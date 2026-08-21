@@ -1,5 +1,5 @@
 // Futterassi - lokale Rezept-App
-// Datenquelle: data/rezepte.json (wird im Chat gepflegt, hier nur gelesen)
+// Datenquelle: rezepte.json (wird im Chat gepflegt, hier nur gelesen)
 
 const FILTER_TAGS = ["vegetarisch", "vegan", "High Protein", "Low Carb", "LEBER", "BLUTDRUCK", "SÄTTIGUNG", "SPORT"];
 const LS_PLAN = "futterassi_plan_v1";
@@ -37,7 +37,7 @@ async function init() {
   });
 
   try {
-    const res = await fetch("data/rezepte.json", { cache: "no-store" });
+    const res = await fetch("rezepte.json", { cache: "no-store" });
     if (!res.ok) throw new Error("HTTP " + res.status);
     RECIPES = await res.json();
   } catch (e) {

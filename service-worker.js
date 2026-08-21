@@ -1,6 +1,6 @@
 // Bei jedem Deploy mit neuem App-Code diese Versionsnummer erhöhen.
 // Sonst bleibt Nutzern die alte, gecachte Version erhalten.
-const CACHE_NAME = "futterassi-v6";
+const CACHE_NAME = "futterassi-v7";
 
 const SHELL = [
   "./",
@@ -8,11 +8,11 @@ const SHELL = [
   "style.css",
   "app.js",
   "manifest.json",
-  "icons/icon-152.png",
-  "icons/icon-167.png",
-  "icons/icon-180.png",
-  "icons/icon-192.png",
-  "icons/icon-512.png"
+  "icon-152.png",
+  "icon-167.png",
+  "icon-180.png",
+  "icon-192.png",
+  "icon-512.png"
 ];
 
 self.addEventListener("install", (e) => {
@@ -33,7 +33,7 @@ self.addEventListener("fetch", (e) => {
   const url = new URL(e.request.url);
 
   // Rezeptdaten: erst Netz, damit Änderungen sofort ankommen, sonst Cache als Fallback.
-  if (url.pathname.endsWith("data/rezepte.json")) {
+  if (url.pathname.endsWith("rezepte.json")) {
     e.respondWith(
       fetch(e.request).then(res => {
         const clone = res.clone();
