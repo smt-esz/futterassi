@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Futterassi</title>
+
+<!-- Standard PWA -->
+<meta name="theme-color" content="#0D5557">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.json">
+
+<!-- iOS/iPadOS: App-artiges Verhalten beim Hinzufügen zum Home-Bildschirm -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Futterassi">
+<link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
+<link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-192.png">
+
+<!-- iOS Splash-Screens, verhindert weißes Aufblitzen beim App-Start -->
+<link rel="apple-touch-startup-image" href="icons/splash-iphone.png"
+  media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="icons/splash-iphone-max.png"
+  media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="icons/splash-ipad-pro11.png"
+  media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+<link rel="apple-touch-startup-image" href="icons/splash-ipad-pro13.png"
+  media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;650;750&family=IBM+Plex+Mono:wght@500;650;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">Futterassi</div>
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-view="katalog">Katalog</button>
+    <button class="tab" data-view="planung">Planung</button>
+  </div>
+</div>
+
+<main class="app" id="app"></main>
+
+<div id="overlay" class="overlay hidden"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

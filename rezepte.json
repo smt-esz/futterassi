@@ -1,0 +1,4244 @@
+[
+  {
+    "id": "sandwich",
+    "name": "Sandwich mit veganem Chicken, Bacon, Avocado & Spiegelei",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": true,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "schnell",
+      "Favorit",
+      "SOJA-CHECK",
+      "Ausnahme"
+    ],
+    "geraete": "Pfanne oder OptiGrill",
+    "zeit": "15 Min. aktiv",
+    "kcal": 780,
+    "protein": 42,
+    "zutaten": [
+      {
+        "menge": 6,
+        "einheit": "Scheiben",
+        "name": "Toastbrot oder Ciabatta"
+      },
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "veganer Chicken-Ersatz"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "veganer Bacon"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Avocado"
+      },
+      {
+        "menge": 3,
+        "einheit": "Stück",
+        "name": "Eier"
+      },
+      {
+        "menge": 150,
+        "einheit": "g",
+        "name": "Cheddar oder Gouda, in Scheiben"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Veganen Chicken-Ersatz und Bacon in der Pfanne oder im OptiGrill knusprig braten.",
+      "Avocado in Scheiben schneiden, salzen und pfeffern.",
+      "Eier in etwas Öl als Spiegelei braten.",
+      "Brot toasten, mit Käse, Chicken-Ersatz, Bacon, Avocado und Spiegelei belegen und mit dem zweiten Brotstück verschließen."
+    ],
+    "notiz": "Stark verarbeitet (veganer Bacon, Chicken-Ersatz), Weißmehl-Toast. Kein LEBER.",
+    "ausnahme": true,
+    "leichter": "Vollkorntoast statt Weißbrot. Veganen Bacon weglassen, Chicken-Ersatz auf 200 g runter, dafür mehr Avocado und Salat. Käse auf 80 g.",
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 45,
+    "status": "stamm",
+    "gekocht_am": "2026-07",
+    "urteil": "kommt wieder",
+    "saison": null
+  },
+  {
+    "id": "kritharaki",
+    "name": "Griechischer Kritharaki-Salat mit Tzatziki-Dressing",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": true,
+    "rest": "½ Salatgurke",
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "Favorit",
+      "BLUTDRUCK",
+      "SPORT"
+    ],
+    "geraete": "Topf für die Nudeln",
+    "zeit": "20 Min. aktiv, 15 Min. Abkühlen",
+    "kcal": 645,
+    "protein": 24,
+    "zutaten": [
+      {
+        "menge": 250,
+        "einheit": "g",
+        "name": "Kritharaki (Orzo-Nudeln)"
+      },
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "Tomaten"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "Feta"
+      },
+      {
+        "menge": 50,
+        "einheit": "g",
+        "name": "schwarze Oliven, entsteint"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "rote Zwiebel"
+      },
+      {
+        "menge": 3,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Rotweinessig"
+      },
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "griechischer Joghurt (2%)"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Stück",
+        "name": "Salatgurke"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Knoblauchzehe"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Olivenöl (fürs Dressing)"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Zitronensaft"
+      },
+      {
+        "menge": 2000,
+        "einheit": "ml",
+        "name": "Wasser zum Kochen der Nudeln"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Wasser mit Salz aufkochen, Kritharaki nach Packungsangabe bissfest kochen, abgießen, kalt abspülen und abkühlen lassen.",
+      "Für das Tzatziki die halbe Gurke fein raspeln, leicht salzen, kurz ziehen lassen und danach gut ausdrücken.",
+      "Joghurt mit der ausgedrückten Gurke, gepresstem Knoblauch, 1 EL Olivenöl, Zitronensaft und Salz zum Dressing verrühren.",
+      "Tomaten würfeln, rote Zwiebel fein würfeln, Oliven halbieren, Feta würfeln.",
+      "Abgekühlte Kritharaki mit Tomaten, Zwiebel und Oliven mischen, mit 3 EL Olivenöl, Rotweinessig, Salz und Pfeffer abschmecken.",
+      "Tzatziki-Dressing unterheben oder zum Servieren danebengeben, Feta darüberstreuen."
+    ],
+    "notiz": "Feta auf 100 g, Oliven auf 50 g, Joghurt auf 2 Prozent. Orzo bleibt Weißmehl, deshalb kein LEBER.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 30,
+    "status": "stamm",
+    "gekocht_am": "2026-07",
+    "urteil": "kommt wieder",
+    "saison": null
+  },
+  {
+    "id": "falafelwrap",
+    "name": "Falafel-Wrap mit Joghurt-Dip",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": "½ Salatgurke",
+    "tags": [
+      "vegetarisch",
+      "schnell"
+    ],
+    "geraete": "Backofen oder Pfanne",
+    "zeit": "15 Min. aktiv, 10 Min. Backzeit",
+    "kcal": 630,
+    "protein": 24,
+    "zutaten": [
+      {
+        "menge": 6,
+        "einheit": "Stück",
+        "name": "Tortilla-Wraps"
+      },
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "Falafel"
+      },
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "Joghurt"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Knoblauchzehe"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Stück",
+        "name": "Salatgurke"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zitrone"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salat, Tomaten zum Belegen"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer, Kreuzkümmel (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Falafel nach Packungsangabe im Ofen oder in der Pfanne erhitzen.",
+      "Joghurt mit gepresstem Knoblauch, fein gewürfelter Gurke, Zitronensaft, Salz, Pfeffer und etwas Kreuzkümmel zum Dip verrühren.",
+      "Wraps mit Salat, Tomaten und Falafel belegen, mit dem Dip beträufeln, einrollen."
+    ],
+    "notiz": "Fertig-Falafel und Weißmehl-Wrap. Mit selbstgemachten Falafel und Vollkorn-Wrap wäre LEBER drin.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 24,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "melone",
+    "name": "Wassermelone-Feta-Salat",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": true,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "Low Carb",
+      "ohne Kochen",
+      "Favorit"
+    ],
+    "geraete": "keine besonderen",
+    "zeit": "10 Min. aktiv",
+    "kcal": 375,
+    "protein": 15,
+    "zutaten": [
+      {
+        "menge": 600,
+        "einheit": "g",
+        "name": "Wassermelone, entkernt, gewürfelt"
+      },
+      {
+        "menge": 150,
+        "einheit": "g",
+        "name": "Feta"
+      },
+      {
+        "menge": 10,
+        "einheit": "Stück",
+        "name": "Minzblätter"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Limette"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "schwarzer Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Wassermelone würfeln und in eine Schüssel geben.",
+      "Feta grob hineinbröckeln oder würfeln.",
+      "Minze fein schneiden und dazugeben.",
+      "Limettensaft, Olivenöl und Pfeffer darüber, vorsichtig mischen."
+    ],
+    "notiz": "Viel Fruchtzucker, dazu Feta. Als Beilage okay, nicht als Leber-Gericht.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 22,
+    "status": "stamm",
+    "gekocht_am": "2026-07",
+    "urteil": "kommt wieder",
+    "saison": [
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  {
+    "id": "bohnensalat",
+    "name": "Weißer Bohnensalat mit Tomaten und Kräuter-Quark-Dip",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "ohne Kochen",
+      "schnell",
+      "LEBER",
+      "BLUTDRUCK",
+      "SÄTTIGUNG"
+    ],
+    "geraete": "keine besonderen",
+    "zeit": "10 Min. aktiv",
+    "kcal": 480,
+    "protein": 33,
+    "zutaten": [
+      {
+        "menge": 480,
+        "einheit": "g",
+        "name": "weiße Bohnen, abgetropft (aus der Dose)"
+      },
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "Tomaten"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "rote Zwiebel"
+      },
+      {
+        "menge": 1,
+        "einheit": "Bund",
+        "name": "Petersilie"
+      },
+      {
+        "menge": 250,
+        "einheit": "g",
+        "name": "Magerquark"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Weißweinessig"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Bohnen abspülen, abtropfen lassen, in eine Schüssel geben.",
+      "Tomaten würfeln, Zwiebel fein würfeln, einen kleinen Teil der Zwiebel für den Dip zurücklegen, den Rest unter die Bohnen mischen.",
+      "Mit Öl, Essig, Salz und Pfeffer abschmecken.",
+      "Für den Dip Magerquark mit etwas Wasser (ca. 2 EL) cremig rühren, restliche Zwiebel und gehackte Petersilie einrühren, salzen und pfeffern.",
+      "Salat mit dem Dip servieren."
+    ],
+    "notiz": "Hülsenfrüchte, Magerquark, Essig statt Salz. Bestes Gericht im Bestand.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 3,
+      "aufwaermen": "beides",
+      "einfrierbar": false
+    },
+    "fett": 14,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "tofuspiesse",
+    "name": "Tofu-Gemüsespieße vom OptiGrill mit Tahin-Dip",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "High Protein",
+      "schnell",
+      "LEBER",
+      "SÄTTIGUNG",
+      "SOJA-CHECK",
+      "BLUTDRUCK"
+    ],
+    "geraete": "OptiGrill, Holzspieße",
+    "zeit": "15 Min. aktiv, 8 Min. Grillzeit",
+    "kcal": 570,
+    "protein": 36,
+    "zutaten": [
+      {
+        "menge": 400,
+        "einheit": "g",
+        "name": "fester Tofu"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zucchini"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "rote Paprika"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "rote Zwiebel"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Sojasauce, salzreduziert"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Knoblauchzehe"
+      },
+      {
+        "menge": 3,
+        "einheit": "EL",
+        "name": "Tahin (Sesammus)"
+      },
+      {
+        "menge": 100,
+        "einheit": "ml",
+        "name": "Wasser"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Sojasauce, salzreduziert (für den Dip)"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Limettensaft"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Chiliflocken (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Tofu würfeln, mit Sojasauce, Öl und gepresstem Knoblauch kurz marinieren.",
+      "Zucchini, Paprika und Zwiebel in Stücke schneiden.",
+      "Tofu und Gemüse abwechselnd auf Spieße stecken.",
+      "Im OptiGrill ca. 8 Minuten grillen, bis Röststellen da sind.",
+      "Für den Dip Tahin mit Wasser, salzreduzierter Sojasauce, Limettensaft und Chiliflocken glattrühren.",
+      "Spieße mit dem Dip servieren."
+    ],
+    "notiz": "Erdnussmus durch Tahin ersetzt, salzreduzierte Sojasauce. Damit auch blutdruckfreundlich.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 33,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "glasnudelsalat",
+    "name": "Asiatischer Glasnudelsalat mit Tofu und Sesam-Dressing",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "High Protein",
+      "schnell",
+      "SÄTTIGUNG",
+      "SOJA-CHECK",
+      "SPORT"
+    ],
+    "geraete": "keine besonderen",
+    "zeit": "15 Min. aktiv, 5 Min. Ziehzeit",
+    "kcal": 630,
+    "protein": 30,
+    "zutaten": [
+      {
+        "menge": 150,
+        "einheit": "g",
+        "name": "Glasnudeln"
+      },
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "fester Tofu"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Salatgurke"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Frühlingszwiebeln"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Bund",
+        "name": "Koriander oder Minze"
+      },
+      {
+        "menge": 3,
+        "einheit": "EL",
+        "name": "Tahin (Sesammus)"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Sojasauce, salzreduziert"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Limettensaft"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Ahornsirup"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Sesamöl"
+      }
+    ],
+    "schritte": [
+      "Glasnudeln nach Packungsangabe in heißem Wasser einweichen, abtropfen lassen, abkühlen.",
+      "Tofu würfeln und in der Pfanne oder im OptiGrill knusprig anbraten.",
+      "Gurke in feine Streifen schneiden, Frühlingszwiebeln in Ringe.",
+      "Für das Dressing Tahin, salzreduzierte Sojasauce, Limettensaft, Ahornsirup und Sesamöl glattrühren, mit etwa 2 EL Wasser verdünnen.",
+      "Alles mischen, mit gehacktem Koriander oder Minze bestreuen."
+    ],
+    "notiz": "Erdnussmus durch Tahin ersetzt. Glasnudeln bleiben raffiniert, deshalb kein LEBER.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 27,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "linsenspinat",
+    "name": "Linsen-Spinat-Salat mit Feta und Weißweinessig",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "schnell",
+      "LEBER",
+      "SÄTTIGUNG",
+      "BLUTDRUCK"
+    ],
+    "geraete": "Topf für die Linsen",
+    "zeit": "10 Min. aktiv, 20 Min. Kochzeit",
+    "kcal": 525,
+    "protein": 30,
+    "zutaten": [
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "rote oder braune Linsen"
+      },
+      {
+        "menge": 150,
+        "einheit": "g",
+        "name": "frischer Spinat"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "Feta"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Weißweinessig"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Knoblauchzehe"
+      },
+      {
+        "menge": 3,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (nach Bedarf)"
+      },
+      {
+        "menge": 500,
+        "einheit": "ml",
+        "name": "Wasser zum Kochen der Linsen"
+      }
+    ],
+    "schritte": [
+      "Linsen in dem Wasser nach Packungsangabe kochen, bis sie weich, aber bissfest sind. Abtropfen, abkühlen lassen.",
+      "Spinat grob schneiden, unter die Linsen mischen.",
+      "Feta grob würfeln oder bröckeln, dazugeben.",
+      "Weißweinessig, gepressten Knoblauch und Olivenöl als Dressing verrühren.",
+      "Salat mit dem Dressing vermengen, mit Salz und Pfeffer abschmecken."
+    ],
+    "notiz": "Zitrone durch Weißweinessig ersetzt, Feta auf 100 g.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 3,
+      "aufwaermen": "beides",
+      "einfrierbar": false
+    },
+    "fett": 24,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "lahmacun",
+    "name": "Vegetarisches Lahmacun auf Wraps mit Veggie-Hack",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "schnell",
+      "SOJA-CHECK",
+      "SPORT"
+    ],
+    "geraete": "Backofen",
+    "zeit": "15 Min. aktiv, 8 Min. Ofenzeit",
+    "kcal": 510,
+    "protein": 27,
+    "zutaten": [
+      {
+        "menge": 6,
+        "einheit": "Stück",
+        "name": "Tortilla-Wraps"
+      },
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "Veggie-Hack"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Tomaten"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Paprika"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zwiebel"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Knoblauchzehen"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Tomatenmark"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Chiliflocken, Salz, Pfeffer (nach Bedarf)"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Salatgurke (zum Belegen)"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Tomaten (zum Belegen)"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salat, Zitronensaft (zum Belegen)"
+      }
+    ],
+    "schritte": [
+      "Tomaten, Paprika, Zwiebel und Knoblauch grob würfeln, mit Tomatenmark, Öl, Chiliflocken, Salz und Pfeffer fein pürieren.",
+      "Die Masse mit dem Veggie-Hack vermischen.",
+      "Die Mischung dünn auf die Wraps streichen, auf ein Blech legen.",
+      "Im Ofen bei 180 Grad ca. 8 Minuten backen, bis die Wraps Röststellen haben.",
+      "Mit gewürfelter Gurke, Tomaten, Salat und einem Spritzer Zitronensaft belegen."
+    ],
+    "notiz": "Veggie-Hack ist Fertigprodukt, Wraps sind Weißmehl.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 18,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "shakshuka",
+    "name": "Shakshuka mit Tomaten und Zucchini",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "warm",
+      "schnell",
+      "LEBER",
+      "BLUTDRUCK",
+      "SÄTTIGUNG",
+      "SCHILDDRÜSE"
+    ],
+    "geraete": "Pfanne mit Deckel",
+    "zeit": "10 Min. aktiv, 15 Min. Kochzeit",
+    "kcal": 540,
+    "protein": 30,
+    "zutaten": [
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zwiebel"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Knoblauchzehen"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zucchini"
+      },
+      {
+        "menge": 500,
+        "einheit": "g",
+        "name": "Tomaten, gehackt"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Paprikapulver"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "TL",
+        "name": "Kreuzkümmel"
+      },
+      {
+        "menge": 4,
+        "einheit": "Stück",
+        "name": "Eier"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "Feta"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer, Petersilie (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Zwiebel und Knoblauch fein hacken, Zucchini würfeln.",
+      "In Öl die Zwiebel glasig dünsten, Zucchini dazugeben und kurz mitbraten.",
+      "Gewürze zugeben, kurz mitrösten, dann die Tomaten dazugeben und ca. 10 Minuten köcheln lassen.",
+      "Mit Salz und Pfeffer abschmecken, kleine Mulden in die Sauce drücken und die Eier hineingleiten lassen.",
+      "Mit Deckel ca. 5 Minuten stocken lassen, bis das Eiweiß fest, das Eigelb aber noch weich ist.",
+      "Feta darüberbröckeln, mit Petersilie bestreuen."
+    ],
+    "notiz": "Eier bringen etwas Jod und Selen, deshalb SCHILDDRÜSE, aber schwach.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 33,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "suesskartoffel",
+    "name": "Süßkartoffel-Kokos-Suppe mit Kichererbsen",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "warm",
+      "LEBER",
+      "SÄTTIGUNG",
+      "High Protein"
+    ],
+    "geraete": "Thermomix oder Topf + Stabmixer",
+    "zeit": "10 Min. aktiv, 15 Min. Kochzeit",
+    "kcal": 585,
+    "protein": 20,
+    "zutaten": [
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zwiebel"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Knoblauchzehe"
+      },
+      {
+        "menge": 500,
+        "einheit": "g",
+        "name": "Süßkartoffel"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Currypulver"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Limette"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Bund",
+        "name": "Koriander"
+      },
+      {
+        "menge": 100,
+        "einheit": "ml",
+        "name": "Kokosmilch"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Bratöl"
+      },
+      {
+        "menge": 500,
+        "einheit": "ml",
+        "name": "Gemüsebrühe, salzarm"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Meersalz, Pfeffer (nach Bedarf)"
+      },
+      {
+        "menge": 240,
+        "einheit": "g",
+        "name": "Kichererbsen, abgetropft (aus der Dose)"
+      }
+    ],
+    "schritte": [
+      "Zwiebel und Knoblauch hacken und im Öl anbraten.",
+      "Süßkartoffel würfeln, mit dem Currypulver 5 Minuten mitbraten.",
+      "Mit der salzarmen Gemüsebrühe ablöschen und etwa 15 Minuten ohne Deckel köcheln.",
+      "Kokosmilch zugeben und glatt pürieren.",
+      "Kichererbsen ganz in die Suppe geben, kurz mit erhitzen. Sie bleiben ganz, das gibt Biss und Protein.",
+      "Limette auspressen, Saft unterrühren, mit Koriander und Pfeffer abschmecken."
+    ],
+    "notiz": "Erdnussmus raus, Kichererbsen rein. Aus 578 kcal bei 10 g Protein wurden 390 kcal bei 13 g.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 4,
+      "aufwaermen": "warm",
+      "einfrierbar": true
+    },
+    "fett": 24,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "curry",
+    "name": "Gemüse-Linsen-Curry",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "High Protein",
+      "einfrierbar",
+      "Resteverwertung",
+      "LEBER",
+      "BLUTDRUCK",
+      "SÄTTIGUNG",
+      "SPORT"
+    ],
+    "geraete": "Topf oder Thermomix",
+    "zeit": "10 Min. aktiv, 20 Min. Kochzeit",
+    "kcal": 630,
+    "protein": 27,
+    "zutaten": [
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "rote Linsen"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zwiebel"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Knoblauchzehen"
+      },
+      {
+        "menge": 400,
+        "einheit": "g",
+        "name": "Tomaten, gehackt"
+      },
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "Zucchini"
+      },
+      {
+        "menge": 200,
+        "einheit": "ml",
+        "name": "Kokosmilch"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Currypulver"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      }
+    ],
+    "schritte": [
+      "Zwiebel und Knoblauch in Öl anschwitzen.",
+      "Currypulver kurz mitrösten.",
+      "Linsen, Tomaten und Zucchini zugeben, mit etwas Wasser (ca. 200 ml) aufgießen.",
+      "Kokosmilch einrühren, ca. 20 Minuten köcheln, bis die Linsen weich sind."
+    ],
+    "notiz": "Kokosmilch ist der Schwachpunkt. Mit 100 ml statt 200 ml oder light sauber leberfreundlich.",
+    "varianten": "Person 2 kann Brokkoli oder Blumenkohl mitkochen, dafür eine kleine Portion abteilen. Grundgericht bleibt ohne.",
+    "ausnahme": false,
+    "leichter": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 4,
+      "aufwaermen": "warm",
+      "einfrierbar": true
+    },
+    "fett": 24,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "gurken",
+    "name": "Gurkensalat mit Kräuter-Joghurt-Dressing",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "Low Carb",
+      "ohne Kochen"
+    ],
+    "geraete": "keine besonderen",
+    "zeit": "10 Min. aktiv, 15 Min. Ziehzeit",
+    "kcal": 210,
+    "protein": 8,
+    "zutaten": [
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Salatgurken"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Salz"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "Kräuter-Crème fraîche"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "Joghurt, ab 3,5% Fett"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "weißer Balsamessig"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "kleine Knoblauchzehe"
+      },
+      {
+        "menge": 20,
+        "einheit": "g",
+        "name": "frischer Dill"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Zucker, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Gurken hobeln, salzen und 15 bis 20 Minuten ziehen lassen, Wasser abgießen.",
+      "Crème fraîche, Joghurt, Essig und Öl verrühren.",
+      "Knoblauch fein reiben, Dill schneiden, beides unterrühren.",
+      "Mit Zucker und Pfeffer abschmecken.",
+      "Gurken ausdrücken, untermischen, kurz durchziehen lassen."
+    ],
+    "notiz": "Beilage. Crème fraîche und Zucker, kaum Protein.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 15,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "knoppers",
+    "name": "High Protein Knoppers Bowl",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "fruehstueck",
+    "favorit": true,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "Frühstück",
+      "schnell",
+      "Favorit",
+      "Ausnahme"
+    ],
+    "geraete": "keine besonderen",
+    "zeit": "10 Min. aktiv",
+    "kcal": 329,
+    "protein": 22,
+    "zutaten": [
+      {
+        "menge": 6,
+        "einheit": "Scheiben",
+        "name": "Waffelbrot (Filinchen)"
+      },
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "High Protein Schokopudding"
+      },
+      {
+        "menge": 250,
+        "einheit": "g",
+        "name": "Magerquark (0,1%)"
+      },
+      {
+        "menge": 40,
+        "einheit": "g",
+        "name": "Zartbitterschokolade, mind. 70%"
+      }
+    ],
+    "schritte": [
+      "Zartbitterschokolade klein schneiden und im Wasserbad schmelzen. Magerquark mit etwas Wasser cremig rühren.",
+      "Zwei Schüsseln schichten: Filinchen, Schokopudding, Filinchen, Magerquark, Filinchen, dann die geschmolzene Schokolade.",
+      "5 bis 10 Minuten in den Tiefkühler stellen."
+    ],
+    "notiz": "Fertigpudding und Schokolade. Bleibt als bewusste Ausnahme, leichtere Fassung im Feld leichter.",
+    "ausnahme": true,
+    "leichter": "Schokopudding weglassen, stattdessen Magerquark mit 1 TL Backkakao und zerdrückter Banane. Zartbitterschokolade auf 20 g halbieren. Filinchen bleiben.",
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 10,
+    "status": "stamm",
+    "gekocht_am": "2026-07",
+    "urteil": "kommt wieder",
+    "saison": null
+  },
+  {
+    "id": "flammkuchen",
+    "name": "Flammkuchen (Ooni)",
+    "basis": 3,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "Resteverwertung",
+      "Ooni",
+      "Ausnahme"
+    ],
+    "geraete": "Ooni Pizzaofen, Küchenmaschine",
+    "zeit": "20 Min. aktiv, 2 bis 4 Min. im Ooni",
+    "kcal": 693,
+    "protein": 17,
+    "zutaten": [
+      {
+        "menge": 230,
+        "einheit": "g",
+        "name": "Mehl"
+      },
+      {
+        "menge": 30,
+        "einheit": "g",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 120,
+        "einheit": "g",
+        "name": "Wasser"
+      },
+      {
+        "menge": 0.25,
+        "einheit": "TL",
+        "name": "Salz"
+      },
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "Schmand"
+      },
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "saure Sahne"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Belag nach Vorrat (Champignons, rote Zwiebeln, Käse)"
+      }
+    ],
+    "schritte": [
+      "Mehl, Öl, Wasser und Salz zu glattem Teig kneten, kurz ruhen lassen.",
+      "Teig dünn ausrollen, auf den Pizzaschieber legen.",
+      "Schmand und saure Sahne verrühren, würzen, dünn aufstreichen.",
+      "Belag nach Vorrat verteilen.",
+      "Im vorgeheizten Ooni 2 bis 4 Minuten backen, zwischendurch drehen."
+    ],
+    "notiz": "Weißmehl, Schmand, saure Sahne. Bleibt als Familiengericht, nicht als Leber-Gericht.",
+    "ausnahme": true,
+    "leichter": "Teig zur Hälfte aus Vollkornmehl. Statt 200 g Schmand plus 200 g saure Sahne: 150 g Skyr mit 100 g Schmand verrühren. Belag mit Champignons, Zwiebeln, Zucchini, Käse sparsam.",
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 35,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "halloumi",
+    "name": "Gegrillter Halloumi mit Kichererbsen-Tomaten-Gurken-Salat",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": "½ Salatgurke",
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "Low Carb",
+      "schnell",
+      "SÄTTIGUNG",
+      "BLUTDRUCK"
+    ],
+    "geraete": "OptiGrill oder Grillpfanne",
+    "zeit": "15 Min. aktiv",
+    "kcal": 600,
+    "protein": 39,
+    "zutaten": [
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "Halloumi"
+      },
+      {
+        "menge": 240,
+        "einheit": "g",
+        "name": "Kichererbsen, abgetropft (aus der Dose)"
+      },
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "Tomaten"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Stück",
+        "name": "Salatgurke"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "rote Zwiebel"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Bund",
+        "name": "Minze"
+      },
+      {
+        "menge": 3,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Weißweinessig"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Halloumi in etwa 1 cm dicke Scheiben schneiden.",
+      "Im OptiGrill oder in einer Grillpfanne ohne Öl von beiden Seiten goldbraun grillen, bis Röststellen da sind.",
+      "Tomaten und Gurke würfeln, rote Zwiebel fein schneiden, Minze hacken.",
+      "Kichererbsen abspülen, abtropfen lassen und mit dem Gemüse mischen.",
+      "Mit Olivenöl, Weißweinessig und Pfeffer abschmecken. Salz braucht es kaum, der Halloumi bringt genug mit.",
+      "Halloumi auf den Salat legen. Dazu passt warmes Vollkorn-Fladenbrot."
+    ],
+    "notiz": "Halloumi von 400 g auf 200 g halbiert, dafür Kichererbsen dazu. Gleiche Sättigung, halbe Salzlast, mehr Ballaststoffe. Nach Kochtest: Minze kann weggelassen werden, schmeckt auch ohne. Sehr gut als Wrap im Fladenbrot serviert.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": "Minze optional, kann weggelassen werden. Als Wrap im Fladenbrot serviert schmeckt es sehr gut.",
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 36,
+    "status": "stamm",
+    "gekocht_am": "2026-08-05",
+    "urteil": "sehr gut",
+    "saison": null
+  },
+  {
+    "id": "gigantes",
+    "name": "Gigantes: weiße Riesenbohnen in Tomatensugo mit Feta",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "warm",
+      "LEBER",
+      "SÄTTIGUNG",
+      "BLUTDRUCK"
+    ],
+    "geraete": "Topf, optional Backofen",
+    "zeit": "15 Min. aktiv, 25 Min. Schmoren",
+    "kcal": 600,
+    "protein": 28,
+    "zutaten": [
+      {
+        "menge": 480,
+        "einheit": "g",
+        "name": "weiße Riesenbohnen oder große weiße Bohnen, abgetropft (2 Dosen)"
+      },
+      {
+        "menge": 500,
+        "einheit": "g",
+        "name": "Tomaten, gehackt (Dose)"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zwiebel"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Knoblauchzehen"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Tomatenmark, ohne Salzzusatz"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Oregano, getrocknet"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Paprikapulver edelsüß"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "Feta"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Bund",
+        "name": "Petersilie"
+      },
+      {
+        "menge": 100,
+        "einheit": "ml",
+        "name": "Wasser"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Zwiebel und Knoblauch fein hacken, in Olivenöl glasig dünsten.",
+      "Tomatenmark kurz mitrösten, Paprikapulver und Oregano zugeben.",
+      "Gehackte Tomaten und Wasser angießen, mit Salz und Pfeffer würzen, ca. 10 Minuten köcheln.",
+      "Bohnen zugeben und weitere 10 bis 15 Minuten schmoren, bis die Sauce sämig ist.",
+      "Feta darüberbröckeln, optional kurz im Ofen überbacken, mit Petersilie bestreuen."
+    ],
+    "notiz": "Feta auf 100 g, Tomatenmark ohne Salzzusatz.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 4,
+      "aufwaermen": "warm",
+      "einfrierbar": true
+    },
+    "fett": 24,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "couscoussalat",
+    "name": "Couscous-Salat mit Kichererbsen, Tomate, Gurke und Feta",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": "½ Salatgurke",
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "schnell",
+      "SÄTTIGUNG",
+      "LEBER",
+      "BLUTDRUCK",
+      "SPORT"
+    ],
+    "geraete": "Wasserkocher oder Topf",
+    "zeit": "15 Min. aktiv, 10 Min. Quellzeit",
+    "kcal": 660,
+    "protein": 26,
+    "zutaten": [
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "Vollkorn-Couscous"
+      },
+      {
+        "menge": 250,
+        "einheit": "ml",
+        "name": "heiße Gemüsebrühe, salzarm"
+      },
+      {
+        "menge": 240,
+        "einheit": "g",
+        "name": "Kichererbsen, abgetropft (aus der Dose)"
+      },
+      {
+        "menge": 250,
+        "einheit": "g",
+        "name": "Tomaten"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Stück",
+        "name": "Salatgurke"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "rote Zwiebel"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Bund",
+        "name": "Minze"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "Feta"
+      },
+      {
+        "menge": 4,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Weißweinessig"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer, Kreuzkümmel (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Couscous mit der heißen Brühe übergießen, abgedeckt ca. 8 Minuten quellen lassen, dann mit einer Gabel auflockern.",
+      "Tomaten und Gurke würfeln, Zwiebel fein schneiden, Minze hacken.",
+      "Couscous mit Kichererbsen, Gemüse und Minze mischen.",
+      "Mit Olivenöl, Weißweinessig, Salz, Pfeffer und etwas Kreuzkümmel abschmecken.",
+      "Feta darüberbröckeln. Hält sich gut und eignet sich auch zum Mitnehmen."
+    ],
+    "notiz": "Vollkorn-Couscous, Feta auf 100 g. Damit leber- und blutdruckfreundlich.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 3,
+      "aufwaermen": "beides",
+      "einfrierbar": false
+    },
+    "fett": 27,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "ofengnocchi",
+    "name": "Ofen-Gnocchi mit Tomaten, Zucchini und Mozzarella",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "warm",
+      "Kind",
+      "Ausnahme",
+      "SPORT"
+    ],
+    "geraete": "Backofen",
+    "zeit": "10 Min. aktiv, 28 Min. Ofenzeit",
+    "kcal": 780,
+    "protein": 27,
+    "zutaten": [
+      {
+        "menge": 600,
+        "einheit": "g",
+        "name": "Gnocchi (Kühlregal)"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zucchini"
+      },
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "Kirschtomaten"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zwiebel"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Knoblauchzehen"
+      },
+      {
+        "menge": 3,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Oregano, getrocknet"
+      },
+      {
+        "menge": 125,
+        "einheit": "g",
+        "name": "Mozzarella"
+      },
+      {
+        "menge": 50,
+        "einheit": "g",
+        "name": "geriebener Käse (z.B. Gouda)"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Bund",
+        "name": "Basilikum"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Backofen auf 200 Grad Ober-/Unterhitze vorheizen.",
+      "Zucchini würfeln, Zwiebel in Spalten, Knoblauch grob hacken.",
+      "Gnocchi, Zucchini, Kirschtomaten, Zwiebel und Knoblauch auf einem Blech mit Olivenöl, Oregano, Salz und Pfeffer mischen.",
+      "Ca. 20 Minuten backen, einmal wenden.",
+      "Mozzarella zupfen und mit dem geriebenen Käse darüber verteilen, weitere 5 bis 8 Minuten überbacken.",
+      "Mit Basilikum bestreuen."
+    ],
+    "notiz": "Gnocchi, Mozzarella, Gouda. Kindgericht, nicht leberfreundlich.",
+    "ausnahme": true,
+    "leichter": "Gnocchi zur Hälfte durch Kichererbsen aus der Dose ersetzen. Geriebenen Käse weglassen, nur Mozzarella.",
+    "varianten": "Person 2 mag Brokkoli: eine Handvoll Röschen in eine Ecke des Blechs, separat servieren. Person 1 bekommt die Ecke ohne.",
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 33,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "zucchinipuffer",
+    "name": "Zucchini-Puffer mit Feta und Kräuter-Joghurt-Dip",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "schnell",
+      "Kind",
+      "SÄTTIGUNG"
+    ],
+    "geraete": "Pfanne, Reibe",
+    "zeit": "25 Min. aktiv",
+    "kcal": 570,
+    "protein": 27,
+    "zutaten": [
+      {
+        "menge": 600,
+        "einheit": "g",
+        "name": "Zucchini"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "Feta"
+      },
+      {
+        "menge": 3,
+        "einheit": "Stück",
+        "name": "Eier"
+      },
+      {
+        "menge": 80,
+        "einheit": "g",
+        "name": "Mehl"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Frühlingszwiebeln"
+      },
+      {
+        "menge": 3,
+        "einheit": "EL",
+        "name": "Olivenöl (zum Braten)"
+      },
+      {
+        "menge": 250,
+        "einheit": "g",
+        "name": "Joghurt"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "kleine Knoblauchzehe"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Bund",
+        "name": "Dill"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Zucchini grob raspeln, leicht salzen, 10 Minuten ziehen lassen und gut ausdrücken.",
+      "Mit Eiern, Mehl, zerbröseltem Feta und fein geschnittenen Frühlingszwiebeln zu einem Teig verrühren, mit Pfeffer würzen.",
+      "In Öl portionsweise kleine Puffer von beiden Seiten goldbraun braten.",
+      "Für den Dip Joghurt mit geriebenem Knoblauch, gehacktem Dill und Salz verrühren.",
+      "Puffer mit dem Dip servieren. Zum Dippen mag das auch der Kleine."
+    ],
+    "notiz": "Weißmehl und Bratöl. Viel Gemüse und Protein, deshalb SÄTTIGUNG.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 30,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "hotdog",
+    "name": "Selbstgemachte Hot Dogs zum Selbstbelegen",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "Kind",
+      "schnell",
+      "Ausnahme"
+    ],
+    "geraete": "Backofen, Topf oder OptiGrill",
+    "zeit": "20 Min. aktiv",
+    "kcal": 675,
+    "protein": 27,
+    "zutaten": [
+      {
+        "menge": 6,
+        "einheit": "Stück",
+        "name": "Vollkorn-Hotdogbrötchen (oder Laugenstangen)"
+      },
+      {
+        "menge": 6,
+        "einheit": "Stück",
+        "name": "vegetarische Würstchen (oder Geflügelwürstchen)"
+      },
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "Hüttenkäse"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Tomaten"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Gewürzgurken"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Röstzwiebeln"
+      },
+      {
+        "menge": 4,
+        "einheit": "EL",
+        "name": "Ketchup"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Senf"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Bund",
+        "name": "Schnittlauch"
+      }
+    ],
+    "schritte": [
+      "Brötchen im Ofen kurz aufbacken, bis sie warm und weich sind.",
+      "Würstchen sanft in heißem (nicht kochendem) Wasser erwärmen oder kurz im OptiGrill anrösten.",
+      "Tomaten und Gewürzgurken in Scheiben schneiden, Schnittlauch fein schneiden.",
+      "Alle Toppings in Schälchen auf den Tisch stellen: Hüttenkäse, Tomaten, Gurken, Röstzwiebeln, Ketchup, Senf, Schnittlauch.",
+      "Jeder belegt sein Brötchen selbst. Für den Kleinen mild halten, Senf und Schärfe erst auf die Erwachsenenportion."
+    ],
+    "notiz": "Würstchen, Ketchup, Weißmehlbrötchen. Bewusst selten.",
+    "ausnahme": true,
+    "leichter": "Vollkornbrötchen, Würstchen auf Erbsen- oder Sojabasis mit wenig Salz, Hüttenkäse als Basis statt Ketchup. Ketchup und Senf in kleinen Schälchen daneben, nicht aufs Brötchen.",
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 27,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "joghurtbowl",
+    "name": "Joghurt-Bowl mit Beeren, Zimt und Knusper-Hafer (to go)",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "fruehstueck",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "Frühstück",
+      "schnell",
+      "LEBER"
+    ],
+    "geraete": "keine besonderen",
+    "zeit": "10 Min. aktiv",
+    "kcal": 300,
+    "protein": 24,
+    "zutaten": [
+      {
+        "menge": 400,
+        "einheit": "g",
+        "name": "griechischer Joghurt (2%) oder Skyr"
+      },
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "Beeren (Blaubeeren, Erdbeeren oder Himbeeren)"
+      },
+      {
+        "menge": 60,
+        "einheit": "g",
+        "name": "Haferflocken"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Zimt (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Haferflocken in einer trockenen Pfanne kurz rösten, bis sie duften, abkühlen lassen.",
+      "Beeren waschen, größere Stücke klein schneiden. Ein Drittel mit der Gabel zerdrücken, das süßt den Joghurt ohne Zucker.",
+      "In zwei Gläser mit Deckel schichten: Joghurt, zerdrückte und ganze Beeren, geröstete Haferflocken, Zimt.",
+      "Deckel drauf, kühl lagern und zum Frühstück mitnehmen."
+    ],
+    "notiz": "Honig und Nüsse raus, Süße kommt aus zerdrückten Beeren, Joghurt auf 2 Prozent.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 6,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "linsenbolo",
+    "name": "Linsen-Bolognese mit Vollkornnudeln",
+    "basis": 6,
+    "portionen_real": null,
+    "typ": "mittag",
+    "favorit": false,
+    "rest": null,
+    "ausnahme": false,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "High Protein",
+      "warm",
+      "einfrierbar",
+      "LEBER",
+      "BLUTDRUCK",
+      "SÄTTIGUNG",
+      "SPORT"
+    ],
+    "geraete": "Topf, Reiskocher oder Topf für die Nudeln",
+    "zeit": "15 Min. aktiv, 30 Min. Kochzeit",
+    "kcal": 480,
+    "protein": 24,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 4,
+      "aufwaermen": "warm",
+      "einfrierbar": true
+    },
+    "notiz": "Das Arbeitspferd fürs Meal Prep. Sauce hält vier Tage, Nudeln am besten separat lagern, sonst matschen sie.",
+    "varianten": null,
+    "leichter": null,
+    "zutaten": [
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "braune oder grüne Linsen, trocken"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Zwiebel"
+      },
+      {
+        "menge": 3,
+        "einheit": "Stück",
+        "name": "Knoblauchzehen"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Zucchini"
+      },
+      {
+        "menge": 800,
+        "einheit": "g",
+        "name": "Tomaten, gehackt (Dose)"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Tomatenmark, ohne Salzzusatz"
+      },
+      {
+        "menge": 2,
+        "einheit": "TL",
+        "name": "Oregano, getrocknet"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Paprikapulver edelsüß"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Weißweinessig"
+      },
+      {
+        "menge": 3,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 600,
+        "einheit": "ml",
+        "name": "Wasser"
+      },
+      {
+        "menge": 500,
+        "einheit": "g",
+        "name": "Vollkornnudeln"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Pfeffer, wenig Salz, frisches Basilikum (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Zwiebeln und Knoblauch fein hacken, Zucchini klein würfeln.",
+      "Alles in Olivenöl anbraten, bis die Zwiebeln glasig sind.",
+      "Tomatenmark, Oregano und Paprikapulver kurz mitrösten.",
+      "Linsen, gehackte Tomaten und 600 ml Wasser zugeben, aufkochen, dann etwa 30 Minuten leise köcheln, bis die Linsen weich sind. Bei Bedarf Wasser nachgießen.",
+      "Mit Weißweinessig, Pfeffer und wenig Salz abschmecken. Der Essig ersetzt hier einen Teil des Salzes.",
+      "Vollkornnudeln separat kochen. Für die Vorratsdosen Nudeln und Sauce getrennt einfüllen und erst beim Aufwärmen mischen.",
+      "Basilikum erst kurz vor dem Essen dazu."
+    ],
+    "fett": 12,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "kichererbsencurry",
+    "name": "Kichererbsen-Spinat-Curry mit Vollkornreis",
+    "basis": 6,
+    "portionen_real": null,
+    "typ": "mittag",
+    "favorit": false,
+    "rest": null,
+    "ausnahme": false,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "High Protein",
+      "warm",
+      "einfrierbar",
+      "LEBER",
+      "BLUTDRUCK",
+      "SÄTTIGUNG",
+      "SPORT"
+    ],
+    "geraete": "Topf, Reiskocher",
+    "zeit": "15 Min. aktiv, 20 Min. Kochzeit",
+    "kcal": 470,
+    "protein": 19,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 4,
+      "aufwaermen": "warm",
+      "einfrierbar": true
+    },
+    "notiz": "Wird beim Stehen besser. Kokosmilch bewusst nur 200 ml auf sechs Portionen, das hält die gesättigten Fette unten.",
+    "varianten": "Person 2 kann sich Blumenkohl mitkochen, eine kleine Portion abteilen.",
+    "leichter": null,
+    "zutaten": [
+      {
+        "menge": 480,
+        "einheit": "g",
+        "name": "Kichererbsen, abgetropft (2 Dosen)"
+      },
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "frischer Spinat (oder tiefgekühlt)"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Zwiebel"
+      },
+      {
+        "menge": 3,
+        "einheit": "Stück",
+        "name": "Knoblauchzehen"
+      },
+      {
+        "menge": 20,
+        "einheit": "g",
+        "name": "frischer Ingwer"
+      },
+      {
+        "menge": 800,
+        "einheit": "g",
+        "name": "Tomaten, gehackt (Dose)"
+      },
+      {
+        "menge": 200,
+        "einheit": "ml",
+        "name": "Kokosmilch"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Currypulver"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Kreuzkümmel, gemahlen"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Weißweinessig"
+      },
+      {
+        "menge": 400,
+        "einheit": "g",
+        "name": "Vollkornreis"
+      },
+      {
+        "menge": 800,
+        "einheit": "ml",
+        "name": "Wasser für den Reis"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Pfeffer, wenig Salz, Chili (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Vollkornreis im Reiskocher mit dem Wasser aufsetzen.",
+      "Zwiebel, Knoblauch und Ingwer fein hacken, in Olivenöl anbraten.",
+      "Currypulver und Kreuzkümmel kurz mitrösten, bis es duftet.",
+      "Gehackte Tomaten und Kokosmilch zugeben, etwa 10 Minuten köcheln.",
+      "Kichererbsen zugeben, weitere 8 Minuten köcheln.",
+      "Spinat portionsweise unterheben, bis er zusammenfällt.",
+      "Mit Weißweinessig, Pfeffer, wenig Salz und Chili abschmecken. Kinderportion vorher abnehmen.",
+      "Reis und Curry getrennt in die Dosen füllen."
+    ],
+    "fett": 14,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "bulgurbowl",
+    "name": "Bulgur-Bowl mit weißen Bohnen, Ofen-Zucchini und Tahin-Sauce",
+    "basis": 6,
+    "portionen_real": null,
+    "typ": "mittag",
+    "favorit": false,
+    "rest": null,
+    "ausnahme": false,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "High Protein",
+      "LEBER",
+      "BLUTDRUCK",
+      "SÄTTIGUNG",
+      "SPORT"
+    ],
+    "geraete": "Backofen, Topf",
+    "zeit": "20 Min. aktiv, 25 Min. Ofenzeit",
+    "kcal": 460,
+    "protein": 20,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 4,
+      "aufwaermen": "beides",
+      "einfrierbar": false
+    },
+    "notiz": "Geht kalt und warm. Tahin-Sauce separat in ein kleines Glas, sonst zieht die Bowl Wasser.",
+    "varianten": null,
+    "leichter": null,
+    "zutaten": [
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "Bulgur (Vollkorn)"
+      },
+      {
+        "menge": 600,
+        "einheit": "ml",
+        "name": "heißes Wasser oder salzarme Gemüsebrühe"
+      },
+      {
+        "menge": 480,
+        "einheit": "g",
+        "name": "weiße Bohnen, abgetropft (2 Dosen)"
+      },
+      {
+        "menge": 3,
+        "einheit": "Stück",
+        "name": "Zucchini"
+      },
+      {
+        "menge": 400,
+        "einheit": "g",
+        "name": "Kirschtomaten"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "rote Zwiebel"
+      },
+      {
+        "menge": 3,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Oregano, getrocknet"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Kreuzkümmel, gemahlen"
+      },
+      {
+        "menge": 4,
+        "einheit": "EL",
+        "name": "Tahin (Sesammus)"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Weißweinessig"
+      },
+      {
+        "menge": 100,
+        "einheit": "ml",
+        "name": "Wasser für die Sauce"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Knoblauchzehe"
+      },
+      {
+        "menge": 1,
+        "einheit": "Bund",
+        "name": "Petersilie"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Pfeffer, wenig Salz (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Backofen auf 200 Grad Ober- und Unterhitze vorheizen.",
+      "Zucchini in Halbmonde schneiden, Zwiebel in Spalten. Mit Kirschtomaten, 2 EL Olivenöl, Oregano, Kreuzkümmel und Pfeffer auf ein Blech geben.",
+      "Etwa 25 Minuten backen, einmal wenden. Die Tomaten sollen aufplatzen.",
+      "Bulgur mit dem heißen Wasser übergießen, abgedeckt 15 Minuten quellen lassen, dann mit der Gabel auflockern.",
+      "Bohnen abspülen und abtropfen lassen.",
+      "Für die Sauce Tahin mit Weißweinessig, gepresstem Knoblauch, 100 ml Wasser und Pfeffer glattrühren. Sie wird erst fest, dann wieder cremig, einfach weiterrühren.",
+      "Bulgur, Bohnen und Ofengemüse mischen, Petersilie hacken und untermischen.",
+      "In die Dosen füllen, Sauce separat."
+    ],
+    "fett": 16,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "tofureispfanne",
+    "name": "Knuspriger Tofu mit Edamame und Reis aus dem Wok",
+    "basis": 6,
+    "portionen_real": null,
+    "typ": "mittag",
+    "favorit": false,
+    "rest": null,
+    "ausnahme": false,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "High Protein",
+      "warm",
+      "SÄTTIGUNG",
+      "SOJA-CHECK",
+      "SPORT"
+    ],
+    "geraete": "Wok, Reiskocher",
+    "zeit": "25 Min. aktiv",
+    "kcal": 490,
+    "protein": 27,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 3,
+      "aufwaermen": "warm",
+      "einfrierbar": false
+    },
+    "notiz": "Tofu verliert beim Aufwärmen etwas Knusprigkeit, bleibt aber gut. Nur drei Tage haltbar, deshalb eher für Montag bis Mittwoch.",
+    "varianten": null,
+    "leichter": null,
+    "zutaten": [
+      {
+        "menge": 600,
+        "einheit": "g",
+        "name": "fester Tofu"
+      },
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "Edamame, tiefgekühlt, ohne Schote"
+      },
+      {
+        "menge": 400,
+        "einheit": "g",
+        "name": "Vollkornreis"
+      },
+      {
+        "menge": 800,
+        "einheit": "ml",
+        "name": "Wasser für den Reis"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Zucchini"
+      },
+      {
+        "menge": 4,
+        "einheit": "Stück",
+        "name": "Frühlingszwiebeln"
+      },
+      {
+        "menge": 3,
+        "einheit": "Stück",
+        "name": "Knoblauchzehen"
+      },
+      {
+        "menge": 20,
+        "einheit": "g",
+        "name": "frischer Ingwer"
+      },
+      {
+        "menge": 3,
+        "einheit": "EL",
+        "name": "Sojasauce, salzreduziert"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Speisestärke"
+      },
+      {
+        "menge": 3,
+        "einheit": "EL",
+        "name": "Bratöl"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Sesamöl"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Reisessig oder Weißweinessig"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Chiliflocken, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Vollkornreis im Reiskocher mit dem Wasser aufsetzen.",
+      "Tofu würfeln, gut trocken tupfen, mit der Speisestärke bestäuben und durchschütteln.",
+      "Im Wok in heißem Bratöl rundherum knusprig braten, herausnehmen.",
+      "Zucchini würfeln, Knoblauch und Ingwer hacken, Frühlingszwiebeln in Ringe schneiden.",
+      "Zucchini im Wok scharf anbraten, Knoblauch und Ingwer zugeben.",
+      "Edamame gefroren dazugeben, 3 Minuten mitbraten.",
+      "Tofu zurück in den Wok, mit salzreduzierter Sojasauce, Sesamöl, Essig und Chili abschmecken.",
+      "Mit dem Reis in die Dosen füllen, Frühlingszwiebeln obendrauf."
+    ],
+    "fett": 18,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "roestkichererbsen",
+    "name": "Röstkichererbsen aus dem Ofen",
+    "basis": 1,
+    "portionen_real": null,
+    "typ": "snack",
+    "favorit": true,
+    "rest": null,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "High Protein",
+      "LEBER",
+      "BLUTDRUCK",
+      "SÄTTIGUNG",
+      "salzig-herzhaft"
+    ],
+    "geraete": "Backofen",
+    "zeit": "5 Min. aktiv, 30 Min. Ofenzeit",
+    "kcal": 190,
+    "protein": 9,
+    "fett": 7,
+    "zutaten": [
+      {
+        "menge": 240,
+        "einheit": "g",
+        "name": "Kichererbsen, abgetropft (aus der Dose)"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Paprikapulver edelsüß"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "TL",
+        "name": "Kreuzkümmel, gemahlen"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Pfeffer, wenig Salz (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Backofen auf 200 Grad Ober- und Unterhitze vorheizen.",
+      "Kichererbsen abspülen, abtropfen lassen und gut trocken tupfen. Je trockener, desto knuspriger.",
+      "Mit Öl und Gewürzen mischen, auf einem Blech verteilen.",
+      "25 bis 30 Minuten backen, einmal wenden. Sie sollen leicht dunkel werden.",
+      "Am selben Abend essen. Über Nacht ziehen sie Wasser und werden zäh."
+    ],
+    "notiz": "Nährwerte geschätzt. Leonart kennt und mag das Rezept.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "status": "stamm",
+    "gekocht_am": "2026-07",
+    "urteil": "kommt wieder",
+    "saison": null
+  },
+  {
+    "id": "popcorn",
+    "name": "Popcorn im Topf, ohne Zucker",
+    "basis": 1,
+    "portionen_real": null,
+    "typ": "snack",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "salzig-herzhaft"
+    ],
+    "geraete": "Topf mit Deckel",
+    "zeit": "5 Min. aktiv",
+    "kcal": 120,
+    "protein": 3,
+    "fett": 5,
+    "zutaten": [
+      {
+        "menge": 30,
+        "einheit": "g",
+        "name": "Puffmais"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Öl"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Paprikapulver oder wenig Salz (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "1 TL Öl in einen Topf mit Deckel geben, Mais dazu, Deckel drauf.",
+      "Mittlere Hitze, Topf immer wieder schütteln, etwa 3 Minuten.",
+      "Wenn das Ploppen nachlässt, vom Herd nehmen.",
+      "Mit Paprikapulver oder wenig Salz würzen. Kein Airfryer, die Körner fliegen in die Heizspirale."
+    ],
+    "notiz": "Nährwerte geschätzt, pro Portion aus 30 g Mais.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "status": "stamm",
+    "gekocht_am": "2026-08",
+    "urteil": "kommt wieder, fester Abendsnack",
+    "saison": null
+  },
+  {
+    "id": "edamame",
+    "name": "Edamame mit Chili",
+    "basis": 1,
+    "portionen_real": null,
+    "typ": "snack",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "High Protein",
+      "SÄTTIGUNG",
+      "SOJA-CHECK",
+      "salzig-herzhaft"
+    ],
+    "geraete": "Topf",
+    "zeit": "8 Min. aktiv",
+    "kcal": 130,
+    "protein": 11,
+    "fett": 5,
+    "zutaten": [
+      {
+        "menge": 150,
+        "einheit": "g",
+        "name": "Edamame, tiefgekühlt, ohne Schote"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Chiliflocken, Pfeffer, wenig Salz (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Edamame in kochendem Wasser 4 bis 5 Minuten garen, abgießen.",
+      "Mit Chiliflocken und Pfeffer würzen. Salz sparsam."
+    ],
+    "notiz": "Nährwerte geschätzt.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "huettenkaese_knaecke",
+    "name": "Hüttenkäse auf Knäckebrot mit Gurke",
+    "basis": 1,
+    "portionen_real": null,
+    "typ": "snack",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "SÄTTIGUNG",
+      "salzig-herzhaft"
+    ],
+    "geraete": "keine besonderen",
+    "zeit": "5 Min. aktiv",
+    "kcal": 170,
+    "protein": 14,
+    "fett": 4,
+    "zutaten": [
+      {
+        "menge": 2,
+        "einheit": "Scheiben",
+        "name": "Vollkorn-Knäckebrot"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "Hüttenkäse"
+      },
+      {
+        "menge": 0.25,
+        "einheit": "Stück",
+        "name": "Salatgurke"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Pfeffer, Schnittlauch (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Hüttenkäse auf das Knäckebrot streichen.",
+      "Gurke in dünne Scheiben, darauf legen.",
+      "Pfeffer und Schnittlauch drüber."
+    ],
+    "notiz": "Nährwerte geschätzt.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "skyr_kakao",
+    "name": "Skyr mit Kakao und Banane",
+    "basis": 1,
+    "portionen_real": null,
+    "typ": "snack",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "SÄTTIGUNG",
+      "süß"
+    ],
+    "geraete": "keine besonderen",
+    "zeit": "5 Min. aktiv",
+    "kcal": 190,
+    "protein": 20,
+    "fett": 2,
+    "zutaten": [
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "Skyr"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Backkakao, ungesüßt"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Banane"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Zimt (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Skyr mit dem Kakao und etwas Wasser cremig rühren.",
+      "Banane zerdrücken und unterheben. Das süßt ohne Zucker.",
+      "Zimt drüber."
+    ],
+    "notiz": "Nährwerte geschätzt. Milchprodukt, Abstand zu L-Thyroxin beachten, falls morgens.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "beeren_skyr",
+    "name": "Gefrorene Beeren mit Skyr",
+    "basis": 1,
+    "portionen_real": null,
+    "typ": "snack",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "LEBER",
+      "süß"
+    ],
+    "geraete": "keine besonderen",
+    "zeit": "10 Min. Wartezeit",
+    "kcal": 160,
+    "protein": 15,
+    "fett": 2,
+    "zutaten": [
+      {
+        "menge": 150,
+        "einheit": "g",
+        "name": "gefrorene Beeren"
+      },
+      {
+        "menge": 150,
+        "einheit": "g",
+        "name": "Skyr"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Zimt (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Beeren 10 Minuten antauen lassen.",
+      "Skyr darüber, Zimt drauf."
+    ],
+    "notiz": "Nährwerte geschätzt. Von Claude vorgeschlagen, noch nicht getestet.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "salzgurken",
+    "name": "Salzgurken aus dem Glas",
+    "basis": 1,
+    "portionen_real": null,
+    "typ": "snack",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "Low Carb",
+      "salzig-herzhaft",
+      "salzig"
+    ],
+    "geraete": "keine besonderen",
+    "zeit": "1 Min.",
+    "kcal": 15,
+    "protein": 1,
+    "fett": 0,
+    "zutaten": [
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Salzgurken"
+      }
+    ],
+    "schritte": [
+      "Glas auf, essen."
+    ],
+    "notiz": "Nährwerte geschätzt. Salzlast beachten, passt schlecht zu einer salzigen Woche.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "melonenwuerfel",
+    "name": "Wassermelone, gewürfelt und kalt",
+    "basis": 1,
+    "portionen_real": null,
+    "typ": "snack",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "süß"
+    ],
+    "geraete": "keine besonderen",
+    "zeit": "5 Min. aktiv",
+    "kcal": 60,
+    "protein": 1,
+    "fett": 0,
+    "zutaten": [
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "Wassermelone, entkernt"
+      }
+    ],
+    "schritte": [
+      "Melone würfeln, kalt stellen, essen."
+    ],
+    "notiz": "Nährwerte geschätzt. Fruchtzucker, aber ganzes Obst ist laut Vorgaben erlaubt.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": [
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  {
+    "id": "hartes_ei",
+    "name": "Hartgekochtes Ei mit Pfeffer",
+    "basis": 1,
+    "portionen_real": null,
+    "typ": "snack",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "Low Carb",
+      "salzig-herzhaft"
+    ],
+    "geraete": "Topf",
+    "zeit": "10 Min.",
+    "kcal": 80,
+    "protein": 7,
+    "fett": 6,
+    "zutaten": [
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Ei"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Ei 8 bis 9 Minuten kochen, abschrecken, pellen, pfeffern."
+    ],
+    "notiz": "Von Leonart abgelehnt, bleibt in der Datei, damit es nicht erneut vorgeschlagen wird.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "status": "raus",
+    "gekocht_am": null,
+    "urteil": "mag Leonart nicht",
+    "saison": null
+  },
+  {
+    "id": "proteinporridge",
+    "name": "Overnight-Proteinporridge mit Beeren und Zimt (to go)",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "fruehstueck",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "Frühstück",
+      "schnell",
+      "LEBER",
+      "SÄTTIGUNG",
+      "SPORT"
+    ],
+    "geraete": "keine besonderen",
+    "zeit": "8 Min. aktiv am Vorabend",
+    "kcal": 430,
+    "protein": 27,
+    "zutaten": [
+      {
+        "menge": 120,
+        "einheit": "g",
+        "name": "Haferflocken, kernig"
+      },
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "Skyr oder Magerquark"
+      },
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "Beeren (Blaubeeren, Himbeeren oder Erdbeeren)"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Leinsamen, geschrotet"
+      },
+      {
+        "menge": 250,
+        "einheit": "ml",
+        "name": "Wasser oder ungesüßter Haferdrink"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Zimt (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Am Vorabend Haferflocken, Leinschrot und Flüssigkeit in zwei Schraubgläser geben und verrühren.",
+      "Skyr direkt untermischen, nicht schichten. Kalt eingerührt gerinnt nichts.",
+      "Ein Drittel der Beeren mit der Gabel zerdrücken und unterheben, das süßt ohne Zucker. Rest ganz obenauf.",
+      "Zimt darüber, Deckel drauf, über Nacht in den Kühlschrank.",
+      "Morgens kalt mitnehmen und in der Schule essen. Der Hafer ist über Nacht weich geworden."
+    ],
+    "notiz": "Kein Zucker, keine Nüsse. Leinschrot bringt Ballaststoffe und liefert die Fettsäuren, die sonst über Nüsse kämen. Naehrwerte sind geschätzt.",
+    "quelle": "Eigenbau, Baukasten-Frühstück aus dem Chat vom 13.08.2026",
+    "notizen": "Flüssigkeitsmenge, Leinschrot und Zubereitungsreihenfolge sind ergänzt, um das Glas transportfähig zu machen.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 2,
+      "aufwaermen": "kalt",
+      "einfrierbar": false
+    },
+    "fett": 11,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "huettenkaesebowl",
+    "name": "Herzhafte Frühstücksbowl mit Hüttenkäse, Tahin und Vollkornbrot (to go)",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "fruehstueck",
+    "favorit": false,
+    "rest": "1/2 Salatgurke",
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "Frühstück",
+      "schnell",
+      "LEBER",
+      "BLUTDRUCK",
+      "SÄTTIGUNG"
+    ],
+    "geraete": "keine besonderen",
+    "zeit": "10 Min. aktiv",
+    "kcal": 430,
+    "protein": 33,
+    "zutaten": [
+      {
+        "menge": 400,
+        "einheit": "g",
+        "name": "Hüttenkäse"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Tahin"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Weißweinessig"
+      },
+      {
+        "menge": 250,
+        "einheit": "g",
+        "name": "Tomaten"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Stück",
+        "name": "Salatgurke"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Bund",
+        "name": "Schnittlauch"
+      },
+      {
+        "menge": 2,
+        "einheit": "Scheiben",
+        "name": "grobes Vollkornbrot"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Tahin mit Weißweinessig und 2 EL Wasser glattrühren, bis eine helle Sauce entsteht.",
+      "Tomaten und Gurke in grobe Würfel schneiden, Schnittlauch fein schneiden.",
+      "Hüttenkäse in zwei Dosen füllen, Gemüse daraufgeben, Tahinsauce darüber, Schnittlauch und Pfeffer obenauf.",
+      "Brot separat einpacken, sonst weicht es durch.",
+      "Salz braucht es nicht, der Hüttenkäse bringt genug mit."
+    ],
+    "notiz": "Die stärkere der beiden Frühstücksoptionen, weil kein süßer Reiz am Morgen. Naehrwerte sind geschätzt.",
+    "quelle": "Eigenbau, Baukasten-Frühstück aus dem Chat vom 13.08.2026",
+    "notizen": "Mengen, Tahin-Verdünnung und die Trennung von Brot und Bowl sind ergänzt, im Baukasten stand nur die Kombination.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 2,
+      "aufwaermen": "kalt",
+      "einfrierbar": false
+    },
+    "fett": 17,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "fava",
+    "name": "Fava: Püree aus gelben Spalterbsen mit Zwiebel und Zitrone",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "mittag",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "High Protein",
+      "warm",
+      "einfrierbar",
+      "LEBER",
+      "BLUTDRUCK",
+      "SÄTTIGUNG",
+      "ballaststoffreich"
+    ],
+    "geraete": "Topf, alternativ Thermomix",
+    "zeit": "10 Min. aktiv, 40 Min. Kochen",
+    "kcal": 545,
+    "protein": 31,
+    "fett": 12,
+    "zutaten": [
+      {
+        "menge": 250,
+        "einheit": "g",
+        "name": "gelbe Spalterbsen, trocken"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zwiebel"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Knoblauchzehen"
+      },
+      {
+        "menge": 750,
+        "einheit": "ml",
+        "name": "Wasser"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zitrone, Saft"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Oregano, getrocknet"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Stück",
+        "name": "rote Zwiebel, roh, zum Anrichten"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Bund",
+        "name": "Petersilie"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Spalterbsen kalt abspülen. Zwiebel und Knoblauch grob würfeln.",
+      "Zwiebel und Knoblauch in 1 EL Olivenöl glasig dünsten, Spalterbsen zugeben, mit dem Wasser aufgießen.",
+      "Ohne Deckel bei kleiner Hitze 35 bis 45 Minuten köcheln lassen. Anfangs den Schaum abschöpfen. Fertig ist es, wenn die Erbsen zerfallen und das Wasser fast weg ist.",
+      "Mit dem Pürierstab glatt pürieren. Ist es zu fest, esslöffelweise heißes Wasser zugeben.",
+      "Mit dem restlichen Olivenöl, Zitronensaft, Oregano, Salz und Pfeffer abschmecken. Beim Auskühlen wird es deutlich fester.",
+      "Mit fein gehackter roter Zwiebel und Petersilie anrichten."
+    ],
+    "notiz": "Nährwerte sind Schätzung auf Basis von Trockengewicht, nicht einzeln verifiziert. Salzarm, das Salz kommt erst am Ende und in kleiner Menge, die Säure trägt den Geschmack. Griechisches Standardgericht, hier ohne Kapern und ohne Oliven gebaut, um die Salzlast unten zu halten. Rest wird im Kühlschrank fest, vor dem Essen mit etwas heißem Wasser aufschlagen.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": "Für Person 1 unproblematisch, keine Karotten, kein Kohl. Fürs Kind eine Portion ohne rohe Zwiebel obendrauf, mit Brotstreifen zum Dippen.",
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 4,
+      "aufwaermen": "warm",
+      "einfrierbar": true
+    },
+    "quelle": "Klassische griechische Küche (Fava Santorinis), eigene Fassung",
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "fasolakia",
+    "name": "Fasolakia: grüne Bohnen mit Kartoffeln und weißen Bohnen in Tomate",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "mittag",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "warm",
+      "einfrierbar",
+      "LEBER",
+      "BLUTDRUCK",
+      "SÄTTIGUNG",
+      "ballaststoffreich"
+    ],
+    "geraete": "Großer Topf mit Deckel",
+    "zeit": "15 Min. aktiv, 35 Min. Schmoren",
+    "kcal": 460,
+    "protein": 12,
+    "fett": 12,
+    "zutaten": [
+      {
+        "menge": 500,
+        "einheit": "g",
+        "name": "grüne Bohnen, frisch oder TK"
+      },
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "festkochende Kartoffeln"
+      },
+      {
+        "menge": 240,
+        "einheit": "g",
+        "name": "weiße Bohnen, abgetropft (1 Dose)"
+      },
+      {
+        "menge": 400,
+        "einheit": "g",
+        "name": "Tomaten, gehackt (Dose)"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zwiebel"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Knoblauchzehen"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Oregano, getrocknet"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Bund",
+        "name": "Dill oder Petersilie"
+      },
+      {
+        "menge": 150,
+        "einheit": "ml",
+        "name": "Wasser"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Bohnen putzen und halbieren, Kartoffeln schälen und in grobe Stücke schneiden. Zwiebel und Knoblauch fein hacken.",
+      "Zwiebel und Knoblauch in Olivenöl glasig dünsten.",
+      "Grüne Bohnen und Kartoffeln zugeben, kurz mitdünsten.",
+      "Gehackte Tomaten, Wasser und Oregano zugeben, mit wenig Salz und Pfeffer würzen. Deckel drauf, 30 Minuten bei kleiner Hitze schmoren.",
+      "Weiße Bohnen unterheben und weitere 5 Minuten ziehen lassen.",
+      "Vom Herd nehmen, Dill oder Petersilie unterrühren. Schmeckt warm und lauwarm."
+    ],
+    "notiz": "Nährwerte sind Schätzung. Protein liegt bei etwa 12 g pro Portion, das ist für dieses Projekt eher niedrig, deshalb kein High-Protein-Tag. Als Mittagessen mit einem Becher Skyr dazu oder mit Vollkornbrot ergänzen. Salzarm gebaut, die Säure der Tomate und das Kraut tragen den Geschmack.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": "Für Person 1 unproblematisch. Fürs Kind Kartoffeln und Bohnen vor dem Servieren separat auf den Teller, Sauce daneben statt darüber.",
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 4,
+      "aufwaermen": "warm",
+      "einfrierbar": true
+    },
+    "quelle": "Klassische griechische Küche (Fasolakia lathera), eigene Fassung mit weißen Bohnen als Proteinträger",
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": [
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  {
+    "id": "gemista",
+    "name": "Gemista: gefüllte Paprika und Tomaten mit Reis und roten Linsen",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "mittag",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "warm",
+      "einfrierbar",
+      "LEBER",
+      "BLUTDRUCK",
+      "SÄTTIGUNG",
+      "SPORT",
+      "ballaststoffreich"
+    ],
+    "geraete": "Backofen, Auflaufform, kleiner Topf",
+    "zeit": "25 Min. aktiv, 60 Min. Ofen",
+    "kcal": 490,
+    "protein": 15,
+    "fett": 12,
+    "zutaten": [
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Paprika"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "große Fleischtomaten"
+      },
+      {
+        "menge": 80,
+        "einheit": "g",
+        "name": "Rundkornreis, trocken"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "rote Linsen, trocken"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zwiebel"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Knoblauchzehen"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Oregano, getrocknet"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Bund",
+        "name": "Petersilie"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Bund",
+        "name": "Minze, frisch"
+      },
+      {
+        "menge": 200,
+        "einheit": "ml",
+        "name": "Wasser"
+      },
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "festkochende Kartoffeln"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Ofen auf 180 Grad Ober- und Unterhitze vorheizen.",
+      "Von Paprika und Tomaten die Deckel abschneiden und aufheben. Das Innere der Tomaten mit einem Löffel auskratzen und auffangen, die Paprika entkernen.",
+      "Das Tomateninnere pürieren oder klein hacken. Zwiebel und Knoblauch fein würfeln und in 1 EL Olivenöl glasig dünsten.",
+      "Reis und rote Linsen zugeben, kurz mitrösten. Tomatenmasse und Wasser angießen, Oregano zugeben, 5 Minuten köcheln. Der Reis soll noch deutlich Biss haben, er gart im Ofen fertig.",
+      "Vom Herd nehmen, gehackte Petersilie und Minze unterrühren, mit wenig Salz und Pfeffer abschmecken.",
+      "Gemüse zu zwei Dritteln füllen, die Masse quillt noch auf. Deckel aufsetzen, in die Auflaufform stellen.",
+      "Kartoffeln in Spalten schneiden und in die Lücken zwischen das Gemüse legen. Restliches Olivenöl darüber, einen Fingerbreit Wasser angießen.",
+      "60 Minuten backen. Nach 40 Minuten prüfen, ob genug Flüssigkeit in der Form ist, sonst nachgießen.",
+      "Mindestens 15 Minuten stehen lassen vor dem Essen."
+    ],
+    "notiz": "Nährwerte sind Schätzung. Klassisch ist nur Reis in der Füllung, die roten Linsen sind hier ergänzt, um Protein und Ballaststoffe zu heben. Ofenzeit und Temperatur sind Erfahrungswerte, keine Angabe aus einer Originalquelle. Lange Ofenzeit, deshalb eher ein Sonntag-Prep-Gericht als ein Feierabendessen.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": "Person 1: keine Karotten, kein Kohl, hier beides nicht enthalten. Minze weglassen, wenn sie nicht gemocht wird, dann Petersilie verdoppeln. Fürs Kind eine Paprika ohne Minze füllen.",
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 4,
+      "aufwaermen": "warm oder kalt",
+      "einfrierbar": true
+    },
+    "quelle": "Klassische griechische Küche (Gemista), eigene Fassung mit roten Linsen",
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": [
+      7,
+      8,
+      9
+    ]
+  },
+  {
+    "id": "ofenlachs_brokkoli",
+    "name": "Ofenlachs mit Brokkoli, Zitrone und Tahin-Sauce",
+    "basis": 2,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "High Protein",
+      "Low Carb",
+      "schnell",
+      "LEBER",
+      "BLUTDRUCK",
+      "SÄTTIGUNG",
+      "SCHILDDRÜSE"
+    ],
+    "geraete": "Backofen, Topf",
+    "zeit": "12 Min. aktiv, 18 Min. Ofenzeit",
+    "kcal": 660,
+    "protein": 51,
+    "fett": 40,
+    "zutaten": [
+      {
+        "menge": 450,
+        "einheit": "g",
+        "name": "Lachsfilet"
+      },
+      {
+        "menge": 500,
+        "einheit": "g",
+        "name": "Brokkoli, TK-Röschen"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zitrone"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Knoblauchzehe"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Tahin"
+      },
+      {
+        "menge": 3,
+        "einheit": "EL",
+        "name": "Wasser, zum Verdünnen der Sauce"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Ofen auf 200 Grad Ober- und Unterhitze vorheizen.",
+      "Lachsfilets auf ein Blech legen, mit Olivenöl bestreichen, mit gepresstem Knoblauch, Salz und Pfeffer würzen.",
+      "15 bis 18 Minuten backen, bis der Lachs gar ist.",
+      "TK-Brokkoli parallel 3 bis 4 Minuten in kochendem Salzwasser blanchieren, abgießen. Nicht mit in den Ofen, sonst wird er zu weich.",
+      "Für die Sauce Tahin mit dem Saft einer halben Zitrone, Wasser und einer Prise Salz glattrühren.",
+      "Lachs und Brokkoli mit der Tahin-Zitronen-Sauce beträufeln, restlichen Zitronensaft nach Geschmack dazugeben, servieren."
+    ],
+    "notiz": "Nährwerte geschätzt. Bislang das einzige Gericht im Bestand mit einer echten Jodquelle, deshalb SCHILDDRÜSE. Nach Kochtest: TK-Brokkoli separat blanchiert statt im Ofen mitgeröstet, behält so Biss. Urteil: fantastisch. Portionsdefinition am 18.08.2026 von 3 auf 2 umgestellt, Zutatenmengen unverändert, Nährwerte pro Portion entsprechend hochgerechnet.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "status": "stamm",
+    "gekocht_am": "2026-08-03",
+    "urteil": "fantastisch",
+    "saison": null,
+    "portionen_real": null
+  },
+  {
+    "id": "linsensuppe_zitrone",
+    "name": "Rote-Linsen-Suppe mit Zitrone und Kreuzkümmel",
+    "basis": 2,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": "kleine Menge Suppe",
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "High Protein",
+      "schnell",
+      "LEBER",
+      "BLUTDRUCK",
+      "SÄTTIGUNG",
+      "ballaststoffreich"
+    ],
+    "geraete": "Topf",
+    "zeit": "10 Min. aktiv, 20 Min. Kochzeit",
+    "kcal": 510,
+    "protein": 27,
+    "fett": 12,
+    "zutaten": [
+      {
+        "menge": 250,
+        "einheit": "g",
+        "name": "rote Linsen"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zwiebel"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Knoblauchzehen"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Kreuzkümmel"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Paprikapulver"
+      },
+      {
+        "menge": 800,
+        "einheit": "ml",
+        "name": "Gemüsebrühe"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zitrone"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Zwiebel und Knoblauch fein würfeln, in Olivenöl glasig dünsten.",
+      "Kreuzkümmel und Paprikapulver kurz mitrösten.",
+      "Linsen und Brühe dazugeben, 15 bis 20 Minuten köcheln lassen, bis die Linsen weich sind.",
+      "Mit Zitronensaft, Salz und Pfeffer abschmecken."
+    ],
+    "notiz": "Nährwerte geschätzt. Instant-Brühe zählt bei der Salzlast mit, mit den anderen Gerichten der Woche abgleichen. Portionsdefinition am 18.08.2026 von 3 auf 2 umgestellt, Zutatenmengen unverändert, Nährwerte pro Portion entsprechend hochgerechnet.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 3,
+      "aufwaermen": "Topf oder Mikrowelle",
+      "einfrierbar": true
+    },
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null,
+    "portionen_real": null
+  },
+  {
+    "id": "ofenfeta_kichererbsen",
+    "name": "Ofenfeta mit Kirschtomaten und Kichererbsen",
+    "basis": 2,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "schnell",
+      "LEBER",
+      "SÄTTIGUNG",
+      "salzig"
+    ],
+    "geraete": "Ofenform",
+    "zeit": "5 Min. aktiv, 25 Min. Ofenzeit",
+    "kcal": 600,
+    "protein": 30,
+    "fett": 36,
+    "zutaten": [
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "Feta, am Stück"
+      },
+      {
+        "menge": 400,
+        "einheit": "g",
+        "name": "Kirschtomaten"
+      },
+      {
+        "menge": 480,
+        "einheit": "g",
+        "name": "Kichererbsen, abgetropft (aus der Dose)"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "rote Zwiebel"
+      },
+      {
+        "menge": 3,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "getrockneter Oregano"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Ofen auf 200 Grad vorheizen.",
+      "Kirschtomaten, Kichererbsen und Zwiebel in eine Auflaufform geben, mit Olivenöl, Oregano, Salz und Pfeffer mischen.",
+      "Feta-Block in die Mitte legen, mit etwas Öl beträufeln.",
+      "20 bis 25 Minuten backen, bis die Tomaten aufplatzen und der Feta weich ist.",
+      "Alles zusammen zerdrücken und vermengen."
+    ],
+    "notiz": "Nährwerte geschätzt. Salzig wegen Feta, in derselben Woche nicht mit Halloumi oder Oliven-Gerichten kombinieren. Nach Kochtest: sehr gut mit selbstgebackenem Fladenbrot und Tzatziki als Beilage. Portionsdefinition am 18.08.2026 von 3 auf 2 umgestellt, Zutatenmengen unverändert, Nährwerte pro Portion entsprechend hochgerechnet.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": "Gut ergänzt mit Fladenbrot und Tzatziki als Beilage.",
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "status": "stamm",
+    "gekocht_am": "2026-08-07",
+    "urteil": "sehr gut",
+    "saison": null,
+    "portionen_real": null
+  },
+  {
+    "id": "tofu_wok_reis",
+    "name": "Räuchertofu-Wok mit Paprika, Brokkoli und Reis",
+    "basis": 2,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "High Protein",
+      "schnell",
+      "LEBER",
+      "BLUTDRUCK",
+      "SÄTTIGUNG",
+      "SPORT",
+      "SOJA-CHECK"
+    ],
+    "geraete": "Wok, Reiskocher",
+    "zeit": "15 Min. aktiv, 10 Min. Reiskocher parallel",
+    "kcal": 630,
+    "protein": 36,
+    "fett": 21,
+    "zutaten": [
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "Räuchertofu, gewürfelt"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "rote Paprika"
+      },
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "Brokkoli, in Röschen"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Karotte"
+      },
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "Reis, roh"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Sojasauce, salzreduziert"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Knoblauchzehe"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Ingwer, daumengroßes Stück"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Sesamöl"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Chiliflocken (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Reis nach Packungsangabe im Reiskocher zubereiten.",
+      "Tofu würfeln, im Wok mit etwas Öl knusprig anbraten, herausnehmen.",
+      "Paprika, Brokkoli und Karotte klein schneiden, im Wok mit Knoblauch und Ingwer scharf anbraten.",
+      "Tofu zurück in den Wok geben, mit Sojasauce und Sesamöl ablöschen, kurz durchschwenken.",
+      "Mit Reis servieren, nach Geschmack Chiliflocken darüber."
+    ],
+    "notiz": "Nährwerte geschätzt. Salzreduzierte Sojasauce, Räuchertofu bringt Umami ohne viel zusätzliches Salz. Portionsdefinition am 18.08.2026 von 3 auf 2 umgestellt, Zutatenmengen unverändert, Nährwerte pro Portion entsprechend hochgerechnet.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": "Person 1 mag keine Karotte, dann Karotte weglassen oder durch mehr Paprika ersetzen.",
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 2,
+      "aufwaermen": "Pfanne",
+      "einfrierbar": false
+    },
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null,
+    "portionen_real": null
+  },
+  {
+    "id": "garnelen_fenchel_orange",
+    "name": "Garnelenpfanne mit Fenchel, Orange und Chili",
+    "basis": 2,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "High Protein",
+      "Low Carb",
+      "schnell",
+      "LEBER",
+      "BLUTDRUCK",
+      "SÄTTIGUNG",
+      "SCHILDDRÜSE"
+    ],
+    "geraete": "Pfanne",
+    "zeit": "15 Min. aktiv",
+    "kcal": 480,
+    "protein": 42,
+    "fett": 21,
+    "zutaten": [
+      {
+        "menge": 400,
+        "einheit": "g",
+        "name": "Garnelen, geschält"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Fenchel"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Orange"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Chilischote, oder Chiliflocken"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Knoblauchzehe"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Fenchel in dünne Streifen schneiden, Orange filetieren, austretenden Saft auffangen.",
+      "Garnelen in Olivenöl mit Knoblauch und Chili scharf anbraten, 2 bis 3 Minuten, herausnehmen.",
+      "Fenchel im selben Fett kurz anbraten, mit dem Orangensaft ablöschen.",
+      "Garnelen zurückgeben, Orangenfilets untermengen, kurz erwärmen, mit Salz und Pfeffer abschmecken."
+    ],
+    "notiz": "Nährwerte geschätzt. Garnelen sind wie Lachs eine echte Jodquelle, deshalb SCHILDDRÜSE. Portionsdefinition am 18.08.2026 von 3 auf 2 umgestellt, Zutatenmengen unverändert, Nährwerte pro Portion entsprechend hochgerechnet.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null,
+    "portionen_real": null
+  },
+  {
+    "id": "kraeuteromelett_ziegenfrischkaese",
+    "name": "Kräuter-Omelett mit Ziegenfrischkäse und Tomaten",
+    "basis": 2,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "Low Carb",
+      "schnell",
+      "LEBER",
+      "SÄTTIGUNG"
+    ],
+    "geraete": "Pfanne",
+    "zeit": "10 Min. aktiv",
+    "kcal": 510,
+    "protein": 33,
+    "fett": 36,
+    "zutaten": [
+      {
+        "menge": 6,
+        "einheit": "Stück",
+        "name": "Eier"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "Ziegenfrischkäse"
+      },
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "Tomaten"
+      },
+      {
+        "menge": 1,
+        "einheit": "Bund",
+        "name": "Schnittlauch oder Petersilie"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Eier verquirlen, mit Salz und Pfeffer würzen.",
+      "Tomaten würfeln, Kräuter fein hacken.",
+      "Öl in der Pfanne erhitzen, Eier hineingeben, bei mittlerer Hitze stocken lassen.",
+      "Tomaten und Ziegenfrischkäse in Klecksen darüber verteilen, Kräuter darüberstreuen.",
+      "Einmal falten oder offen servieren."
+    ],
+    "notiz": "Nährwerte geschätzt. Milchprodukt am Abend, L-Thyroxin-Abstand hier nicht relevant, da kein Frühstück. Portionsdefinition am 18.08.2026 von 3 auf 2 umgestellt, Zutatenmengen unverändert, Nährwerte pro Portion entsprechend hochgerechnet.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null,
+    "portionen_real": null
+  },
+  {
+    "id": "sauerteigbrot",
+    "name": "Roggen-Weizen-Sauerteigbrot mit Saaten (750 g Laib, ca. 15 Scheiben)",
+    "basis": 15,
+    "portionen_real": null,
+    "typ": "basis",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegan",
+      "Frühstück",
+      "LEBER",
+      "BLUTDRUCK",
+      "SÄTTIGUNG",
+      "SPORT"
+    ],
+    "geraete": "Küchenmaschine mit Knethaken, gusseiserner Topf mit Deckel, Gärkorb",
+    "zeit": "40 Min. aktiv, 24 Std. gesamt",
+    "kcal": 110,
+    "protein": 4,
+    "zutaten": [
+      {
+        "menge": 15,
+        "einheit": "g",
+        "name": "Weizensauerteig-Anstellgut, aktiv"
+      },
+      {
+        "menge": 290,
+        "einheit": "g",
+        "name": "Weizenmehl 550"
+      },
+      {
+        "menge": 110,
+        "einheit": "g",
+        "name": "Roggenvollkornmehl"
+      },
+      {
+        "menge": 265,
+        "einheit": "ml",
+        "name": "Wasser"
+      },
+      {
+        "menge": 50,
+        "einheit": "g",
+        "name": "Saatenmischung (Sonnenblumenkerne, Kürbiskerne, Leinsamen)"
+      },
+      {
+        "menge": 100,
+        "einheit": "ml",
+        "name": "kochendes Wasser für das Brühstück"
+      },
+      {
+        "menge": 6,
+        "einheit": "g",
+        "name": "Salz"
+      }
+    ],
+    "schritte": [
+      "Abends Sauerteig ansetzen: 15 g Anstellgut, 50 g Weizenmehl 550, 50 ml lauwarmes Wasser verrühren, abgedeckt bei Raumtemperatur reifen lassen, bis er sich verdoppelt hat und die Oberfläche gewölbt ist.",
+      "Gleichzeitig Brühstück ansetzen: Saaten mit 100 ml kochendem Wasser übergießen, umrühren, abgedeckt über Nacht quellen lassen.",
+      "Am Morgen 240 g Weizenmehl, 110 g Roggenvollkornmehl und 215 ml Wasser grob vermischen, 40 Minuten Autolyse ohne Kneten.",
+      "Sauerteig und Salz zugeben, 5 Minuten am Knethaken auf niedriger Stufe kneten. Abgetropftes Brühstück nur so lange unterkneten, bis die Saaten verteilt sind.",
+      "Stockgare 3,5 bis 4,5 Stunden bei 22 bis 24 Grad. In der ersten Stunde dreimal im Abstand von 20 Minuten dehnen und falten.",
+      "Unter Spannung rund formen, mit Schluss nach oben in den bemehlten Gärkorb setzen.",
+      "Stückgare 1 Stunde bei Raumtemperatur oder über Nacht im Kühlschrank. Die kalte Führung bringt mehr Aroma und lässt sich besser einschneiden.",
+      "Gusseisentopf mit Deckel 45 Minuten bei 250 Grad Ober- und Unterhitze vorheizen.",
+      "Teigling stürzen, tief und schräg einschneiden, in den heißen Topf setzen, 20 Minuten mit Deckel bei 250 Grad backen.",
+      "Deckel abnehmen, auf 210 Grad senken, 25 Minuten fertig backen bis die Kruste dunkelbraun ist, Kerntemperatur 96 bis 98 Grad.",
+      "Mindestens 2 Stunden auf dem Gitter vollständig auskühlen lassen, erst dann anschneiden."
+    ],
+    "notiz": "Salz bei 1,4 Prozent aufs Mehl statt der üblichen 1,7 bis 1,9. Roggenanteil 27 Prozent, das ist der Kompromiss zwischen Volumen und Geschmack. Saaten als Brühstück, sonst ziehen sie dem Teig Wasser aus der Krume. Nährwerte je Scheibe sind geschätzt.",
+    "quelle": "Eigenbau für Leonarts Weizen- und Roggensauerteig, Chat vom 13.08.2026",
+    "notizen": "Mehlmengen, Hydration, Salzanteil, Gare- und Backzeiten sind ergänzt. Leonarts bisherige Führung ist nicht dokumentiert, die Zeiten sind Richtwerte und hängen von der Triebkraft des Anstellguts ab.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": 4,
+      "aufwaermen": null,
+      "einfrierbar": true
+    },
+    "fett": 2,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "roggenvollkornbrot",
+    "name": "Grobes Roggenvollkornbrot mit Saaten (Kastenform, ca. 14 Scheiben)",
+    "basis": 14,
+    "portionen_real": null,
+    "typ": "basis",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegan",
+      "Frühstück",
+      "LEBER",
+      "SÄTTIGUNG",
+      "SPORT"
+    ],
+    "geraete": "Küchenmaschine mit Knethaken, Kastenform",
+    "zeit": "30 Min. aktiv, 2 Tage gesamt",
+    "kcal": 115,
+    "protein": 4,
+    "zutaten": [
+      {
+        "menge": 15,
+        "einheit": "g",
+        "name": "Roggensauerteig-Anstellgut, aktiv"
+      },
+      {
+        "menge": 350,
+        "einheit": "g",
+        "name": "Roggenvollkornmehl"
+      },
+      {
+        "menge": 280,
+        "einheit": "ml",
+        "name": "Wasser"
+      },
+      {
+        "menge": 80,
+        "einheit": "g",
+        "name": "grobe Saaten (Sonnenblumenkerne, Leinsamen, Kürbiskerne)"
+      },
+      {
+        "menge": 160,
+        "einheit": "ml",
+        "name": "kochendes Wasser für das Quellstück"
+      },
+      {
+        "menge": 6,
+        "einheit": "g",
+        "name": "Salz"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Kümmel, Koriander und Fenchel, gemörsert"
+      }
+    ],
+    "schritte": [
+      "Sauerteig ansetzen: 15 g Roggen-Anstellgut, 150 g Roggenvollkornmehl, 150 ml lauwarmes Wasser verrühren, abgedeckt 16 Stunden bei 26 bis 28 Grad reifen lassen. Er stellt 43 Prozent des Mehls, daher kommt die Stabilität.",
+      "Quellstück ansetzen: Saaten mit 160 ml kochendem Wasser übergießen, abgedeckt über Nacht quellen lassen.",
+      "Reifen Sauerteig, 200 g Roggenvollkornmehl, 130 ml Wasser, Salz, Brotgewürz und Quellstück 6 bis 8 Minuten auf niedriger Stufe mischen. Es entsteht eine zähe, klebrige Masse, kein glatter Teig.",
+      "Kastenform fetten, Teig mit nassem Schaber einfüllen, Oberfläche nass glattstreichen.",
+      "Stückgare 60 bis 90 Minuten bei Raumtemperatur, bis die Oberfläche aufreißt. Die Risse sind das Signal, nicht die Uhr.",
+      "Bei 250 Grad Ober- und Unterhitze einschießen, eine Tasse heißes Wasser auf den Ofenboden, 15 Minuten anbacken.",
+      "Dampf ablassen, auf 190 Grad senken, 60 Minuten fertig backen, Kerntemperatur 96 bis 98 Grad.",
+      "Sofort stürzen und 24 Stunden auf dem Gitter ruhen lassen, erst dann anschneiden. Danach in Scheiben schneiden und bis auf zwei bis drei Scheiben einfrieren."
+    ],
+    "notiz": "Das im Arztpapier gemeinte grobe Vollkornbrot, 100 Prozent Roggenvollkorn. Wird nicht luftig, das liegt am fehlenden Klebergerüst des Roggens und nicht am Rezept. Salz 1,7 Prozent aufs Mehl, bei reinem Roggen bricht der Geschmack darunter ein. Nährwerte je Scheibe geschätzt.",
+    "quelle": "Eigenbau für Leonarts Roggensauerteig, Chat vom 13.08.2026",
+    "notizen": "Versäuerungsgrad, Hydration, Salzanteil, Gare- und Backzeiten sind ergänzt. Zeiten sind Richtwerte und hängen von Triebkraft und Raumtemperatur ab.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": 5,
+      "aufwaermen": null,
+      "einfrierbar": true
+    },
+    "fett": 3,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "eiweissbrot",
+    "name": "Kräftiges Eiweißbrot auf Roggensauerteig (Kastenform, ca. 15 Scheiben)",
+    "basis": 15,
+    "portionen_real": null,
+    "typ": "basis",
+    "favorit": false,
+    "rest": "Rest Magerquark",
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "Frühstück",
+      "LEBER",
+      "SÄTTIGUNG",
+      "SOJA-CHECK"
+    ],
+    "geraete": "Küchenmaschine mit Knethaken, Kastenform",
+    "zeit": "30 Min. aktiv, 2 Tage gesamt",
+    "kcal": 135,
+    "protein": 7,
+    "zutaten": [
+      {
+        "menge": 15,
+        "einheit": "g",
+        "name": "Roggensauerteig-Anstellgut, aktiv"
+      },
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "Roggenvollkornmehl"
+      },
+      {
+        "menge": 230,
+        "einheit": "ml",
+        "name": "Wasser"
+      },
+      {
+        "menge": 120,
+        "einheit": "g",
+        "name": "Saatenmischung (Sonnenblumenkerne, Kürbiskerne, Leinsamen)"
+      },
+      {
+        "menge": 200,
+        "einheit": "ml",
+        "name": "kochendes Wasser für das Quellstück"
+      },
+      {
+        "menge": 60,
+        "einheit": "g",
+        "name": "Lupinenmehl oder entöltes Sojamehl"
+      },
+      {
+        "menge": 150,
+        "einheit": "g",
+        "name": "Magerquark"
+      },
+      {
+        "menge": 6,
+        "einheit": "g",
+        "name": "Salz"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Kümmel, Koriander und Fenchel, gemörsert"
+      }
+    ],
+    "schritte": [
+      "Sauerteig ansetzen: 15 g Roggen-Anstellgut, 150 g Roggenvollkornmehl, 150 ml lauwarmes Wasser, 16 Stunden warm reifen lassen.",
+      "Quellstück ansetzen: 120 g Saaten mit 200 ml kochendem Wasser übergießen, über Nacht quellen lassen.",
+      "Reifen Sauerteig, 150 g Roggenvollkornmehl, Lupinen- oder Sojamehl, Magerquark, 80 ml Wasser, Salz, Brotgewürz und Quellstück 8 Minuten auf niedriger Stufe mischen. Der Teig ist klebriger als beim Grundrezept, nicht mit Mehl gegensteuern.",
+      "Kastenform fetten, Teig einfüllen, Oberfläche nass glattstreichen, nach Wunsch Saaten aufstreuen.",
+      "Stückgare 75 bis 100 Minuten, bis die Oberfläche aufreißt. Geht langsamer als das Grundrezept, weil Lupinen- und Sojamehl den Hefen keine Nahrung liefern.",
+      "Bei 250 Grad einschießen, Tasse heißes Wasser auf den Ofenboden, 15 Minuten anbacken.",
+      "Dampf ablassen, auf 185 Grad senken, 65 Minuten fertig backen. Bei zu schneller Bräunung mit Alufolie abdecken.",
+      "Stürzen, 24 Stunden ruhen lassen, in Scheiben schneiden und bis auf zwei bis drei Scheiben einfrieren."
+    ],
+    "notiz": "Kein Eiweißbrot im Handelssinne, die kommen nur über Nussmehle und Sojaprotein-Isolat auf ihre Werte. Hier ungefähr 7 g Eiweiß je Scheibe statt 4 g beim Grundrezept. Lupinen- und Sojamehl sind nicht im Vorrat und müssen zugekauft werden. Nährwerte geschätzt, Packungsangaben des Mehls prüfen.",
+    "quelle": "Eigenbau, Eiweißvariante des groben Roggenvollkornbrots, Chat vom 13.08.2026",
+    "notizen": "Mengen, Wasseranteil, abgesenkte Backtemperatur und die längere Stückgare sind ergänzt.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": 5,
+      "aufwaermen": null,
+      "einfrierbar": true
+    },
+    "fett": 4,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  }
+]
