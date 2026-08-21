@@ -379,3 +379,179 @@ input.day-label {
 }
 .row-between:last-of-type { border-bottom: none; }
 .row-between.aktiv > span:first-child { font-weight: 750; }
+
+/* ---------------------------------------------------------
+   7. KALENDER
+   --------------------------------------------------------- */
+
+.kal { margin-bottom: 20px; padding: 14px 14px 12px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); }
+.kal-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+.kal-titel { font-family: var(--font-display); font-size: 17px; font-weight: 750; letter-spacing: -.02em; }
+.kal-nav { width: 44px; height: 44px; border: 1.5px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--text); font-size: 20px; line-height: 1; }
+.kal-nav:active { background: var(--chip-bg); }
+
+.kal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.kal-wt { padding-bottom: 4px; text-align: center; font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.kal-tag {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  min-height: 48px; padding: 4px 0;
+  border: 1.5px solid transparent; border-radius: var(--radius-md);
+  background: var(--bg); color: var(--text);
+}
+.kal-nr { font-family: var(--font-number); font-size: 15px; font-weight: 650; }
+.kal-punkte { display: flex; gap: 3px; height: 6px; }
+.kal-punkte i { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+.kal-tag.heute { border-color: var(--teal); }
+.kal-tag.heute .kal-nr { color: var(--teal); font-weight: 800; }
+.kal-tag.belegt { background: var(--chip-bg); }
+.kal-tag.gewaehlt { background: var(--text); color: #fff; border-color: var(--text); }
+.kal-tag.gewaehlt .kal-nr { color: #fff; }
+.kal-tag.gewaehlt .kal-punkte i { background: #fff; }
+
+.kal-add { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+.kal-add-titel { margin-bottom: 8px; font-family: var(--font-display); font-size: 17px; font-weight: 750; }
+
+.segmented { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; padding: 4px; border-radius: var(--radius-md); background: var(--chip-bg); }
+.segmented button {
+  min-height: 44px; padding: 0 6px; border: 0; border-radius: 9px;
+  background: transparent; color: var(--muted);
+  font-size: 13px; font-weight: 750; letter-spacing: -.01em;
+}
+.segmented button.aktiv { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(23,25,22,.12); }
+.segmented.klein button { min-height: 40px; font-size: 12px; }
+.segmented.winzig { display: inline-grid; padding: 3px; }
+.segmented.winzig button { min-height: 34px; padding: 0 12px; font-size: 12px; }
+
+/* ---------------------------------------------------------
+   8. TAGE, ÜBERSICHT, MEAL PREP
+   --------------------------------------------------------- */
+
+.day-list { display: grid; gap: 12px; }
+.day-datum { font-family: var(--font-display); font-size: 20px; font-weight: 750; letter-spacing: -.02em; }
+
+.uebersicht-tag { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.uebersicht-tag:last-child { border-bottom: none; padding-bottom: 0; }
+.uebersicht-tag:first-child { padding-top: 0; }
+.uebersicht-kopf { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 4px; font-weight: 750; }
+.uebersicht-zahlen { font-family: var(--font-number); font-size: 12px; font-weight: 650; color: var(--muted); white-space: nowrap; }
+.uebersicht-zeile { font-size: 14px; color: var(--muted); line-height: 1.5; }
+
+.meal-prep-split { display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; font-family: var(--font-number); font-size: 12px; font-weight: 650; color: #B4B6B0; }
+
+.prep-liste { display: grid; gap: 10px; margin-top: 12px; }
+.prep-karte { display: grid; gap: 10px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); }
+.prep-kopf { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.prep-name { font-weight: 750; line-height: 1.3; }
+.prep-fuss { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.prep-info { font-family: var(--font-number); font-size: 11px; font-weight: 650; color: var(--muted); }
+
+.prep-auswahl { margin-top: 14px; }
+.prep-vorschlaege { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+.prep-vorschlaege::-webkit-scrollbar { display: none; }
+.prep-treffer { display: grid; gap: 6px; }
+.prep-treffer-zeile {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  min-height: 52px; padding: 10px 14px; text-align: left;
+  border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); color: var(--text);
+  font-size: 14px; font-weight: 650;
+}
+.prep-treffer-zeile:active { background: var(--chip-bg); }
+
+/* ---------------------------------------------------------
+   9. TIMER IM KOCHMODUS
+   --------------------------------------------------------- */
+
+.cook-timer { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.cook-timer-rest { font-family: var(--font-number); font-size: 30px; font-weight: 700; color: #F7F7F2; }
+.cook-timer .cook-timer-btn { min-height: 44px; padding: 0 16px; border: 1.5px solid #5B5F59; border-radius: 999px; background: none; color: #F7F7F2; font-family: var(--font-body); font-size: 13px; font-weight: 750; }
+.cook-timer.fertig .cook-timer-rest { color: var(--accent); }
+.cook-timer.fertig .cook-timer-btn { border-color: var(--accent); background: var(--accent); }
+
+/* Datum antippen öffnet die native Datumsauswahl, ohne zusätzliches Bedienelement. */
+.day-datum-wrap { position: relative; }
+.day-datum-input {
+  position: absolute; inset: 0;
+  width: 100%; min-height: 0; padding: 0; margin: 0;
+  border: 0; background: transparent; color: transparent;
+  opacity: 0; -webkit-appearance: none; appearance: none;
+}
+
+/* ---------------------------------------------------------
+   10. FARBLOGIK NACH MAHLZEIT
+   Der Streifen an der Karte und das Typ-Abzeichen zeigen
+   dieselbe Farbe, damit die Logik ohne Legende lesbar ist.
+   --------------------------------------------------------- */
+
+:root {
+  --meal-fruehstueck: #C56A00;
+  --meal-mittag: #0F766E;
+  --meal-abendessen: #8C3045;
+  --meal-snack: #5B4AA8;
+  --meal-basis: #6B6D68;
+}
+
+.card::before { width: 6px; }
+.card[data-category="fruehstueck"]::before { background: var(--meal-fruehstueck); }
+.card[data-category="mittag"]::before { background: var(--meal-mittag); }
+.card[data-category="abendessen"]::before { background: var(--meal-abendessen); }
+.card[data-category="snack"]::before { background: var(--meal-snack); }
+.card[data-category="basis"]::before { background: var(--meal-basis); }
+
+.badge.typ[data-typ="fruehstueck"] { background: #F6ECDF; color: var(--meal-fruehstueck); }
+.badge.typ[data-typ="mittag"] { background: #E2EFED; color: var(--meal-mittag); }
+.badge.typ[data-typ="abendessen"] { background: #F6E6EA; color: var(--meal-abendessen); }
+.badge.typ[data-typ="snack"] { background: #EBE8F7; color: var(--meal-snack); }
+.badge.typ[data-typ="basis"] { background: var(--chip-bg); color: var(--meal-basis); }
+.badge.geaendert { background: #FBEEDD; color: #8A5A00; }
+
+/* ---------------------------------------------------------
+   11. SCHRITTE, KLAPPTEXTE, EDITOR, DATEN
+   --------------------------------------------------------- */
+
+/* Die Ziffer sitzt jetzt auf Höhe der ersten Textzeile, statt darüber. */
+.steps li { align-items: start; }
+.steps li::before { flex: 0 0 auto; }
+.steps li p { margin: 0; padding-top: 7px; font-size: 17px; }
+
+.klapp { margin-bottom: 12px; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); }
+.klapp > summary {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: var(--touch); padding: 0 16px;
+  font-size: 14px; font-weight: 750; cursor: pointer; list-style: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.klapp > summary::-webkit-details-marker { display: none; }
+.klapp > summary::after { content: "+"; font-family: var(--font-number); font-size: 20px; color: var(--muted); }
+.klapp[open] > summary::after { content: "–"; }
+.klapp[open] > summary { border-bottom: 1px solid var(--line); }
+.klapp-inhalt { padding: 14px 16px 16px; }
+.klapp-zeile { padding: 8px 0; border-bottom: 1px solid var(--line); }
+.klapp-zeile:last-child { border-bottom: none; padding-bottom: 0; }
+.klapp-zeile strong { display: block; margin-bottom: 3px; font-size: 12px; color: var(--muted); }
+.klapp-zeile span { font-size: 14px; line-height: 1.5; }
+
+.note-box.eigen { border-left-color: var(--accent); background: #FBEDE8; }
+.note-box p + p { margin-top: 8px; }
+
+.overlay-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.btn.klein { min-height: 44px; padding: 0 16px; font-size: 14px; }
+.btn.secondary.an { background: var(--text); color: #fff; }
+
+.edit-zutaten { display: grid; gap: 8px; }
+.edit-zeile { display: grid; grid-template-columns: 72px 96px 1fr 44px; gap: 6px; align-items: center; }
+.edit-zeile input, .edit-zeile select { min-height: 48px; padding: 8px 10px; font-size: 15px; }
+.edit-zeile .edit-menge { font-family: var(--font-number); text-align: right; }
+.edit-weg { width: 44px; height: 44px; border: 1.5px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--warning); font-size: 20px; }
+.edit-flaeche { min-height: 220px; font-size: 15px; line-height: 1.6; }
+
+.day-rest { font-size: 12.5px; color: var(--muted); }
+.daten-zahlen { display: flex; gap: 24px; margin: 10px 0 4px; }
+.daten-zahlen div { display: grid; gap: 2px; }
+.daten-zahlen strong { font-family: var(--font-number); font-size: 26px; font-weight: 700; }
+.daten-zahlen span { font-size: 12px; color: var(--muted); }
+.segmented.urteil button { font-size: 11px; padding: 0 8px; }
+
+@media (max-width: 380px) {
+  .edit-zeile { grid-template-columns: 64px 78px 1fr 40px; }
+  .edit-zeile input, .edit-zeile select { font-size: 14px; padding: 8px 6px; }
+}
