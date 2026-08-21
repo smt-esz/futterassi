@@ -7,6 +7,7 @@
 
 <!-- Standard PWA -->
 <meta name="theme-color" content="#0D5557">
+<meta name="color-scheme" content="light">
 <meta name="format-detection" content="telephone=no">
 <link rel="manifest" href="manifest.json">
 
@@ -39,15 +40,19 @@
 
 <div class="topbar">
   <div class="brand">Futterassi</div>
-  <div class="tabs" id="tabs">
-    <button class="tab active" data-view="katalog">Katalog</button>
-    <button class="tab" data-view="planung">Planung</button>
+  <div class="tabs" id="tabs" role="tablist">
+    <button class="tab active" type="button" role="tab" aria-selected="true" data-view="katalog">Katalog</button>
+    <button class="tab" type="button" role="tab" aria-selected="false" data-view="planung">Planung</button>
   </div>
 </div>
 
-<main class="app" id="app"></main>
+<main class="app" id="app">
+  <noscript>
+    <p class="small-note">Für Futterassi muss JavaScript aktiv sein.</p>
+  </noscript>
+</main>
 
-<div id="overlay" class="overlay hidden"></div>
+<div id="overlay" class="overlay hidden" role="dialog" aria-modal="true"></div>
 
 <script src="app.js"></script>
 </body>
