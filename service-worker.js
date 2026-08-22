@@ -1,6 +1,6 @@
 // Bei jedem Deploy mit neuem App-Code diese Versionsnummer erhöhen.
 // Sonst bleibt die alte, gecachte Version aktiv.
-const CACHE_NAME = "futterassi-v13";
+const CACHE_NAME = "futterassi-v14";
 
 // Muss zum gleichnamigen Wert in app.js passen. Zwei Stellen, mehr nicht.
 const DATA_FILE = "rezepte.json";

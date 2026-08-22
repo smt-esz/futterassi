@@ -605,3 +605,47 @@ input.day-label {
 
 body.timer-an .app { padding-bottom: 96px; }
 body.timer-an .overlay { padding-bottom: 96px; }
+
+/* ---------------------------------------------------------
+   13. TAGESKARTE MIT VIER MAHLZEITEN
+   --------------------------------------------------------- */
+
+.tag-karte { gap: 0; padding: 16px 16px 8px; }
+.tag-karte.gewaehlt { border-color: var(--text); box-shadow: var(--shadow-card), 0 0 0 2px var(--text); }
+.tag-karte .day-card-header { margin-bottom: 6px; }
+
+.mahlzeit { border-top: 1px solid var(--line); }
+.mahlzeit:first-of-type { border-top: none; }
+.mahlzeit-kopf {
+  display: grid; grid-template-columns: 84px 1fr 24px; align-items: center; gap: 10px;
+  width: 100%; min-height: 52px; padding: 6px 0;
+  border: 0; background: none; color: inherit; text-align: left;
+}
+.mahlzeit-name {
+  font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+  padding: 5px 8px; border-radius: 6px; text-align: center;
+  background: var(--chip-bg); color: var(--muted);
+}
+.mahlzeit-name[data-typ="fruehstueck"] { background: #F6ECDF; color: var(--meal-fruehstueck); }
+.mahlzeit-name[data-typ="mittag"] { background: #E2EFED; color: var(--meal-mittag); }
+.mahlzeit-name[data-typ="abendessen"] { background: #F6E6EA; color: var(--meal-abendessen); }
+.mahlzeit-name[data-typ="snack"] { background: #EBE8F7; color: var(--meal-snack); }
+.mahlzeit-gericht { font-size: 15px; font-weight: 650; line-height: 1.3; }
+.mahlzeit-menge { font-family: var(--font-number); font-size: 11px; font-weight: 700; color: var(--muted); white-space: nowrap; }
+.mahlzeit-leer { color: var(--disabled); font-weight: 650; }
+.mahlzeit-pfeil { font-family: var(--font-number); font-size: 20px; color: var(--muted); text-align: center; }
+.mahlzeit.belegt .mahlzeit-gericht { color: var(--text); }
+.mahlzeit-vk { margin: -2px 0 8px 94px; font-size: 12px; color: var(--teal); }
+.mahlzeit-auf { display: grid; gap: 10px; padding: 4px 0 14px; }
+.mahlzeit-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.mahlzeit-chips .chip { min-height: 40px; font-size: 12px; }
+
+.vk-nutzung { display: grid; gap: 4px; margin-top: 4px; padding-top: 8px; border-top: 1px solid var(--line); }
+.vk-zeile { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; }
+
+.kal-tag.sport .kal-nr { text-decoration: underline; text-decoration-color: var(--teal); text-underline-offset: 3px; }
+
+@media (max-width: 380px) {
+  .mahlzeit-kopf { grid-template-columns: 76px 1fr 20px; gap: 8px; }
+  .mahlzeit-vk { margin-left: 84px; }
+}

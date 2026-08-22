@@ -9,6 +9,7 @@ const FILTER_TAGS = ["vegetarisch", "vegan", "High Protein", "Low Carb", "LEBER"
 const TYP_LABEL = { abendessen: "Abendessen", mittag: "Mittag", fruehstueck: "Frühstück", snack: "Snack", basis: "Basis" };
 const TYP_RANG = { abendessen: 0, mittag: 1, snack: 2, fruehstueck: 3, basis: 4 };
 const PREP_ZIEL = 10;
+const STANDARD_PORTIONEN = 2;   // zwei Erwachsene, das Kind kommt über 2,5 dazu
 const SCHNELL_GRENZE = 20;   // Minuten von Anfang bis Teller, für den Notfall-Filter
 
 const WOCHENTAG_KURZ = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
@@ -82,39 +83,61 @@ function loadUi() {
 }
 
 function loadPlan() {
-  const d = { days: [], prep: [] };
+  const leer = { tage: [] };
   let raw = null;
-  // Nur das Lesen und Parsen wird abgesichert. Ein Fehler beim Umformen wäre
-  // ein Programmierfehler und darf nicht stillschweigend den Plan löschen.
   try {
     raw = JSON.parse(localStorage.getItem(LS_PLAN));
   } catch (e) {
-    return d;
+    return leer;
   }
-  if (!raw || typeof raw !== "object") return d;
-  const days = Array.isArray(raw.days) ? raw.days : [];
-  const prep = Array.isArray(raw.prep) ? raw.prep : [];
-  return {
-      days: days.filter(x => x && typeof x === "object").map(x => {
-        const label = typeof x.label === "string" ? x.label : "";
-        const datum = istIso(x.datum) ? x.datum : labelZuIso(label);
-        return {
-          datum: datum || null,
-          label: datum ? tagLabel(datum) : label,
-          kategorie: KATEGORIE_KEYS.includes(x.kategorie) ? x.kategorie : "abendessen",
-          art: ["reste", "brotzeit"].includes(x.art) ? x.art : "rezept",
-          notiz: typeof x.notiz === "string" ? x.notiz : "",
-          portionen: portionenNormal(x.portionen),
-          recipeId: typeof x.recipeId === "string" ? x.recipeId : "",
-          sporttag: x.sporttag === true
-        };
-      }),
-      prep: prep.filter(x => x && typeof x === "object" && x.id).map(x => ({
-        id: String(x.id),
-        portionen: Math.max(0, parseInt(x.portionen, 10) || 0),
-        modus: x.modus === "frieren" ? "frieren" : "frisch"
-      }))
+  if (!raw || typeof raw !== "object") return leer;
+
+  const slotAus = (x) => {
+    if (!x || typeof x !== "object") return null;
+    const art = ["reste", "brotzeit"].includes(x.art) ? x.art : "rezept";
+    const recipeId = typeof x.recipeId === "string" ? x.recipeId : "";
+    if (art === "rezept" && !recipeId) return null;
+    return {
+      art,
+      recipeId,
+      portionen: portionenNormal(x.portionen),
+      notiz: typeof x.notiz === "string" ? x.notiz : ""
+    };
   };
+
+  // Neue Form: nach Tagen gruppiert, jede Mahlzeit ein Feld.
+  if (Array.isArray(raw.tage)) {
+    const tage = [];
+    raw.tage.forEach(t => {
+      if (!t || !istIso(t.datum)) return;
+      const mahlzeiten = {};
+      KATEGORIE_KEYS.forEach(k => {
+        const slot = slotAus((t.mahlzeiten || {})[k]);
+        if (slot) mahlzeiten[k] = slot;
+      });
+      tage.push({ datum: t.datum, sporttag: t.sporttag === true, mahlzeiten });
+    });
+    tage.sort((a, b) => (a.datum < b.datum ? -1 : 1));
+    return { tage };
+  }
+
+  // Alte Form: flache Liste, eine Karte pro Mahlzeit. Wird einmalig umgebaut.
+  const alt = Array.isArray(raw.days) ? raw.days : [];
+  const tage = [];
+  alt.forEach(x => {
+    if (!x || typeof x !== "object") return;
+    const datum = istIso(x.datum) ? x.datum : labelZuIso(x.label || "");
+    if (!datum) return;
+    const kat = KATEGORIE_KEYS.includes(x.kategorie) ? x.kategorie : "abendessen";
+    let tag = tage.find(t => t.datum === datum);
+    if (!tag) { tag = { datum, sporttag: false, mahlzeiten: {} }; tage.push(tag); }
+    if (x.sporttag === true) tag.sporttag = true;
+    if (tag.mahlzeiten[kat]) return;   // doppelte Mahlzeit, die erste gewinnt
+    const slot = slotAus(x);
+    if (slot) tag.mahlzeiten[kat] = slot;
+  });
+  tage.sort((a, b) => (a.datum < b.datum ? -1 : 1));
+  return { tage };
 }
 
 function loadPatches() {
@@ -241,6 +264,10 @@ async function init() {
     navigator.serviceWorker.register(SW_FILE).catch(() => {});
   }
 
+  // Ein aus der alten Form umgebauter Plan wird einmal in der neuen Form
+  // festgeschrieben, damit nicht bei jedem Start neu umgebaut wird.
+  if (plan.tage.length) savePlan();
+
   // Ein laufender Timer überlebt das Schließen der App.
   timerLaden();
   zeichneTimer();
@@ -318,8 +345,12 @@ function zeigeLadefehler(e) {
 function pruefePlanBezuege() {
   const ids = new Set(RECIPES.map(r => r.id));
   const fehlend = new Set();
-  plan.days.forEach(d => { if (d.recipeId && !ids.has(d.recipeId)) fehlend.add(d.recipeId); });
-  plan.prep.forEach(p => { if (p.portionen > 0 && !ids.has(p.id)) fehlend.add(p.id); });
+  plan.tage.forEach(tag => {
+    KATEGORIE_KEYS.forEach(k => {
+      const slot = tag.mahlzeiten[k];
+      if (slot && slot.art === "rezept" && slot.recipeId && !ids.has(slot.recipeId)) fehlend.add(slot.recipeId);
+    });
+  });
   planHinweis = fehlend.size
     ? `${fehlend.size} Eintrag/Einträge im Plan zeigen auf Rezepte, die es in ${DATA_FILE} nicht mehr gibt: ${[...fehlend].join(", ")}. Sie fehlen im Kopiertext.`
     : "";
@@ -1298,10 +1329,6 @@ function labelZuIso(label) {
 
 const ART_LABEL = { reste: "Reste", brotzeit: "Brotzeit" };
 
-function istKochtag(day) {
-  return (day.art || "rezept") === "rezept";
-}
-
 // Halbe Portionen sind erlaubt, damit "Kind isst mit" mit 2,5 abgebildet ist.
 function portionenNormal(wert) {
   const n = Number(wert);
@@ -1309,63 +1336,124 @@ function portionenNormal(wert) {
   return Math.min(12, Math.max(0.5, Math.round(n * 2) / 2));
 }
 
-function tagPortionen(day) {
-  if (day.portionen) return day.portionen;
-  const r = rezeptMitId(day.recipeId);
-  return r ? (r.basis || 2) : 2;
-}
-
 function portionenText(n) {
   return String(n).replace(".", ",");
 }
 
-// Was für diesen Tag im Text steht, egal ob Rezept, Reste oder Brotzeit.
-function tagGericht(day) {
-  if (!istKochtag(day)) {
-    const zusatz = String(day.notiz || "").trim();
-    return ART_LABEL[day.art] + (zusatz ? " " + zusatz : "");
+function leererSlot() {
+  return { art: "rezept", recipeId: "", portionen: null, notiz: "" };
+}
+
+function slotGefuellt(slot) {
+  if (!slot) return false;
+  if (slot.art !== "rezept") return true;
+  return !!rezeptMitId(slot.recipeId);
+}
+
+function slotGericht(slot) {
+  if (!slot) return "";
+  if (slot.art !== "rezept") {
+    const zusatz = String(slot.notiz || "").trim();
+    return ART_LABEL[slot.art] + (zusatz ? " " + zusatz : "");
   }
-  const r = rezeptMitId(day.recipeId);
+  const r = rezeptMitId(slot.recipeId);
   return r ? r.name : "";
 }
 
-function tagAnlegen(datum, kategorie, art) {
-  plan.days.push({
-    datum,
-    label: tagLabel(datum),
-    kategorie,
-    art: art || "rezept",
-    notiz: "",
-    portionen: null,
-    recipeId: "",
-    sporttag: false
-  });
-  savePlan();
-  render();
+// Eine Mahlzeit ist standardmäßig für die beiden Erwachsenen. Die Rezeptbasis
+// sagt nur, für wie viele Portionen die Mengen in der Datei gelten, nicht,
+// wie viele davon auf den Tisch kommen.
+function slotPortionen(slot) {
+  if (!slot) return STANDARD_PORTIONEN;
+  return slot.portionen || STANDARD_PORTIONEN;
 }
 
-function tagAnzeige(day) {
-  return day.datum ? tagLabel(day.datum) : (day.label || "Kochtag");
+function tagObjekt(datum, anlegenWennFehlt) {
+  let tag = plan.tage.find(t => t.datum === datum);
+  if (!tag && anlegenWennFehlt) {
+    tag = { datum, sporttag: false, mahlzeiten: {} };
+    plan.tage.push(tag);
+  }
+  return tag || null;
+}
+
+function tagHatInhalt(tag) {
+  return KATEGORIE_KEYS.some(k => slotGefuellt(tag.mahlzeiten[k]));
+}
+
+// Alle belegten Mahlzeiten der Woche, sortiert nach Datum und Tageszeit.
+function alleSlots() {
+  const rang = k => Math.max(0, KATEGORIE_KEYS.indexOf(k));
+  const raus = [];
+  plan.tage.forEach(tag => {
+    KATEGORIE_KEYS.forEach(k => {
+      const slot = tag.mahlzeiten[k];
+      if (slotGefuellt(slot)) raus.push({ tag, kat: k, slot });
+    });
+  });
+  return raus.sort((a, b) => (a.tag.datum < b.tag.datum ? -1 : a.tag.datum > b.tag.datum ? 1 :
+    rang(a.kat) - rang(b.kat)));
 }
 
 function sortierteTage() {
-  const rang = k => Math.max(0, KATEGORIE_KEYS.indexOf(k));
-  return plan.days
-    .map((d, idx) => ({ d, idx }))
-    .sort((a, b) => {
-      if (!a.d.datum && !b.d.datum) return a.idx - b.idx;
-      if (!a.d.datum) return 1;
-      if (!b.d.datum) return -1;
-      if (a.d.datum !== b.d.datum) return a.d.datum < b.d.datum ? -1 : 1;
-      return rang(a.d.kategorie) - rang(b.d.kategorie);
+  return plan.tage.slice().sort((a, b) => (a.datum < b.datum ? -1 : a.datum > b.datum ? 1 : 0));
+}
+
+// ---------- VORKOCHEN, ABGELEITET ----------
+
+// Steht dasselbe Gericht an mehreren Stellen der Woche, wird es einmal gekocht,
+// und zwar am frühesten Termin. Die Menge ist die Summe aller Portionen.
+function vorkochGruppen() {
+  const nachRezept = new Map();
+  alleSlots().forEach(eintrag => {
+    if (eintrag.slot.art !== "rezept") return;
+    const id = eintrag.slot.recipeId;
+    if (!nachRezept.has(id)) nachRezept.set(id, []);
+    nachRezept.get(id).push(eintrag);
+  });
+
+  const gruppen = [];
+  nachRezept.forEach((eintraege, id) => {
+    if (eintraege.length < 2) return;
+    const r = rezeptMitId(id);
+    if (!r) return;
+    const kochtag = eintraege[0].tag.datum;
+    const portionen = eintraege.reduce((a, e) => a + slotPortionen(e.slot), 0);
+    const haltbar = (r.prep && Number(r.prep.haltbar_tage)) || null;
+
+    const nutzung = eintraege.map(e => {
+      const abstand = Math.round((dateVon(e.tag.datum) - dateVon(kochtag)) / 86400000);
+      let lagerung = "frisch";
+      if (abstand > 0 && haltbar && abstand > haltbar) lagerung = r.prep && r.prep.einfrierbar ? "einfrieren" : "zu lang";
+      return { eintrag: e, abstand, lagerung };
     });
+
+    gruppen.push({ rezept: r, kochtag, portionen, nutzung, haltbar });
+  });
+
+  return gruppen.sort((a, b) => (a.kochtag < b.kochtag ? -1 : 1));
+}
+
+// Zu welcher Vorkoch-Gruppe gehört diese Mahlzeit, und ist sie der Kochtag?
+function vorkochInfo(datum, kat) {
+  for (const g of vorkochGruppen()) {
+    const treffer = g.nutzung.find(n => n.eintrag.tag.datum === datum && n.eintrag.kat === kat);
+    if (treffer) return { gruppe: g, kochtag: treffer.abstand === 0 && g.nutzung[0].eintrag.kat === kat, info: treffer };
+  }
+  return null;
+}
+
+function mittagPortionen() {
+  return alleSlots()
+    .filter(e => e.kat === "mittag" && e.slot.art === "rezept")
+    .reduce((a, e) => a + slotPortionen(e.slot), 0);
 }
 
 // ---------- PLANUNG: ANSICHT ----------
 
 let kalenderAnker = isoVon(montagVon(new Date()));
 let gewaehltesDatum = null;
-let prepSuche = "";
+let offenerSlot = null;   // { datum, kat }
 
 function renderPlanung() {
   const wrap = document.createElement("div");
@@ -1383,8 +1471,13 @@ function renderPlanung() {
     clean.textContent = "Verwaiste Einträge entfernen";
     clean.addEventListener("click", () => {
       const ids = new Set(RECIPES.map(r => r.id));
-      plan.days = plan.days.filter(d => !d.recipeId || ids.has(d.recipeId));
-      plan.prep = plan.prep.filter(p => ids.has(p.id));
+      plan.tage.forEach(tag => {
+        KATEGORIE_KEYS.forEach(k => {
+          const slot = tag.mahlzeiten[k];
+          if (slot && slot.art === "rezept" && slot.recipeId && !ids.has(slot.recipeId)) delete tag.mahlzeiten[k];
+        });
+      });
+      plan.tage = plan.tage.filter(tagHatInhalt);
       savePlan();
       pruefePlanBezuege();
       render();
@@ -1406,16 +1499,20 @@ function renderPlanung() {
 
   const dayList = document.createElement("div");
   dayList.className = "day-list";
-  sortierteTage().forEach(({ d, idx }) => dayList.appendChild(renderDayCard(d, idx)));
-  if (!plan.days.length) {
+  const zuZeigen = sortierteTage().filter(tagHatInhalt).map(t => t.datum);
+  if (gewaehltesDatum && !zuZeigen.includes(gewaehltesDatum)) zuZeigen.push(gewaehltesDatum);
+  zuZeigen.sort();
+  zuZeigen.forEach(datum => dayList.appendChild(renderTagKarte(datum)));
+
+  if (!zuZeigen.length) {
     const leer = document.createElement("p");
     leer.className = "small-note";
-    leer.textContent = "Noch keine Mahlzeit geplant. Oben einen Tag antippen, dann die Kategorie wählen.";
+    leer.textContent = "Noch nichts geplant. Oben einen Tag antippen, dann stehen die vier Mahlzeiten darunter.";
     dayList.appendChild(leer);
   }
   wrap.appendChild(dayList);
 
-  wrap.appendChild(renderPrepPanel());
+  wrap.appendChild(renderVorkochen());
   wrap.appendChild(renderWochenuebersicht());
   wrap.appendChild(renderKopiertext());
   wrap.appendChild(renderImportPanel());
@@ -1435,14 +1532,6 @@ function renderKalender() {
 
   const monate = [...new Set(tage.map(d => d.getMonth()))];
   const titel = monate.map(m => MONAT_NAME[m]).join(" / ") + " " + tage[13].getFullYear();
-
-  const belegung = {};
-  plan.days.forEach(d => {
-    if (!d.datum) return;
-    if (!belegung[d.datum]) belegung[d.datum] = [];
-    belegung[d.datum].push(d);
-  });
-
   const heute = heuteIso();
 
   box.innerHTML = `
@@ -1455,17 +1544,20 @@ function renderKalender() {
       ${["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"].map(t => `<div class="kal-wt">${t}</div>`).join("")}
       ${tage.map(d => {
         const iso = isoVon(d);
-        const eintraege = belegung[iso] || [];
+        const tag = plan.tage.find(t => t.datum === iso);
+        const anzahl = tag ? KATEGORIE_KEYS.filter(k => slotGefuellt(tag.mahlzeiten[k])).length : 0;
         const cls = ["kal-tag"];
         if (iso === heute) cls.push("heute");
         if (iso === gewaehltesDatum) cls.push("gewaehlt");
-        if (eintraege.length) cls.push("belegt");
+        if (anzahl) cls.push("belegt");
+        if (tag && tag.sporttag) cls.push("sport");
         return `<button type="button" class="${cls.join(" ")}" data-iso="${iso}" aria-label="${escapeAttr(tagLabel(iso))}">
           <span class="kal-nr">${d.getDate()}</span>
-          <span class="kal-punkte">${eintraege.slice(0, 3).map(() => "<i></i>").join("")}</span>
+          <span class="kal-punkte">${Array.from({ length: anzahl }).map(() => "<i></i>").join("")}</span>
         </button>`;
       }).join("")}
     </div>
+    <p class="small-note" style="margin:10px 2px 0">Tag antippen, die vier Mahlzeiten stehen darunter.</p>
   `;
 
   box.querySelectorAll(".kal-nav").forEach(b => {
@@ -1477,39 +1569,13 @@ function renderKalender() {
 
   box.querySelectorAll(".kal-tag").forEach(b => {
     b.addEventListener("click", () => {
-      gewaehltesDatum = gewaehltesDatum === b.dataset.iso ? null : b.dataset.iso;
+      gewaehltesDatum = b.dataset.iso;
+      offenerSlot = null;
       render();
+      const karte = document.querySelector(`.day-card[data-datum="${gewaehltesDatum}"]`);
+      if (karte && karte.scrollIntoView) karte.scrollIntoView({ block: "nearest" });
     });
   });
-
-  if (gewaehltesDatum) {
-    const add = document.createElement("div");
-    add.className = "kal-add";
-    add.innerHTML = `
-      <div class="kal-add-titel">${escapeHtml(tagLabel(gewaehltesDatum))} planen</div>
-      <div class="segmented">
-        ${KATEGORIEN.map(k => `<button type="button" data-kat="${k.key}">${escapeHtml(k.label)}</button>`).join("")}
-      </div>
-      <div class="kal-add-schnell">
-        <button type="button" class="chip" data-art="reste">+ Reste-Tag</button>
-        <button type="button" class="chip" data-art="brotzeit">+ Brotzeit</button>
-      </div>
-      <p class="small-note" style="margin:8px 0 0">Kategorie antippen, dann unten das Rezept wählen. Mehrere Mahlzeiten pro Tag sind möglich.</p>
-    `;
-    add.querySelectorAll("[data-kat]").forEach(b => {
-      b.addEventListener("click", () => tagAnlegen(gewaehltesDatum, b.dataset.kat, "rezept"));
-    });
-    add.querySelectorAll("[data-art]").forEach(b => {
-      b.addEventListener("click", () => tagAnlegen(gewaehltesDatum, "abendessen", b.dataset.art));
-    });
-    box.appendChild(add);
-  } else {
-    const hint = document.createElement("p");
-    hint.className = "small-note";
-    hint.style.margin = "10px 2px 0";
-    hint.textContent = "Tag antippen, um eine Mahlzeit zu planen.";
-    box.appendChild(hint);
-  }
 
   const heuteBtn = document.createElement("button");
   heuteBtn.type = "button";
@@ -1524,12 +1590,7 @@ function renderKalender() {
   return box;
 }
 
-// ---------- KOCHTAG-KARTE ----------
-
-function planbareRezepte() {
-  return RECIPES.filter(r => r.status !== "raus");
-}
-
+// ---------- TAGESKARTE MIT VIER MAHLZEITEN ----------
 
 function passendeRezepte(kategorie, sporttag) {
   const nah = KATEGORIE_NAH[kategorie] || [];
@@ -1549,170 +1610,289 @@ function passendeRezepte(kategorie, sporttag) {
   };
 }
 
-// Gekocht heißt: für dieses Rezept liegt lokal ein gekocht_am, das zum Tag passt.
-function istGekocht(day, r) {
-  if (!r) return false;
-  const p = patches[r.id];
-  if (!p || !p.gekocht_am) return false;
-  return !day.datum || p.gekocht_am === day.datum;
+function planbareRezepte() {
+  return RECIPES.filter(r => r.status !== "raus");
 }
 
-function renderDayCard(day, idx) {
+function slotSetzen(datum, kat, aenderung) {
+  const tag = tagObjekt(datum, true);
+  const slot = Object.assign(leererSlot(), tag.mahlzeiten[kat] || {}, aenderung);
+  tag.mahlzeiten[kat] = slot;
+  savePlan();
+}
+
+function slotLeeren(datum, kat) {
+  const tag = tagObjekt(datum, false);
+  if (!tag) return;
+  delete tag.mahlzeiten[kat];
+  if (!tagHatInhalt(tag) && !tag.sporttag) plan.tage = plan.tage.filter(t => t !== tag);
+  savePlan();
+}
+
+function renderTagKarte(datum) {
+  const tag = tagObjekt(datum, false) || { datum, sporttag: false, mahlzeiten: {} };
   const card = document.createElement("div");
-  card.className = "day-card";
+  card.className = "day-card tag-karte" + (datum === gewaehltesDatum ? " gewaehlt" : "");
+  card.dataset.datum = datum;
 
-  const kopf = `
-    <div class="day-card-header">
-      <div class="day-datum-wrap">
-        <div class="day-datum">${escapeHtml(tagAnzeige(day))}</div>
-        <input type="date" class="day-datum-input" value="${escapeAttr(day.datum || "")}" aria-label="Datum ändern">
-      </div>
-      <div class="sport-switch">
-        <span class="label">Sport</span>
-        <button class="toggle${day.sporttag ? " active" : ""}" type="button" aria-label="Sporttag" aria-pressed="${day.sporttag ? "true" : "false"}"></button>
-      </div>
-    </div>`;
-
-  if (!istKochtag(day)) {
-    // Reste- und Brotzeit-Tage haben kein Rezept, nur eine kurze Notiz.
-    card.classList.add("kein-kochtag");
-    card.innerHTML = `
-      ${kopf}
-      <div class="tag-art">${escapeHtml(ART_LABEL[day.art])}</div>
-      <input type="text" class="tag-notiz" value="${escapeAttr(day.notiz || "")}"
-        placeholder="${day.art === "reste" ? "woher, zum Beispiel von Mittwoch" : "was dazu, zum Beispiel Brot und Aufstriche"}"
-        aria-label="Notiz zu diesem Tag">
-      <div class="day-actions">
-        <button class="btn secondary" type="button" data-act="wechsel">${day.art === "reste" ? "zu Brotzeit" : "zu Reste"}</button>
-        <button class="btn secondary" type="button" data-act="del">Entfernen</button>
-      </div>
-    `;
-    card.querySelector(".tag-notiz").addEventListener("input", (e) => {
-      day.notiz = e.target.value;
-      savePlan();
-      aktualisiereKopiertext();
-    });
-    card.querySelector('[data-act="wechsel"]').addEventListener("click", () => {
-      day.art = day.art === "reste" ? "brotzeit" : "reste";
-      savePlan();
-      render();
-    });
-  } else {
-    const selected = rezeptMitId(day.recipeId);
-    const fehlend = day.recipeId && !selected;
-    const lowCarbWarn = day.sporttag && selected && (selected.tags || []).includes("Low Carb");
-    const { passend, weitere } = passendeRezepte(day.kategorie, day.sporttag);
-    const portionen = tagPortionen(day);
-    const basis = selected ? (selected.basis || 2) : 2;
-
-    const opt = r => `<option value="${escapeAttr(r.id)}"${r.id === day.recipeId ? " selected" : ""}>${escapeHtml(r.name + ((r.tags || []).includes("SPORT") ? " · SPORT" : ""))}</option>`;
-
-    const infoZeile = selected ? [
-      selected.kcal ? selected.kcal + " kcal" : "",
-      selected.protein ? selected.protein + " g Eiweiß" : "",
-      salzWert(selected) != null ? salzText(salzWert(selected)) + " Salz" : "",
-      zeitText(selected)
-    ].filter(Boolean).map(escapeHtml).join(" · ") : "";
-
-    card.innerHTML = `
-      ${kopf}
-      <div class="segmented klein">
-        ${KATEGORIEN.map(k => `<button type="button" data-kat="${k.key}"${k.key === day.kategorie ? ' class="aktiv"' : ""}>${escapeHtml(k.label)}</button>`).join("")}
-      </div>
-      <select aria-label="Rezept für diese Mahlzeit">
-        <option value="">Rezept wählen</option>
-        ${fehlend ? `<option value="${escapeAttr(day.recipeId)}" selected>Unbekannt: ${escapeHtml(day.recipeId)}</option>` : ""}
-        ${passend.length ? `<optgroup label="Passend zu ${escapeAttr(katLabel(day.kategorie))}">${passend.map(opt).join("")}</optgroup>` : ""}
-        ${weitere.length ? `<optgroup label="Weitere Rezepte">${weitere.map(opt).join("")}</optgroup>` : ""}
-      </select>
-      ${selected ? `<div class="row-between portionen-zeile">
-        <span class="prep-info">Portionen, Rezeptbasis ${basis}</span>
-        <div class="stepper">
-          <button type="button" data-p="-0.5" aria-label="Weniger Portionen">−</button>
-          <span class="val">${escapeHtml(portionenText(portionen))}</span>
-          <button type="button" data-p="0.5" aria-label="Mehr Portionen">+</button>
-        </div>
-      </div>` : ""}
-      ${infoZeile ? `<div class="day-info">${infoZeile}</div>` : ""}
-      ${lowCarbWarn ? `<div class="warn-lowcarb">Low Carb an einem Sporttag, laut Vorgabe eigentlich nicht vorgesehen.</div>` : ""}
-      ${selected && selected.rest ? `<div class="day-rest">Bleibt übrig: ${escapeHtml(String(selected.rest))}</div>` : ""}
-      <div class="day-actions">
-        ${selected ? `<button class="btn secondary" type="button" data-act="open">Rezept öffnen</button>` : ""}
-        ${selected ? `<button class="btn secondary${istGekocht(day, selected) ? " an" : ""}" type="button" data-act="gekocht">${istGekocht(day, selected) ? "gekocht ✓" : "gekocht"}</button>` : ""}
-        <button class="btn secondary" type="button" data-act="del">Entfernen</button>
-      </div>
-    `;
-
-    card.querySelectorAll("[data-kat]").forEach(b => {
-      b.addEventListener("click", () => {
-        day.kategorie = b.dataset.kat;
-        savePlan();
-        render();
-      });
-    });
-    card.querySelector("select").addEventListener("change", (e) => {
-      day.recipeId = e.target.value;
-      day.portionen = null;
-      savePlan();
-      render();
-    });
-    card.querySelectorAll("[data-p]").forEach(b => {
-      b.addEventListener("click", () => {
-        day.portionen = portionenNormal(tagPortionen(day) + parseFloat(b.dataset.p));
-        savePlan();
-        render();
-      });
-    });
-    const openBtn = card.querySelector('[data-act="open"]');
-    if (openBtn) openBtn.addEventListener("click", () => openDetail(selected.id));
-    const gekochtBtn = card.querySelector('[data-act="gekocht"]');
-    if (gekochtBtn) {
-      gekochtBtn.addEventListener("click", () => {
-        const datum = day.datum || heuteIso();
-        patchSetzen(selected.id, { gekocht_am: istGekocht(day, selected) ? undefined : datum });
-        render();
-      });
-    }
-  }
-
-  card.querySelector(".day-datum-input").addEventListener("change", (e) => {
-    const wert = e.target.value;
-    if (!istIso(wert)) return;
-    day.datum = wert;
-    day.label = tagLabel(wert);
-    savePlan();
-    kalenderAnker = isoVon(montagVon(dateVon(wert)));
-    render();
-  });
-  card.querySelector(".toggle").addEventListener("click", () => {
-    day.sporttag = !day.sporttag;
+  const kopf = document.createElement("div");
+  kopf.className = "day-card-header";
+  kopf.innerHTML = `
+    <div class="day-datum-wrap">
+      <div class="day-datum">${escapeHtml(tagLabel(datum))}</div>
+    </div>
+    <div class="sport-switch">
+      <span class="label">Sport</span>
+      <button class="toggle${tag.sporttag ? " active" : ""}" type="button" aria-label="Sporttag" aria-pressed="${tag.sporttag ? "true" : "false"}"></button>
+    </div>
+  `;
+  kopf.querySelector(".toggle").addEventListener("click", () => {
+    const t = tagObjekt(datum, true);
+    t.sporttag = !t.sporttag;
+    if (!tagHatInhalt(t) && !t.sporttag) plan.tage = plan.tage.filter(x => x !== t);
     savePlan();
     render();
   });
-  card.querySelector('[data-act="del"]').addEventListener("click", () => {
-    plan.days.splice(idx, 1);
-    savePlan();
-    render();
+  card.appendChild(kopf);
+
+  KATEGORIEN.forEach(k => {
+    card.appendChild(renderMahlzeit(datum, k, tag));
   });
 
   return card;
+}
+
+function renderMahlzeit(datum, kategorie, tag) {
+  const kat = kategorie.key;
+  const slot = tag.mahlzeiten[kat];
+  const offen = offenerSlot && offenerSlot.datum === datum && offenerSlot.kat === kat;
+  const gefuellt = slotGefuellt(slot);
+  const r = slot && slot.art === "rezept" ? rezeptMitId(slot.recipeId) : null;
+
+  const zeile = document.createElement("div");
+  zeile.className = "mahlzeit" + (offen ? " offen" : "") + (gefuellt ? " belegt" : "");
+
+  const vk = gefuellt && r ? vorkochInfo(datum, kat) : null;
+  const kopfText = gefuellt
+    ? `${escapeHtml(slotGericht(slot))}${r ? ` <span class="mahlzeit-menge">${escapeHtml(portionenText(slotPortionen(slot)))} P</span>` : ""}`
+    : `<span class="mahlzeit-leer">wählen</span>`;
+
+  const kopf = document.createElement("button");
+  kopf.type = "button";
+  kopf.className = "mahlzeit-kopf";
+  kopf.innerHTML = `
+    <span class="mahlzeit-name" data-typ="${escapeAttr(kat)}">${escapeHtml(kategorie.label)}</span>
+    <span class="mahlzeit-gericht">${kopfText}</span>
+    <span class="mahlzeit-pfeil">${offen ? "−" : "+"}</span>
+  `;
+  kopf.addEventListener("click", () => {
+    offenerSlot = offen ? null : { datum, kat };
+    render();
+  });
+  zeile.appendChild(kopf);
+
+  if (vk && !vk.kochtag) {
+    const hinweis = document.createElement("div");
+    hinweis.className = "mahlzeit-vk";
+    hinweis.textContent = `vorgekocht am ${tagLabel(vk.gruppe.kochtag)}${vk.info.lagerung === "einfrieren" ? ", aus dem Gefrierfach" : ""}`;
+    zeile.appendChild(hinweis);
+  }
+  if (vk && vk.kochtag && vk.gruppe.nutzung.length > 1) {
+    const hinweis = document.createElement("div");
+    hinweis.className = "mahlzeit-vk";
+    hinweis.textContent = `hier ${portionenText(vk.gruppe.portionen)} Portionen kochen, deckt ${vk.gruppe.nutzung.length} Mahlzeiten`;
+    zeile.appendChild(hinweis);
+  }
+
+  if (!offen) return zeile;
+
+  const auf = document.createElement("div");
+  auf.className = "mahlzeit-auf";
+
+  const art = slot ? slot.art : "rezept";
+  if (art === "rezept") {
+    const { passend, weitere } = passendeRezepte(kat, tag.sporttag);
+    const opt = x => `<option value="${escapeAttr(x.id)}"${slot && x.id === slot.recipeId ? " selected" : ""}>${escapeHtml(x.name + ((x.tags || []).includes("SPORT") ? " · SPORT" : ""))}</option>`;
+    const fehlend = slot && slot.recipeId && !r;
+
+    auf.innerHTML = `
+      <select aria-label="Rezept für ${escapeAttr(kategorie.label)}">
+        <option value="">Rezept wählen</option>
+        ${fehlend ? `<option value="${escapeAttr(slot.recipeId)}" selected>Unbekannt: ${escapeHtml(slot.recipeId)}</option>` : ""}
+        ${passend.length ? `<optgroup label="Passend zu ${escapeAttr(kategorie.label)}">${passend.map(opt).join("")}</optgroup>` : ""}
+        ${weitere.length ? `<optgroup label="Weitere Rezepte">${weitere.map(opt).join("")}</optgroup>` : ""}
+      </select>
+      ${r ? `<div class="row-between portionen-zeile">
+        <span class="prep-info">Portionen, Rezeptbasis ${r.basis || 2}</span>
+        <div class="stepper">
+          <button type="button" data-p="-0.5" aria-label="Weniger Portionen">−</button>
+          <span class="val">${escapeHtml(portionenText(slotPortionen(slot)))}</span>
+          <button type="button" data-p="0.5" aria-label="Mehr Portionen">+</button>
+        </div>
+      </div>` : ""}
+      ${r ? `<div class="day-info">${[
+        r.kcal ? r.kcal + " kcal" : "",
+        r.protein ? r.protein + " g Eiweiß" : "",
+        salzWert(r) != null ? salzText(salzWert(r)) + " Salz" : "",
+        zeitText(r)
+      ].filter(Boolean).map(escapeHtml).join(" · ")}</div>` : ""}
+      ${r && tag.sporttag && (r.tags || []).includes("Low Carb") ? `<div class="warn-lowcarb">Low Carb an einem Sporttag, laut Vorgabe eigentlich nicht vorgesehen.</div>` : ""}
+      ${r && r.rest ? `<div class="day-rest">Bleibt übrig: ${escapeHtml(String(r.rest))}</div>` : ""}
+      <div class="mahlzeit-chips">
+        <button type="button" class="chip" data-art="reste">Reste</button>
+        <button type="button" class="chip" data-art="brotzeit">Brotzeit</button>
+        ${r ? `<button type="button" class="chip" data-act="open">Rezept öffnen</button>` : ""}
+        ${r ? `<button type="button" class="chip${istGekochtSlot(datum, r) ? " active" : ""}" data-act="gekocht">${istGekochtSlot(datum, r) ? "gekocht ✓" : "gekocht"}</button>` : ""}
+        ${gefuellt ? `<button type="button" class="chip" data-act="leeren">Leeren</button>` : ""}
+      </div>
+    `;
+
+    auf.querySelector("select").addEventListener("change", (e) => {
+      if (!e.target.value) slotLeeren(datum, kat);
+      else slotSetzen(datum, kat, { art: "rezept", recipeId: e.target.value, portionen: null, notiz: "" });
+      render();
+    });
+    auf.querySelectorAll("[data-p]").forEach(b => {
+      b.addEventListener("click", () => {
+        slotSetzen(datum, kat, { portionen: portionenNormal(slotPortionen(slot) + parseFloat(b.dataset.p)) });
+        render();
+      });
+    });
+  } else {
+    auf.innerHTML = `
+      <div class="tag-art">${escapeHtml(ART_LABEL[art])}</div>
+      <input type="text" class="tag-notiz" value="${escapeAttr(slot.notiz || "")}"
+        placeholder="${art === "reste" ? "woher, zum Beispiel von Montag" : "was dazu, zum Beispiel Brot und Aufstriche"}"
+        aria-label="Notiz">
+      <div class="mahlzeit-chips">
+        <button type="button" class="chip${art === "reste" ? " active" : ""}" data-art="reste">Reste</button>
+        <button type="button" class="chip${art === "brotzeit" ? " active" : ""}" data-art="brotzeit">Brotzeit</button>
+        <button type="button" class="chip" data-art="rezept">Rezept</button>
+        <button type="button" class="chip" data-act="leeren">Leeren</button>
+      </div>
+    `;
+    auf.querySelector(".tag-notiz").addEventListener("input", (e) => {
+      slotSetzen(datum, kat, { notiz: e.target.value });
+      aktualisiereKopiertext();
+    });
+  }
+
+  auf.querySelectorAll("[data-art]").forEach(b => {
+    b.addEventListener("click", () => {
+      const neu = b.dataset.art;
+      if (neu === "rezept") slotSetzen(datum, kat, { art: "rezept", notiz: "" });
+      else slotSetzen(datum, kat, { art: neu, recipeId: "", portionen: null });
+      render();
+    });
+  });
+  const openBtn = auf.querySelector('[data-act="open"]');
+  if (openBtn) openBtn.addEventListener("click", () => openDetail(r.id));
+  const gekochtBtn = auf.querySelector('[data-act="gekocht"]');
+  if (gekochtBtn) {
+    gekochtBtn.addEventListener("click", () => {
+      patchSetzen(r.id, { gekocht_am: istGekochtSlot(datum, r) ? undefined : datum });
+      render();
+    });
+  }
+  const leerBtn = auf.querySelector('[data-act="leeren"]');
+  if (leerBtn) {
+    leerBtn.addEventListener("click", () => {
+      slotLeeren(datum, kat);
+      offenerSlot = null;
+      render();
+    });
+  }
+
+  zeile.appendChild(auf);
+  return zeile;
+}
+
+function istGekochtSlot(datum, r) {
+  if (!r) return false;
+  const p = patches[r.id];
+  return !!(p && p.gekocht_am === datum);
+}
+
+// ---------- VORKOCHEN, ANZEIGE ----------
+
+function renderVorkochen() {
+  const wrap = document.createElement("div");
+
+  const label = document.createElement("span");
+  label.className = "label";
+  label.style.display = "block";
+  label.style.margin = "26px 0 8px";
+  label.textContent = "Vorkochen";
+  wrap.appendChild(label);
+
+  const gruppen = vorkochGruppen();
+  const mittag = mittagPortionen();
+
+  const summe = document.createElement("div");
+  summe.className = "meal-prep";
+  summe.innerHTML = `
+    <div class="meal-prep-header">
+      <span class="label" style="color:#B4B6B0">Mittagessen der Woche</span>
+      <span class="meal-prep-value">${escapeHtml(portionenText(mittag))} / ${PREP_ZIEL}</span>
+    </div>
+    <div class="progress"><span style="width:${Math.min(100, (mittag / PREP_ZIEL) * 100)}%"></span></div>
+    <div class="meal-prep-split">
+      <span>${gruppen.length} Gericht(e) mehrfach eingeplant</span>
+      <span>${escapeHtml(portionenText(gruppen.reduce((a, g) => a + g.portionen, 0)))} Portionen daraus</span>
+    </div>
+  `;
+  wrap.appendChild(summe);
+
+  if (!gruppen.length) {
+    const leer = document.createElement("p");
+    leer.className = "small-note";
+    leer.textContent = "Steht dasselbe Gericht an zwei Stellen der Woche, rechnet die App hier automatisch zusammen, wie viel du am ersten Termin kochen musst.";
+    wrap.appendChild(leer);
+    return wrap;
+  }
+
+  const liste = document.createElement("div");
+  liste.className = "prep-liste";
+  gruppen.forEach(g => {
+    const karte = document.createElement("div");
+    karte.className = "prep-karte";
+    const warnung = g.nutzung.find(n => n.lagerung === "zu lang");
+    const frieren = g.nutzung.filter(n => n.lagerung === "einfrieren").reduce((a, n) => a + slotPortionen(n.eintrag.slot), 0);
+
+    karte.innerHTML = `
+      <div class="prep-kopf">
+        <span class="prep-name">${escapeHtml(g.rezept.name)}</span>
+        <span class="meal-prep-value" style="color:var(--text)">${escapeHtml(portionenText(g.portionen))} P</span>
+      </div>
+      <div class="prep-info">Kochen am ${escapeHtml(tagLabel(g.kochtag))}${g.haltbar ? `, hält ${g.haltbar} Tage` : ""}${frieren ? `, davon ${escapeHtml(portionenText(frieren))} einfrieren` : ""}</div>
+      <div class="vk-nutzung">
+        ${g.nutzung.map(n => `<div class="vk-zeile">
+          <span>${escapeHtml(tagLabel(n.eintrag.tag.datum))} · ${escapeHtml(katLabel(n.eintrag.kat))}</span>
+          <span class="prep-info">${escapeHtml(portionenText(slotPortionen(n.eintrag.slot)))} P · ${escapeHtml(n.abstand === 0 ? "am Kochtag" : n.lagerung === "einfrieren" ? "Gefrierfach" : n.lagerung === "zu lang" ? "zu spät" : "frisch")}</span>
+        </div>`).join("")}
+      </div>
+      ${warnung ? `<div class="warn-lowcarb">Zwischen Kochtag und ${escapeHtml(tagLabel(warnung.eintrag.tag.datum))} liegen ${warnung.abstand} Tage, laut Rezept hält es ${g.haltbar}. Näher zusammenlegen oder einfrieren.</div>` : ""}
+    `;
+    liste.appendChild(karte);
+  });
+  wrap.appendChild(liste);
+
+  return wrap;
 }
 
 // ---------- WOCHENÜBERSICHT ----------
 
 function renderWochenuebersicht() {
   const wrap = document.createElement("div");
-  if (!plan.days.some(d => tagGericht(d))) return wrap;
+  const slots = alleSlots();
+  if (!slots.length) return wrap;
 
   const gruppen = [];
-  sortierteTage().forEach(({ d }) => {
-    const gericht = tagGericht(d);
-    if (!gericht) return;
-    const r = rezeptMitId(d.recipeId);
-    const key = tagAnzeige(d);
-    let g = gruppen.find(x => x.key === key);
-    if (!g) { g = { key, zeilen: [], kcal: 0, protein: 0, salz: 0, hatSalz: false }; gruppen.push(g); }
-    g.zeilen.push(`${istKochtag(d) ? katLabel(d.kategorie) + ": " : ""}${gericht}${d.sporttag ? " (Sport)" : ""}`);
+  slots.forEach(({ tag, kat, slot }) => {
+    let g = gruppen.find(x => x.datum === tag.datum);
+    if (!g) { g = { datum: tag.datum, zeilen: [], kcal: 0, protein: 0, salz: 0, hatSalz: false, sport: tag.sporttag }; gruppen.push(g); }
+    g.zeilen.push(`${katLabel(kat)}: ${slotGericht(slot)}`);
+    const r = slot.art === "rezept" ? rezeptMitId(slot.recipeId) : null;
     if (r) {
       g.kcal += Number(r.kcal) || 0;
       g.protein += Number(r.protein) || 0;
@@ -1729,11 +1909,10 @@ function renderWochenuebersicht() {
 
   const box = document.createElement("div");
   box.className = "day-card";
-  box.style.marginBottom = "18px";
   box.innerHTML = gruppen.map(g => `
     <div class="uebersicht-tag">
       <div class="uebersicht-kopf">
-        <span>${escapeHtml(g.key)}</span>
+        <span>${escapeHtml(tagLabel(g.datum))}${g.sport ? " · Sport" : ""}</span>
         <span class="uebersicht-zahlen">${g.kcal || g.protein ? `${g.kcal} kcal · ${g.protein} g EW` : ""}${g.hatSalz ? ` · ${salzText(g.salz)} Salz` : ""}</span>
       </div>
       ${g.zeilen.map(z => `<div class="uebersicht-zeile">${escapeHtml(z)}</div>`).join("")}
@@ -1766,194 +1945,10 @@ function renderWochenuebersicht() {
   const note = document.createElement("p");
   note.className = "small-note";
   note.style.marginTop = "10px";
-  note.textContent = "Summen aus rezepte.json, jeweils eine Portion pro Person. Frühstück und Snacks nur, wenn du sie eingeplant hast.";
+  note.textContent = "Summen aus rezepte.json, jeweils eine Portion pro Person.";
   wrap.appendChild(note);
 
   return wrap;
-}
-
-// ---------- MEAL PREP ----------
-
-function prepEintraege() {
-  return plan.prep.filter(p => p.portionen > 0);
-}
-
-function prepWert(id) {
-  const e = plan.prep.find(p => p.id === id);
-  return e ? e.portionen : 0;
-}
-
-function prepModus(id) {
-  const e = plan.prep.find(p => p.id === id);
-  return e && e.modus === "frieren" ? "frieren" : "frisch";
-}
-
-function prepSetzen(id, wert, modus) {
-  let entry = plan.prep.find(p => p.id === id);
-  if (!entry) { entry = { id, portionen: 0, modus: "frisch" }; plan.prep.push(entry); }
-  entry.portionen = Math.max(0, Math.min(20, wert));
-  if (modus) entry.modus = modus;
-  if (entry.portionen === 0) plan.prep = plan.prep.filter(p => p !== entry);
-  savePlan();
-}
-
-function prepSummen() {
-  let frisch = 0, frieren = 0;
-  prepEintraege().forEach(p => {
-    if (p.modus === "frieren") frieren += p.portionen;
-    else frisch += p.portionen;
-  });
-  return { frisch, frieren, gesamt: frisch + frieren };
-}
-
-function renderPrepPanel() {
-  const wrap = document.createElement("div");
-
-  const label = document.createElement("span");
-  label.className = "label";
-  label.style.display = "block";
-  label.style.margin = "26px 0 8px";
-  label.textContent = "Meal Prep";
-  wrap.appendChild(label);
-
-  const s = prepSummen();
-  const summary = document.createElement("div");
-  summary.className = "meal-prep";
-  summary.innerHTML = `
-    <div class="meal-prep-header">
-      <span class="label" style="color:#B4B6B0">Ziel ${PREP_ZIEL} Portionen</span>
-      <span class="meal-prep-value">${s.gesamt} / ${PREP_ZIEL}</span>
-    </div>
-    <div class="progress"><span style="width:${Math.min(100, (s.gesamt / PREP_ZIEL) * 100)}%"></span></div>
-    <div class="meal-prep-split">
-      <span>Frisch ${s.frisch}</span>
-      <span>Einfrieren ${s.frieren}</span>
-      <span>${s.gesamt < PREP_ZIEL ? (PREP_ZIEL - s.gesamt) + " fehlen" : "Ziel erreicht"}</span>
-    </div>
-  `;
-  wrap.appendChild(summary);
-
-  const gewaehlt = document.createElement("div");
-  gewaehlt.className = "prep-liste";
-  const eintraege = prepEintraege();
-
-  if (!eintraege.length) {
-    const leer = document.createElement("p");
-    leer.className = "small-note";
-    leer.textContent = "Noch nichts vorgekocht geplant. Unten suchen oder einen Vorschlag antippen.";
-    gewaehlt.appendChild(leer);
-  }
-
-  eintraege.forEach(p => {
-    const r = RECIPES.find(x => x.id === p.id);
-    if (!r) return;
-    const karte = document.createElement("div");
-    karte.className = "prep-karte";
-
-    const prep = r.prep || {};
-    const infos = [];
-    if (prep.haltbar_tage) infos.push(`hält ${prep.haltbar_tage} Tage`);
-    if (prep.einfrierbar) infos.push("einfrierbar");
-    if (r.protein) infos.push(`${r.protein} g Eiweiß`);
-    if (!prep.geeignet) infos.push("nicht als prep markiert");
-
-    const warnung = p.modus === "frieren" && !prep.einfrierbar
-      ? "In rezepte.json steht nichts von einfrierbar."
-      : "";
-
-    karte.innerHTML = `
-      <div class="prep-kopf">
-        <span class="prep-name">${escapeHtml(r.name)}</span>
-        <div class="stepper">
-          <button type="button" data-d="-1" aria-label="Weniger Portionen">−</button>
-          <span class="val">${p.portionen}</span>
-          <button type="button" data-d="1" aria-label="Mehr Portionen">+</button>
-        </div>
-      </div>
-      <div class="prep-fuss">
-        <div class="segmented winzig">
-          <button type="button" data-modus="frisch"${p.modus !== "frieren" ? ' class="aktiv"' : ""}>Frisch</button>
-          <button type="button" data-modus="frieren"${p.modus === "frieren" ? ' class="aktiv"' : ""}>Einfrieren</button>
-        </div>
-        <span class="prep-info">${escapeHtml(infos.join(" · "))}</span>
-      </div>
-      ${warnung ? `<div class="warn-lowcarb">${escapeHtml(warnung)}</div>` : ""}
-    `;
-
-    karte.querySelectorAll(".stepper button").forEach(b => {
-      b.addEventListener("click", () => {
-        prepSetzen(p.id, prepWert(p.id) + parseInt(b.dataset.d, 10));
-        render();
-      });
-    });
-    karte.querySelectorAll("[data-modus]").forEach(b => {
-      b.addEventListener("click", () => {
-        prepSetzen(p.id, prepWert(p.id), b.dataset.modus);
-        render();
-      });
-    });
-
-    gewaehlt.appendChild(karte);
-  });
-
-  wrap.appendChild(gewaehlt);
-  wrap.appendChild(renderPrepAuswahl());
-  return wrap;
-}
-
-function renderPrepAuswahl() {
-  const box = document.createElement("div");
-  box.className = "prep-auswahl";
-
-  const gewaehlteIds = new Set(prepEintraege().map(p => p.id));
-  const alle = planbareRezepte().filter(r => !gewaehlteIds.has(r.id));
-
-  // Vorschläge: als prep geeignet, viel Eiweiß, noch nicht gewählt.
-  const vorschlaege = alle
-    .filter(r => r.prep && r.prep.geeignet)
-    .sort((a, b) => (Number(b.protein) || 0) - (Number(a.protein) || 0))
-    .slice(0, 4);
-
-  const suche = prepSuche.trim().toLowerCase();
-  const treffer = suche
-    ? alle.filter(r => suchtext(r).includes(suche)).slice(0, 6)
-    : [];
-
-  box.innerHTML = `
-    ${vorschlaege.length ? `<div class="prep-vorschlaege">
-      ${vorschlaege.map(r => `<button type="button" class="chip" data-add="${escapeAttr(r.id)}">+ ${escapeHtml(r.name)}</button>`).join("")}
-    </div>` : ""}
-    <div class="search" style="margin-bottom:8px">
-      <input type="search" id="prep-suche" placeholder="Anderes Gericht suchen" value="${escapeAttr(prepSuche)}" autocomplete="off">
-    </div>
-    <div class="prep-treffer">
-      ${suche && !treffer.length ? `<p class="small-note" style="margin:0">Nichts gefunden.</p>` : ""}
-      ${treffer.map(r => `<button type="button" class="prep-treffer-zeile" data-add="${escapeAttr(r.id)}">
-        <span>${escapeHtml(r.name)}</span>
-        <span class="prep-info">${escapeHtml([typLabel(r.typ), r.prep && r.prep.geeignet ? "prep" : "", r.protein ? r.protein + " g EW" : ""].filter(Boolean).join(" · "))}</span>
-      </button>`).join("")}
-    </div>
-  `;
-
-  box.querySelectorAll("[data-add]").forEach(b => {
-    b.addEventListener("click", () => {
-      const r = RECIPES.find(x => x.id === b.dataset.add);
-      prepSetzen(b.dataset.add, 2, r && r.prep && r.prep.einfrierbar && !(r.prep && r.prep.geeignet) ? "frieren" : "frisch");
-      prepSuche = "";
-      render();
-    });
-  });
-
-  const inp = box.querySelector("#prep-suche");
-  inp.addEventListener("input", (e) => {
-    prepSuche = e.target.value;
-    const neu = renderPrepAuswahl();
-    box.replaceWith(neu);
-    const feld = neu.querySelector("#prep-suche");
-    if (feld) { feld.focus(); feld.setSelectionRange(feld.value.length, feld.value.length); }
-  });
-
-  return box;
 }
 
 // ---------- IMPORT ----------
@@ -1972,9 +1967,7 @@ function renderImportPanel() {
     <div class="copy-panel">
       <textarea id="import-text" placeholder="Mi 19.08.: Griechischer Kritharaki-Salat (Sporttag)
 Do 20.08. (Mittag): Linsen-Bolognese
-Fr 21.08.: Sandwich mit veganem Chicken
-
-Meal Prep: Weißer Bohnensalat x4"></textarea>
+Fr 21.08.: Reste von Mittwoch"></textarea>
     </div>
     <button class="btn primary full" type="button" id="import-btn" style="margin-top:8px">Übernehmen</button>
     <div id="import-result" class="small-note" style="margin-bottom:0"></div>
@@ -1986,16 +1979,14 @@ Meal Prep: Weißer Bohnensalat x4"></textarea>
   box.querySelector("#import-btn").addEventListener("click", () => {
     const text = box.querySelector("#import-text").value;
     if (!text.trim()) return;
-    const hatPlan = plan.days.length || prepEintraege().length;
-    if (hatPlan && !confirm("Aktuelle Wochenplanung auf diesem Gerät ersetzen?")) return;
+    if (plan.tage.length && !confirm("Aktuelle Wochenplanung auf diesem Gerät ersetzen?")) return;
     const result = parseImportText(text);
-    plan.days = result.days;
-    plan.prep = result.prep;
+    plan.tage = result.tage;
     savePlan();
     pruefePlanBezuege();
     importErgebnis = importMeldung(result);
-    const erstes = result.days.find(d => d.datum);
-    if (erstes) kalenderAnker = isoVon(montagVon(dateVon(erstes.datum)));
+    if (result.tage.length) kalenderAnker = isoVon(montagVon(dateVon(result.tage[0].datum)));
+    offenerSlot = null;
     render();
   });
 
@@ -2003,24 +1994,28 @@ Meal Prep: Weißer Bohnensalat x4"></textarea>
 }
 
 function importMeldung(result) {
-  const parts = [`${result.days.length} Mahlzeit(en) übernommen`];
-  if (result.prep.length) parts.push(`${result.prep.length} Meal-Prep-Eintrag/Einträge übernommen`);
-  if (result.ohneDatum) parts.push(`${result.ohneDatum} ohne erkennbares Datum`);
+  const anzahl = result.tage.reduce((a, t) => a + KATEGORIE_KEYS.filter(k => t.mahlzeiten[k]).length, 0);
+  const parts = [`${anzahl} Mahlzeit(en) an ${result.tage.length} Tag(en) übernommen`];
+  if (result.prepZeilen) parts.push(`${result.prepZeilen} Meal-Prep-Zeile(n) übersprungen, das Vorkochen rechnet die App jetzt selbst aus`);
+  if (result.ohneDatum) parts.push(`${result.ohneDatum} Zeile(n) ohne erkennbares Datum übersprungen`);
   if (result.unmatched.length) parts.push(`nicht erkannt: ${result.unmatched.map(l => `"${l}"`).join(", ")}`);
-  let s = parts.join(", ") + ".";
-  if (result.unmatched.length) s += " Nicht erkannte Zeilen bitte manuell nachtragen.";
-  return s;
+  return parts.join(", ") + ".";
 }
 
-// Format bleibt kompatibel: "Tag: Rezeptname (Sporttag)" und "Meal Prep: Rezeptname xN".
-// Neu ist nur eine Kategorie in Klammern hinter dem Tag, die nur dann auftaucht,
-// wenn es nicht Abendessen ist. Alte Texte ohne Kategorie werden weiter gelesen.
+// Format bleibt kompatibel: "Tag: Rezeptname (Sporttag)", Kategorie in Klammern
+// hinter dem Tag, Portionen als xN hinter dem Namen.
 function parseImportText(text) {
-  const days = [];
-  const prep = [];
+  const tage = [];
   const unmatched = [];
   let ohneDatum = 0;
+  let prepZeilen = 0;
   let prepModus = false;
+
+  const holeTag = (datum) => {
+    let t = tage.find(x => x.datum === datum);
+    if (!t) { t = { datum, sporttag: false, mahlzeiten: {} }; tage.push(t); }
+    return t;
+  };
 
   String(text).replace(/^\uFEFF/, "").split(/\r?\n/).forEach(raw => {
     const line = raw.trim()
@@ -2030,76 +2025,53 @@ function parseImportText(text) {
     if (!line) { prepModus = false; return; }
 
     if (/^meal\s*prep\s*:?\s*$/i.test(line)) { prepModus = true; return; }
-
-    // Überschriften ohne Inhalt ("Wochenplan:", "Kochtage:") sind kein Fehler.
     if (/^[^:]{1,40}:\s*$/.test(line)) return;
 
-    const prepPrefix = line.match(/^meal\s*prep\s*:\s*(.+)$/i);
-    const prepInhalt = prepPrefix ? prepPrefix[1] : (prepModus ? line : null);
-
-    if (prepInhalt != null) {
-      const m = prepInhalt.match(/^(.+?)\s*[x×]\s*(\d+)\s*(?:portionen)?$/i);
-      const name = m ? m[1] : prepInhalt;
-      const anzahl = m ? parseInt(m[2], 10) : 1;
-      const r = findRecipeByName(name);
-      if (r) {
-        const vorhanden = prep.find(p => p.id === r.id);
-        if (vorhanden) vorhanden.portionen += anzahl;
-        else prep.push({ id: r.id, portionen: anzahl, modus: "frisch" });
-      } else {
-        unmatched.push(line);
-      }
-      return;
-    }
+    if (/^meal\s*prep\s*:/i.test(line) || prepModus) { prepZeilen++; return; }
 
     const dayMatch = line.match(/^([^:]{1,40}):\s*(.+)$/);
-    if (dayMatch) {
-      let labelTeil = dayMatch[1].trim();
-      let kategorie = "abendessen";
-      const katMatch = labelTeil.match(/^(.*?)\s*\((frühstück|fruehstueck|mittag|abend|abendessen|snack)\)\s*$/i);
-      if (katMatch) {
-        labelTeil = katMatch[1].trim();
-        const k = katMatch[2].toLowerCase();
-        kategorie = k.startsWith("fr") ? "fruehstueck" : k === "mittag" ? "mittag" : k === "snack" ? "snack" : "abendessen";
-      }
+    if (!dayMatch) { unmatched.push(line); return; }
 
-      let name = dayMatch[2].trim();
-      let sporttag = false;
-      const sportMatch = name.match(/^(.*?)\s*\((?:sporttag|sport)\)\s*$/i);
-      if (sportMatch) { name = sportMatch[1].trim(); sporttag = true; }
+    let labelTeil = dayMatch[1].trim();
+    let kategorie = "abendessen";
+    const katMatch = labelTeil.match(/^(.*?)\s*\((frühstück|fruehstueck|mittag|abend|abendessen|snack)\)\s*$/i);
+    if (katMatch) {
+      labelTeil = katMatch[1].trim();
+      const k = katMatch[2].toLowerCase();
+      kategorie = k.startsWith("fr") ? "fruehstueck" : k === "mittag" ? "mittag" : k === "snack" ? "snack" : "abendessen";
+    }
 
-      let portionen = null;
-      const mengeMatch = name.match(/^(.*?)\s*[x×]\s*(\d+(?:[.,]\d)?)\s*$/i);
-      if (mengeMatch) {
-        name = mengeMatch[1].trim();
-        portionen = portionenNormal(String(mengeMatch[2]).replace(",", "."));
-      }
+    let name = dayMatch[2].trim();
+    let sporttag = false;
+    const sportMatch = name.match(/^(.*?)\s*\((?:sporttag|sport)\)\s*$/i);
+    if (sportMatch) { name = sportMatch[1].trim(); sporttag = true; }
 
-      const datum = labelZuIso(labelTeil);
-      const eintrag = { datum, label: datum ? tagLabel(datum) : labelTeil, kategorie, sporttag, portionen, art: "rezept", notiz: "", recipeId: "" };
+    let portionen = null;
+    const mengeMatch = name.match(/^(.*?)\s*[x×]\s*(\d+(?:[.,]\d)?)\s*$/i);
+    if (mengeMatch) {
+      name = mengeMatch[1].trim();
+      portionen = portionenNormal(String(mengeMatch[2]).replace(",", "."));
+    }
 
-      // Reste- und Brotzeit-Tage tragen kein Rezept, nur das Stichwort.
-      const artMatch = name.match(/^(reste|brotzeit)\b[,:]?\s*(.*)$/i);
-      if (artMatch) {
-        if (!datum) ohneDatum++;
-        days.push(Object.assign(eintrag, { art: artMatch[1].toLowerCase(), notiz: artMatch[2].trim() }));
-        return;
-      }
+    const datum = labelZuIso(labelTeil);
+    if (!datum) { ohneDatum++; return; }
 
-      const r = findRecipeByName(name);
-      if (r) {
-        if (!datum) ohneDatum++;
-        days.push(Object.assign(eintrag, { recipeId: r.id }));
-      } else {
-        unmatched.push(line);
-      }
+    const tag = holeTag(datum);
+    if (sporttag) tag.sporttag = true;
+
+    const artMatch = name.match(/^(reste|brotzeit)\b[,:]?\s*(.*)$/i);
+    if (artMatch) {
+      tag.mahlzeiten[kategorie] = { art: artMatch[1].toLowerCase(), recipeId: "", portionen: null, notiz: artMatch[2].trim() };
       return;
     }
 
-    unmatched.push(line);
+    const r = findRecipeByName(name);
+    if (r) tag.mahlzeiten[kategorie] = { art: "rezept", recipeId: r.id, portionen, notiz: "" };
+    else unmatched.push(line);
   });
 
-  return { days, prep, unmatched, ohneDatum };
+  tage.sort((a, b) => (a.datum < b.datum ? -1 : 1));
+  return { tage, unmatched, ohneDatum, prepZeilen };
 }
 
 function normName(s) {
@@ -2123,13 +2095,10 @@ function findRecipeByName(name) {
   });
   if (teil.length === 1) return teil[0];
   if (teil.length > 1) {
-    // Bei mehreren Treffern gewinnt der kürzeste Name, aber nur wenn er
-    // eindeutig kürzer ist. Sonst lieber nicht raten.
     const sortiert = teil.slice().sort((a, b) => a.name.length - b.name.length);
     return sortiert[0].name.length < sortiert[1].name.length ? sortiert[0] : null;
   }
 
-  // Letzter Versuch über Wortüberschneidung, nur bei klarem Vorsprung.
   const worte = n.split(" ").filter(w => w.length > 3);
   if (!worte.length) return null;
   const bewertet = RECIPES.map(r => {
@@ -2153,15 +2122,6 @@ function renderKopiertext() {
   label.style.margin = "26px 0 8px";
   label.textContent = "Kopiertext für den Chat";
   wrap.appendChild(label);
-
-  const offen = plan.days.filter(d => !tagGericht(d)).length;
-  if (offen) {
-    const hint = document.createElement("p");
-    hint.className = "small-note";
-    hint.style.marginTop = "0";
-    hint.textContent = `${offen} Mahlzeit(en) ohne Rezept, sie stehen nicht im Kopiertext.`;
-    wrap.appendChild(hint);
-  }
 
   const panel = document.createElement("div");
   panel.className = "copy-panel";
@@ -2187,11 +2147,8 @@ function renderKopiertext() {
   teilen.textContent = "Woche teilen";
   teilen.addEventListener("click", () => {
     const text = wochenText();
-    if (navigator.share) {
-      navigator.share({ title: "Essensplan", text }).catch(() => {});
-    } else {
-      copyToClipboard(text, teilen, "Woche teilen");
-    }
+    if (navigator.share) navigator.share({ title: "Essensplan", text }).catch(() => {});
+    else copyToClipboard(text, teilen, "Woche teilen");
   });
   wrap.appendChild(teilen);
 
@@ -2204,7 +2161,7 @@ function renderKopiertext() {
       <summary>Zutaten der ganzen Woche, ${zutaten.length} Posten</summary>
       <div class="klapp-inhalt">
         <p class="small-note" style="margin-top:0">
-          Rohe Summe aus allen geplanten Gerichten und Prep-Portionen, alphabetisch.
+          Rohe Summe aus allen geplanten Mahlzeiten, alphabetisch.
           Vorrat und Vorratsfach sind darin nicht berücksichtigt, die eigentliche Einkaufsliste kommt weiter aus dem Chat.
         </p>
         <div class="copy-panel"><textarea readonly id="rohliste">${escapeHtml(zutaten.join("\n"))}</textarea></div>
@@ -2226,19 +2183,14 @@ function renderKopiertext() {
 // Kurzfassung für die Partnerin, ohne die Chat-Formalitäten.
 function wochenText() {
   const zeilen = [];
-  sortierteTage().forEach(({ d }) => {
-    const gericht = tagGericht(d);
-    if (!gericht) return;
-    zeilen.push(`${tagAnzeige(d)}${istKochtag(d) ? ", " + katLabel(d.kategorie) : ""}: ${gericht}`);
+  let letzterTag = "";
+  alleSlots().forEach(({ tag, kat, slot }) => {
+    if (tag.datum !== letzterTag) {
+      zeilen.push(`${tagLabel(tag.datum)}${tag.sporttag ? " (Sport)" : ""}`);
+      letzterTag = tag.datum;
+    }
+    zeilen.push(`  ${katLabel(kat)}: ${slotGericht(slot)}`);
   });
-  const prep = plan.prep.filter(p => p.portionen > 0).map(p => {
-    const r = rezeptMitId(p.id);
-    return r ? `${r.name} (${p.portionen} Portionen)` : null;
-  }).filter(Boolean);
-  if (prep.length) {
-    zeilen.push("");
-    zeilen.push("Vorgekocht: " + prep.join(", "));
-  }
   return zeilen.join("\n");
 }
 
@@ -2249,22 +2201,20 @@ function aktualisiereKopiertext() {
 
 function buildKopiertext() {
   const lines = [];
-  sortierteTage().forEach(({ d }) => {
-    const gericht = tagGericht(d);
+  alleSlots().forEach(({ tag, kat, slot }) => {
+    const gericht = slotGericht(slot);
     if (!gericht) return;
-    const kat = d.kategorie && d.kategorie !== "abendessen" ? ` (${katLabel(d.kategorie)})` : "";
-    // Die Portionsangabe steht nur da, wenn sie von der Rezeptbasis abweicht.
-    const r = rezeptMitId(d.recipeId);
-    const menge = r && tagPortionen(d) !== (r.basis || 2) ? ` x${portionenText(tagPortionen(d))}` : "";
-    lines.push(`${tagAnzeige(d)}${kat}: ${gericht}${menge}${d.sporttag ? " (Sporttag)" : ""}`);
+    const katTeil = kat !== "abendessen" ? ` (${katLabel(kat)})` : "";
+    const r = slot.art === "rezept" ? rezeptMitId(slot.recipeId) : null;
+    const menge = r && slotPortionen(slot) !== STANDARD_PORTIONEN ? ` x${portionenText(slotPortionen(slot))}` : "";
+    lines.push(`${tagLabel(tag.datum)}${katTeil}: ${gericht}${menge}${tag.sporttag ? " (Sporttag)" : ""}`);
   });
-  const prepLines = prepEintraege().map(p => {
-    const r = RECIPES.find(x => x.id === p.id);
-    return r ? `Meal Prep: ${r.name} x${p.portionen}` : null;
-  }).filter(Boolean);
-  if (prepLines.length) {
+
+  // Vorkochen im gewohnten Format, damit der Chat es unverändert lesen kann.
+  const prep = vorkochGruppen().map(g => `Meal Prep: ${g.rezept.name} x${portionenText(g.portionen)}`);
+  if (prep.length) {
     lines.push("");
-    lines.push(...prepLines);
+    lines.push(...prep);
   }
   return lines.join("\n");
 }
@@ -2275,8 +2225,9 @@ function buildKopiertext() {
 // gibt es dort nicht, deshalb läuft der Salzblick über die Tags, nicht über Zahlen.
 function wochenHinweise() {
   const hinweise = [];
-  const gerichte = plan.days
-    .map(d => ({ d, r: rezeptMitId(d.recipeId) }))
+  const gerichte = alleSlots()
+    .filter(e => e.slot.art === "rezept")
+    .map(e => ({ tag: e.tag, kat: e.kat, r: rezeptMitId(e.slot.recipeId) }))
     .filter(x => x.r);
 
   const ausnahmen = gerichte.filter(x => x.r.ausnahme);
@@ -2289,14 +2240,9 @@ function wochenHinweise() {
     hinweise.push(`${salzig.length} salzig-herzhafte Gerichte: ${salzig.map(x => x.r.name).join(", ")}. In rezepte.json steht kein Salzwert, das ist nur der Tag-Blick.`);
   }
 
-  const zaehler = {};
-  gerichte.forEach(x => { zaehler[x.r.id] = (zaehler[x.r.id] || 0) + 1; });
-  const doppelt = Object.keys(zaehler).filter(id => zaehler[id] > 1).map(id => rezeptMitId(id).name);
-  if (doppelt.length) hinweise.push(`Doppelt eingeplant: ${doppelt.join(", ")}.`);
-
   const mitSalz = gerichte.filter(x => salzWert(x.r) != null);
   if (mitSalz.length) {
-    const tage = new Set(plan.days.map(x => x.datum || x.label)).size || 1;
+    const tage = new Set(gerichte.map(x => x.tag.datum)).size || 1;
     const proTag = mitSalz.reduce((a, x) => a + salzWert(x.r), 0) / tage;
     hinweise.push(`Salz aus den geplanten Gerichten: im Schnitt ${salzText(proTag)} pro Tag und Person, ohne Frühstück, Brotzeit und Vorratsfach. Einen Zielwert gibt keine Projektdatei vor, den setzt ihr mit dem Arzt.`);
   }
@@ -2318,9 +2264,10 @@ function wochenHinweise() {
 
 function offeneReste() {
   const reste = [];
-  plan.days.forEach(d => {
-    const r = rezeptMitId(d.recipeId);
-    if (r && r.rest) reste.push({ tag: tagAnzeige(d), rest: String(r.rest), quelle: r.name });
+  alleSlots().forEach(({ tag, slot }) => {
+    if (slot.art !== "rezept") return;
+    const r = rezeptMitId(slot.recipeId);
+    if (r && r.rest) reste.push({ tag: tagLabel(tag.datum), rest: String(r.rest), quelle: r.name });
   });
   return reste;
 }
@@ -2343,13 +2290,10 @@ function rohliste() {
     });
   };
 
-  plan.days.forEach(d => {
-    const r = rezeptMitId(d.recipeId);
-    if (r) addiere(r, tagPortionen(d) / (r.basis || 2));
-  });
-  plan.prep.filter(p => p.portionen > 0).forEach(p => {
-    const r = rezeptMitId(p.id);
-    if (r) addiere(r, p.portionen / (r.basis || 2));
+  alleSlots().forEach(({ slot }) => {
+    if (slot.art !== "rezept") return;
+    const r = rezeptMitId(slot.recipeId);
+    if (r) addiere(r, slotPortionen(slot) / (r.basis || 2));
   });
 
   const zeilen = [...summe.entries()]
@@ -2628,7 +2572,7 @@ function sicherungEinlesen(text) {
     plan = loadPlan();
     pruefePlanBezuege();
   }
-  return `Eingelesen: ${plan.days.length} Mahlzeit(en), ${Object.keys(patches).length} angepasste Rezepte.`;
+  return `Eingelesen: ${plan.tage.length} Tag(e), ${Object.keys(patches).length} angepasste Rezepte.`;
 }
 
 function textBlock(titel, text, notiz) {
