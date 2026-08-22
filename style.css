@@ -555,3 +555,53 @@ input.day-label {
   .edit-zeile { grid-template-columns: 64px 78px 1fr 40px; }
   .edit-zeile input, .edit-zeile select { font-size: 14px; padding: 8px 6px; }
 }
+
+/* Reste- und Brotzeit-Tage, Portionen pro Mahlzeit */
+.kal-add-schnell { display: flex; gap: 8px; margin-top: 8px; }
+.day-card.kein-kochtag { border-style: dashed; }
+.tag-art { font-family: var(--font-display); font-size: 17px; font-weight: 750; color: var(--muted); }
+.tag-notiz { min-height: 48px; }
+.portionen-zeile { border-bottom: none; padding: 2px 0; }
+
+/* ---------------------------------------------------------
+   12. TIMER
+   Große Anzeige im Kochmodus, Leiste am unteren Rand überall sonst.
+   --------------------------------------------------------- */
+
+.cook-timer { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+.cook-timer-rest {
+  font-family: var(--font-number); font-weight: 700; letter-spacing: -.04em;
+  font-size: clamp(48px, 15vw, 80px); line-height: 1; color: #F7F7F2;
+  font-variant-numeric: tabular-nums;
+}
+.cook-timer-label { font-family: var(--font-body); font-size: 13px; font-weight: 750; color: #9BA09A; }
+.cook-timer .cook-timer-btn { min-height: 48px; padding: 0 18px; border: 1.5px solid #5B5F59; border-radius: 999px; background: none; color: #F7F7F2; font-family: var(--font-body); font-size: 14px; font-weight: 750; }
+.cook-timer .cook-timer-btn.leise { border-color: #3A3D38; color: #9BA09A; }
+.cook-timer.fertig .cook-timer-rest { color: var(--accent); animation: timer-puls 1s ease-in-out infinite; }
+.cook-timer.fertig .cook-timer-label { color: var(--accent); }
+.cook-timer.fertig .cook-timer-btn { border-color: var(--accent); background: var(--accent); color: #fff; }
+
+@keyframes timer-puls { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+@media (prefers-reduced-motion: reduce) {
+  .cook-timer.fertig .cook-timer-rest { animation: none; }
+}
+
+.timer-bar {
+  position: fixed; z-index: 900;
+  left: 12px; right: 12px; bottom: max(12px, env(safe-area-inset-bottom));
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 12px 14px 12px 20px;
+  border-radius: var(--radius-lg); background: var(--text); color: #F7F7F2;
+  box-shadow: var(--shadow-floating);
+}
+.timer-bar-rest {
+  font-family: var(--font-number); font-weight: 700; font-size: 34px; letter-spacing: -.03em;
+  font-variant-numeric: tabular-nums;
+}
+.timer-bar-stop { min-height: 48px; padding: 0 20px; border: 1.5px solid #5B5F59; border-radius: 999px; background: none; color: #F7F7F2; font-family: var(--font-body); font-size: 14px; font-weight: 750; }
+.timer-bar.fertig { background: var(--accent); }
+.timer-bar.fertig .timer-bar-rest { font-size: 24px; }
+.timer-bar.fertig .timer-bar-stop { border-color: #fff; background: #fff; color: var(--accent); }
+
+body.timer-an .app { padding-bottom: 96px; }
+body.timer-an .overlay { padding-bottom: 96px; }

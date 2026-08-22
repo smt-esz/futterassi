@@ -9,6 +9,7 @@ const FILTER_TAGS = ["vegetarisch", "vegan", "High Protein", "Low Carb", "LEBER"
 const TYP_LABEL = { abendessen: "Abendessen", mittag: "Mittag", fruehstueck: "Frühstück", snack: "Snack", basis: "Basis" };
 const TYP_RANG = { abendessen: 0, mittag: 1, snack: 2, fruehstueck: 3, basis: 4 };
 const PREP_ZIEL = 10;
+const SCHNELL_GRENZE = 20;   // Minuten von Anfang bis Teller, für den Notfall-Filter
 
 const WOCHENTAG_KURZ = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
 const MONAT_NAME = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
@@ -35,10 +36,14 @@ function katLabel(key) {
 const LS_PLAN = "futterassi_plan_v1";
 const LS_UI = "futterassi_ui_v1";
 const LS_PATCH = "futterassi_patch_v1";
+const LS_TIMER = "futterassi_timer_v1";
+
+// Name des Kurzbefehls auf dem iPhone, an den der Timer übergeben wird.
+const SHORTCUT_NAME = "Küchentimer";
 
 // Felder, die in der App geändert werden dürfen. Alles andere bleibt so, wie es
 // aus rezepte.json kommt. notiz_eigen ist das einzige neue Feld.
-const PATCH_FELDER = ["zutaten", "schritte", "basis", "notiz_eigen", "gekocht_am", "urteil", "favorit"];
+const PATCH_FELDER = ["zutaten", "schritte", "basis", "notiz_eigen", "gekocht_am", "urteil", "favorit", "_stempel"];
 
 let ROH_RECIPES = [];   // exakt so, wie sie aus rezepte.json kommen
 let RECIPES = [];       // mit den lokalen Änderungen darübergelegt
@@ -51,6 +56,9 @@ let editor = null;          // { id, basis, zutaten, schritte, notiz_eigen }
 let cook = null;            // { el, recipe, i, portionen, zutatenOffen, touchX }
 let importErgebnis = null;  // bleibt über das Neuzeichnen hinweg sichtbar
 let planHinweis = "";
+let dateiStand = "";
+let DATEI_WRAPPER = false;
+let driftHinweis = [];
 let speicherDefekt = false;
 
 // ---------- Zustand laden und speichern ----------
@@ -94,6 +102,9 @@ function loadPlan() {
           datum: datum || null,
           label: datum ? tagLabel(datum) : label,
           kategorie: KATEGORIE_KEYS.includes(x.kategorie) ? x.kategorie : "abendessen",
+          art: ["reste", "brotzeit"].includes(x.art) ? x.art : "rezept",
+          notiz: typeof x.notiz === "string" ? x.notiz : "",
+          portionen: portionenNormal(x.portionen),
           recipeId: typeof x.recipeId === "string" ? x.recipeId : "",
           sporttag: x.sporttag === true
         };
@@ -146,8 +157,14 @@ function patchSetzen(id, felder) {
   Object.keys(neu).forEach(k => {
     if (neu[k] === undefined || !PATCH_FELDER.includes(k)) delete neu[k];
   });
-  if (Object.keys(neu).length) patches[id] = neu;
-  else delete patches[id];
+  const roh = ROH_RECIPES.find(r => r.id === id);
+  const echteFelder = Object.keys(neu).filter(f => f !== "_stempel");
+  if (echteFelder.length) {
+    if (roh) neu._stempel = feldStempel(roh, echteFelder);
+    patches[id] = neu;
+  } else {
+    delete patches[id];
+  }
   savePatches();
   RECIPES = mergeRecipes();
 }
@@ -158,13 +175,38 @@ function patchLoeschen(id) {
   RECIPES = mergeRecipes();
 }
 
+// Fingerabdruck der Originalfelder, die eine Anpassung überschreibt. Ändert
+// der Chat später genau dieses Feld, fällt es beim nächsten Laden auf.
+function feldStempel(rezept, felder) {
+  const teile = felder.filter(f => f !== "urteil" && f !== "gekocht_am").map(f => `${f}:${JSON.stringify(rezept[f])}`);
+  let hash = 0;
+  const text = teile.join("|");
+  for (let i = 0; i < text.length; i++) {
+    hash = (hash * 31 + text.charCodeAt(i)) | 0;
+  }
+  return String(hash);
+}
+
+function pruefePatchDrift() {
+  driftHinweis = [];
+  Object.keys(patches).forEach(id => {
+    const roh = ROH_RECIPES.find(r => r.id === id);
+    const p = patches[id];
+    if (!roh || !p) return;
+    const felder = Object.keys(p).filter(f => f !== "_stempel");
+    const jetzt = feldStempel(roh, felder);
+    if (p._stempel && p._stempel !== jetzt) driftHinweis.push(roh.name);
+  });
+}
+
 function geaenderteRezepte() {
   return RECIPES.filter(r => patches[r.id]);
 }
 
 function speichern(key, wert) {
   try {
-    localStorage.setItem(key, JSON.stringify(wert));
+    if (wert === null) localStorage.removeItem(key);
+    else localStorage.setItem(key, JSON.stringify(wert));
   } catch (e) {
     // Privater Safari-Modus oder voller Speicher. Die App läuft weiter,
     // nur ohne Sicherung über den Neustart hinweg.
@@ -199,6 +241,16 @@ async function init() {
     navigator.serviceWorker.register(SW_FILE).catch(() => {});
   }
 
+  // Ein laufender Timer überlebt das Schließen der App.
+  timerLaden();
+  zeichneTimer();
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") timerPruefen();
+  });
+  window.addEventListener("pageshow", timerPruefen);
+  window.addEventListener("focus", timerPruefen);
+
   const ok = await ladeDaten();
   if (ok) render();
 }
@@ -207,11 +259,21 @@ async function ladeDaten() {
   try {
     const res = await fetch(DATA_FILE, { cache: "no-store" });
     if (!res.ok) throw new Error("Server antwortet mit " + res.status);
-    const daten = await res.json();
-    if (!Array.isArray(daten)) throw new Error("Datei enthält keine Rezeptliste");
+    const roh = await res.json();
+
+    // Zwei Formen sind erlaubt: die blanke Liste wie bisher, oder ein Objekt
+    // mit den Feldern stand und rezepte. Damit lässt sich der Dateistand
+    // mitliefern, ohne dass alte Dateien brechen.
+    const daten = Array.isArray(roh) ? roh : (roh && Array.isArray(roh.rezepte) ? roh.rezepte : null);
+    if (!daten) throw new Error("Datei enthält keine Rezeptliste");
+
+    DATEI_WRAPPER = !Array.isArray(roh);
+    const kopfDatum = (res.headers && typeof res.headers.get === "function") ? res.headers.get("Last-Modified") : null;
+    dateiStand = (!Array.isArray(roh) && roh.stand) ? String(roh.stand) : (kopfDatum || "");
     ROH_RECIPES = daten.filter(r => r && r.id && r.name);
     RECIPES = mergeRecipes();
     pruefePlanBezuege();
+    pruefePatchDrift();
     return true;
   } catch (e) {
     zeigeLadefehler(e);
@@ -336,7 +398,7 @@ function renderKatalog() {
         ui.tags = ui.tags.includes(tag) ? ui.tags.filter(x => x !== tag) : ui.tags.concat(tag);
       }));
     });
-    chipbar.appendChild(chip("unter 20 Min", ui.schnell, () => {
+    chipbar.appendChild(chip(`unter ${SCHNELL_GRENZE} Min gesamt`, ui.schnell, () => {
       ui.schnell = !ui.schnell;
     }));
     chipbar.appendChild(chip(ui.showRaus ? "raus: eingeblendet" : "raus ausgeblendet", ui.showRaus, () => {
@@ -407,8 +469,8 @@ function filteredRecipes() {
     if (ui.typen.length && !ui.typen.includes(r.typ)) return false;
     if (s && !suchtext(r).includes(s)) return false;
     if (ui.schnell) {
-      const min = aktivMinuten(r);
-      if (min == null || min > 20) return false;
+      const min = gesamtMinuten(r);
+      if (min == null || min > SCHNELL_GRENZE) return false;
     }
     if (ui.tags.length) {
       const rtags = r.tags || [];
@@ -424,11 +486,55 @@ function mapCategory(r) {
   return r.typ || "";
 }
 
-// Aktive Zeit aus dem Freitextfeld zeit, für den Schnell-Filter.
-// "15 Min. aktiv, 25 Min. Ofenzeit" liefert 15.
+// Zeiten. Wenn rezepte.json die Felder zeit_aktiv und zeit_gesamt mitbringt,
+// gelten die. Sonst wird das Freitextfeld zeit gelesen:
+// "15 Min. aktiv, 25 Min. Ofenzeit" ergibt 15 aktiv und 40 gesamt.
+function minutenListe(text) {
+  const treffer = [];
+  const re = /(\d{1,3})\s*(?:bis|-|–)?\s*(\d{1,3})?\s*(min|std|stunde)/gi;
+  let m;
+  while ((m = re.exec(String(text || "")))) {
+    const zahl = Number(m[2] || m[1]);
+    treffer.push({ minuten: /^std|^stunde/i.test(m[3]) ? zahl * 60 : zahl, stelle: m.index, text: m[0] });
+  }
+  return treffer;
+}
+
 function aktivMinuten(r) {
-  const m = String(r.zeit || "").match(/(\d{1,3})\s*Min/i);
-  return m ? Number(m[1]) : null;
+  if (Number(r.zeit_aktiv) > 0) return Number(r.zeit_aktiv);
+  const text = String(r.zeit || "");
+  const treffer = minutenListe(text);
+  if (!treffer.length) return null;
+  const aktiv = treffer.find(t => /aktiv/i.test(text.slice(t.stelle, t.stelle + t.text.length + 8)));
+  return aktiv ? aktiv.minuten : treffer[0].minuten;
+}
+
+function gesamtMinuten(r) {
+  if (Number(r.zeit_gesamt) > 0) return Number(r.zeit_gesamt);
+  const treffer = minutenListe(r.zeit);
+  if (!treffer.length) return null;
+  return treffer.reduce((a, t) => a + t.minuten, 0);
+}
+
+function zeitText(r) {
+  if (Number(r.zeit_aktiv) > 0 || Number(r.zeit_gesamt) > 0) {
+    const teile = [];
+    if (Number(r.zeit_aktiv) > 0) teile.push(`${r.zeit_aktiv} Min aktiv`);
+    if (Number(r.zeit_gesamt) > 0) teile.push(`${r.zeit_gesamt} Min gesamt`);
+    return teile.join(", ");
+  }
+  return r.zeit || "";
+}
+
+// Salz pro Portion. Steht nur zur Verfügung, wenn rezepte.json das Feld salz_g
+// mitbringt. Ohne Feld bleibt jede Aussage dazu eine Schätzung, deshalb null.
+function salzWert(r) {
+  const n = Number(r && r.salz_g);
+  return isFinite(n) && n >= 0 && r.salz_g !== null && r.salz_g !== undefined && r.salz_g !== "" ? n : null;
+}
+
+function salzText(n) {
+  return `${String(round1(n)).replace(".", ",")} g`;
 }
 
 function statusClass(status) {
@@ -459,7 +565,8 @@ function renderCard(r) {
   if (r.kcal) metrics.push(`<span class="metric"><strong>${escapeHtml(r.kcal)}</strong>&nbsp;kcal</span>`);
   if (r.protein) metrics.push(`<span class="metric"><strong>${escapeHtml(r.protein)}</strong>&nbsp;g Eiweiß</span>`);
   if (r.fett) metrics.push(`<span class="metric"><strong>${escapeHtml(r.fett)}</strong>&nbsp;g Fett</span>`);
-  if (r.zeit) metrics.push(`<span class="metric">${escapeHtml(r.zeit)}</span>`);
+  if (salzWert(r) != null) metrics.push(`<span class="metric"><strong>${escapeHtml(salzText(salzWert(r)))}</strong>&nbsp;Salz</span>`);
+  if (zeitText(r)) metrics.push(`<span class="metric">${escapeHtml(zeitText(r))}</span>`);
 
   card.innerHTML = `
     <h3>${escapeHtml(r.name)}</h3>
@@ -513,7 +620,8 @@ function drawDetail() {
   const metaBadges = [`<span class="badge status ${statusClass(r.status)}">${escapeHtml(statusText(r.status))}</span>`];
   if (r.typ) metaBadges.push(`<span class="badge typ" data-typ="${escapeAttr(r.typ)}">${escapeHtml(typLabel(r.typ))}</span>`);
   if (r._geaendert) metaBadges.push(`<span class="badge geaendert">GEÄNDERT</span>`);
-  if (r.zeit) metaBadges.push(`<span class="badge">${escapeHtml(r.zeit)}</span>`);
+  if (zeitText(r)) metaBadges.push(`<span class="badge">${escapeHtml(zeitText(r))}</span>`);
+  if (salzWert(r) != null) metaBadges.push(`<span class="badge">${escapeHtml(salzText(salzWert(r)))} Salz</span>`);
   if (r.geraete) metaBadges.push(`<span class="badge">${escapeHtml(r.geraete)}</span>`);
 
   // Eingeklappt liegt alles, was beim Kochen nicht in der Hand gebraucht wird.
@@ -850,8 +958,8 @@ function closeCook() {
   if (!cook) return;
   cook.el.remove();
   cook = null;
-  timerStopp();
-  wakeLockAus();
+  if (!timer) wakeLockAus();
+  zeichneTimer();
   if (!detail) scrollSperre(false);
 }
 
@@ -901,7 +1009,11 @@ function drawCook() {
       e.stopPropagation();
       const wert = b.dataset.timer;
       if (wert === "stop") timerStopp();
-      else timerStart(parseInt(wert, 10));
+      else if (wert === "uhr") {
+        const zeiten = findeZeiten((cook.recipe.schritte || [])[cook.i] || "");
+        anUhrUebergeben(zeiten[0] || 10);
+        return;
+      } else timerStart(parseInt(wert, 10));
       drawCook();
     });
   });
@@ -924,73 +1036,187 @@ function findeZeiten(text) {
   return [...new Set(gefunden)];
 }
 
-let timer = null; // { restSek, tickId, gesamtSek }
+// Der Timer rechnet mit einem Endzeitpunkt, nicht mit einem herunterzählenden
+// Zähler. Legt iOS die Seite bei ausgeschaltetem Display schlafen, steht danach
+// trotzdem die richtige Zeit da. Ein Wecker bei dunklem Bildschirm ist damit
+// nicht möglich, dafür fehlt dem Browser die Berechtigung, im Hintergrund zu laufen.
+let timer = null;      // { ende: ms, gesamt: sek, alarm: bool }
+let timerTickId = null;
 
 function mmss(sek) {
-  const m = Math.floor(Math.max(0, sek) / 60);
-  const s = Math.max(0, sek) % 60;
-  return `${m}:${pad2(s)}`;
+  const negativ = sek < 0;
+  const abs = Math.abs(sek);
+  const m = Math.floor(abs / 60);
+  const s = abs % 60;
+  return `${negativ ? "+" : ""}${m}:${pad2(s)}`;
+}
+
+function timerRest() {
+  if (!timer) return 0;
+  return Math.round((timer.ende - Date.now()) / 1000);
+}
+
+function timerLaden() {
+  let raw = null;
+  try {
+    raw = JSON.parse(localStorage.getItem(LS_TIMER));
+  } catch (e) {
+    return;
+  }
+  if (!raw || !raw.ende) return;
+  // Älter als eine Stunde über der Zeit: nicht mehr interessant.
+  if (Date.now() - raw.ende > 3600000) {
+    speichern(LS_TIMER, null);
+    return;
+  }
+  timer = { ende: raw.ende, gesamt: raw.gesamt || 0, alarm: raw.ende <= Date.now() };
+  timerLauf();
+}
+
+function timerStart(minuten) {
+  if (!minuten || minuten <= 0) return;
+  timer = { ende: Date.now() + minuten * 60000, gesamt: minuten * 60, alarm: false };
+  speichern(LS_TIMER, timer);
+  tonFreischalten();
+  wakeLockAn();
+  timerLauf();
+  zeichneTimer();
+}
+
+function timerStopp() {
+  timer = null;
+  if (timerTickId) { clearInterval(timerTickId); timerTickId = null; }
+  speichern(LS_TIMER, null);
+  if (!cook) wakeLockAus();
+  zeichneTimer();
+}
+
+function timerLauf() {
+  if (timerTickId) clearInterval(timerTickId);
+  timerTickId = setInterval(timerPruefen, 500);
+}
+
+function timerPruefen() {
+  if (!timer) return;
+  if (!timer.alarm && timerRest() <= 0) {
+    timer.alarm = true;
+    speichern(LS_TIMER, timer);
+    piep();
+    if (navigator.vibrate) { try { navigator.vibrate([400, 200, 400, 200, 600]); } catch (e) { /* egal */ } }
+  }
+  zeichneTimer();
+}
+
+// Läuft ein Timer, zeigt eine Leiste am unteren Rand die Zeit, auch außerhalb
+// des Kochmodus. Im Kochmodus steht die große Anzeige oben, dann bleibt sie weg.
+function zeichneTimer() {
+  const rest = timerRest();
+
+  if (cook) {
+    const gross = document.querySelector(".cook-timer-rest");
+    if (gross) {
+      gross.textContent = timer ? mmss(rest) : "";
+      const box = gross.closest(".cook-timer");
+      if (box) box.classList.toggle("fertig", !!(timer && timer.alarm));
+      const knopf = box && box.querySelector('[data-timer="stop"]');
+      if (knopf) knopf.textContent = timer && timer.alarm ? "Ok" : "Stopp";
+    } else if (timer) {
+      drawCook();
+    }
+  }
+
+  let leiste = document.getElementById("timer-bar");
+  if (!timer || cook) {
+    if (leiste) leiste.remove();
+    document.body.classList.remove("timer-an");
+    return;
+  }
+  document.body.classList.add("timer-an");
+  if (!leiste) {
+    leiste = document.createElement("div");
+    leiste.id = "timer-bar";
+    leiste.className = "timer-bar";
+    leiste.innerHTML = `
+      <span class="timer-bar-rest"></span>
+      <button type="button" class="timer-bar-stop">Stopp</button>
+    `;
+    leiste.querySelector(".timer-bar-stop").addEventListener("click", timerStopp);
+    document.body.appendChild(leiste);
+  }
+  leiste.classList.toggle("fertig", !!timer.alarm);
+  leiste.querySelector(".timer-bar-rest").textContent = timer.alarm ? `Zeit um ${mmss(rest)}` : mmss(rest);
+  leiste.querySelector(".timer-bar-stop").textContent = timer.alarm ? "Ok" : "Stopp";
 }
 
 function timerZeile(schrittText) {
   if (timer) {
-    const fertig = timer.restSek <= 0;
-    return `<div class="cook-timer${fertig ? " fertig" : ""}">
-      <span class="cook-timer-rest">${fertig ? "Zeit um" : mmss(timer.restSek)}</span>
-      <button type="button" class="cook-timer-btn" data-timer="stop">${fertig ? "Ok" : "Stopp"}</button>
+    const rest = timerRest();
+    return `<div class="cook-timer${timer.alarm ? " fertig" : ""}">
+      <span class="cook-timer-rest">${mmss(rest)}</span>
+      <span class="cook-timer-label">${timer.alarm ? "Zeit um" : "läuft"}</span>
+      <button type="button" class="cook-timer-btn" data-timer="stop">${timer.alarm ? "Ok" : "Stopp"}</button>
     </div>`;
   }
   const zeiten = findeZeiten(schrittText);
   if (!zeiten.length) return "";
   return `<div class="cook-timer">
-    ${zeiten.slice(0, 3).map(m => `<button type="button" class="cook-timer-btn" data-timer="${m}">${m} Min Timer</button>`).join("")}
+    ${zeiten.slice(0, 3).map(m => `<button type="button" class="cook-timer-btn" data-timer="${m}">${m} Min</button>`).join("")}
+    <button type="button" class="cook-timer-btn leise" data-timer="uhr">iPhone-Uhr</button>
   </div>`;
 }
 
-function timerStart(minuten) {
-  timerStopp();
-  if (!minuten || minuten <= 0) return;
-  timer = { restSek: minuten * 60, gesamtSek: minuten * 60, tickId: null };
-  timer.tickId = setInterval(() => {
-    if (!timer) return;
-    timer.restSek -= 1;
-    const el = document.querySelector(".cook-timer-rest");
-    if (timer.restSek <= 0) {
-      clearInterval(timer.tickId);
-      timer.tickId = null;
-      piep();
-      if (cook) drawCook();
-      return;
-    }
-    if (el) el.textContent = mmss(timer.restSek);
-  }, 1000);
+// Der Browser darf nur nach einer Berührung Ton abspielen. Beim Start des Timers
+// wird deshalb einmal kurz und lautlos angeschubst, damit der Ton später kommt.
+let audioCtx = null;
+function tonFreischalten() {
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    if (!audioCtx) audioCtx = new AC();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    g.gain.value = 0.0001;
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    o.start();
+    o.stop(audioCtx.currentTime + 0.03);
+  } catch (e) {
+    /* egal */
+  }
 }
 
-function timerStopp() {
-  if (timer && timer.tickId) clearInterval(timer.tickId);
-  timer = null;
-}
-
-// Kurzer Ton am Ende. Ohne Audio-Unterstützung passiert nichts.
 function piep() {
   try {
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return;
-    const ctx = new AC();
-    [0, 0.45, 0.9].forEach(versatz => {
-      const o = ctx.createOscillator();
-      const g = ctx.createGain();
+    if (!audioCtx) audioCtx = new AC();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    [0, 0.45, 0.9, 1.35].forEach(versatz => {
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
       o.connect(g);
-      g.connect(ctx.destination);
+      g.connect(audioCtx.destination);
       o.frequency.value = 880;
-      g.gain.setValueAtTime(0.0001, ctx.currentTime + versatz);
-      g.gain.exponentialRampToValueAtTime(0.3, ctx.currentTime + versatz + 0.02);
-      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + versatz + 0.3);
-      o.start(ctx.currentTime + versatz);
-      o.stop(ctx.currentTime + versatz + 0.32);
+      g.gain.setValueAtTime(0.0001, audioCtx.currentTime + versatz);
+      g.gain.exponentialRampToValueAtTime(0.35, audioCtx.currentTime + versatz + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + versatz + 0.3);
+      o.start(audioCtx.currentTime + versatz);
+      o.stop(audioCtx.currentTime + versatz + 0.32);
     });
   } catch (e) {
     /* kein Ton, kein Drama */
+  }
+}
+
+// Übergabe an die Uhr des iPhones. Das geht nur über einen Kurzbefehl, den du
+// selbst anlegst, der Name steht oben in SHORTCUT_NAME.
+function anUhrUebergeben(minuten) {
+  const url = `shortcuts://run-shortcut?name=${encodeURIComponent(SHORTCUT_NAME)}&input=text&text=${minuten}`;
+  try {
+    window.location.href = url;
+  } catch (e) {
+    /* egal */
   }
 }
 
@@ -1068,6 +1294,54 @@ function labelZuIso(label) {
   const d = new Date(jahr, monat - 1, tag);
   if (d.getMonth() !== monat - 1) return null;
   return isoVon(d);
+}
+
+const ART_LABEL = { reste: "Reste", brotzeit: "Brotzeit" };
+
+function istKochtag(day) {
+  return (day.art || "rezept") === "rezept";
+}
+
+// Halbe Portionen sind erlaubt, damit "Kind isst mit" mit 2,5 abgebildet ist.
+function portionenNormal(wert) {
+  const n = Number(wert);
+  if (!isFinite(n) || n <= 0) return null;
+  return Math.min(12, Math.max(0.5, Math.round(n * 2) / 2));
+}
+
+function tagPortionen(day) {
+  if (day.portionen) return day.portionen;
+  const r = rezeptMitId(day.recipeId);
+  return r ? (r.basis || 2) : 2;
+}
+
+function portionenText(n) {
+  return String(n).replace(".", ",");
+}
+
+// Was für diesen Tag im Text steht, egal ob Rezept, Reste oder Brotzeit.
+function tagGericht(day) {
+  if (!istKochtag(day)) {
+    const zusatz = String(day.notiz || "").trim();
+    return ART_LABEL[day.art] + (zusatz ? " " + zusatz : "");
+  }
+  const r = rezeptMitId(day.recipeId);
+  return r ? r.name : "";
+}
+
+function tagAnlegen(datum, kategorie, art) {
+  plan.days.push({
+    datum,
+    label: tagLabel(datum),
+    kategorie,
+    art: art || "rezept",
+    notiz: "",
+    portionen: null,
+    recipeId: "",
+    sporttag: false
+  });
+  savePlan();
+  render();
 }
 
 function tagAnzeige(day) {
@@ -1216,20 +1490,17 @@ function renderKalender() {
       <div class="segmented">
         ${KATEGORIEN.map(k => `<button type="button" data-kat="${k.key}">${escapeHtml(k.label)}</button>`).join("")}
       </div>
+      <div class="kal-add-schnell">
+        <button type="button" class="chip" data-art="reste">+ Reste-Tag</button>
+        <button type="button" class="chip" data-art="brotzeit">+ Brotzeit</button>
+      </div>
       <p class="small-note" style="margin:8px 0 0">Kategorie antippen, dann unten das Rezept wählen. Mehrere Mahlzeiten pro Tag sind möglich.</p>
     `;
     add.querySelectorAll("[data-kat]").forEach(b => {
-      b.addEventListener("click", () => {
-        plan.days.push({
-          datum: gewaehltesDatum,
-          label: tagLabel(gewaehltesDatum),
-          kategorie: b.dataset.kat,
-          recipeId: "",
-          sporttag: false
-        });
-        savePlan();
-        render();
-      });
+      b.addEventListener("click", () => tagAnlegen(gewaehltesDatum, b.dataset.kat, "rezept"));
+    });
+    add.querySelectorAll("[data-art]").forEach(b => {
+      b.addEventListener("click", () => tagAnlegen(gewaehltesDatum, "abendessen", b.dataset.art));
     });
     box.appendChild(add);
   } else {
@@ -1290,20 +1561,7 @@ function renderDayCard(day, idx) {
   const card = document.createElement("div");
   card.className = "day-card";
 
-  const selected = RECIPES.find(r => r.id === day.recipeId);
-  const fehlend = day.recipeId && !selected;
-  const lowCarbWarn = day.sporttag && selected && (selected.tags || []).includes("Low Carb");
-  const { passend, weitere } = passendeRezepte(day.kategorie, day.sporttag);
-
-  const opt = r => `<option value="${escapeAttr(r.id)}"${r.id === day.recipeId ? " selected" : ""}>${escapeHtml(r.name + ((r.tags || []).includes("SPORT") ? " · SPORT" : ""))}</option>`;
-
-  const infoZeile = selected ? [
-    selected.kcal ? selected.kcal + " kcal" : "",
-    selected.protein ? selected.protein + " g Eiweiß" : "",
-    selected.zeit || ""
-  ].filter(Boolean).map(escapeHtml).join(" · ") : "";
-
-  card.innerHTML = `
+  const kopf = `
     <div class="day-card-header">
       <div class="day-datum-wrap">
         <div class="day-datum">${escapeHtml(tagAnzeige(day))}</div>
@@ -1313,33 +1571,110 @@ function renderDayCard(day, idx) {
         <span class="label">Sport</span>
         <button class="toggle${day.sporttag ? " active" : ""}" type="button" aria-label="Sporttag" aria-pressed="${day.sporttag ? "true" : "false"}"></button>
       </div>
-    </div>
-    <div class="segmented klein">
-      ${KATEGORIEN.map(k => `<button type="button" data-kat="${k.key}"${k.key === day.kategorie ? ' class="aktiv"' : ""}>${escapeHtml(k.label)}</button>`).join("")}
-    </div>
-    <select aria-label="Rezept für diese Mahlzeit">
-      <option value="">Rezept wählen</option>
-      ${fehlend ? `<option value="${escapeAttr(day.recipeId)}" selected>Unbekannt: ${escapeHtml(day.recipeId)}</option>` : ""}
-      ${passend.length ? `<optgroup label="Passend zu ${escapeAttr(katLabel(day.kategorie))}">${passend.map(opt).join("")}</optgroup>` : ""}
-      ${weitere.length ? `<optgroup label="Weitere Rezepte">${weitere.map(opt).join("")}</optgroup>` : ""}
-    </select>
-    ${infoZeile ? `<div class="day-info">${infoZeile}</div>` : ""}
-    ${lowCarbWarn ? `<div class="warn-lowcarb">Low Carb an einem Sporttag, laut Vorgabe eigentlich nicht vorgesehen.</div>` : ""}
-    ${selected && selected.rest ? `<div class="day-rest">Bleibt übrig: ${escapeHtml(String(selected.rest))}</div>` : ""}
-    <div class="day-actions">
-      ${selected ? `<button class="btn secondary" type="button" data-act="open">Rezept öffnen</button>` : ""}
-      ${selected ? `<button class="btn secondary${istGekocht(day, selected) ? " an" : ""}" type="button" data-act="gekocht">${istGekocht(day, selected) ? "gekocht ✓" : "gekocht"}</button>` : ""}
-      <button class="btn secondary" type="button" data-act="del">Entfernen</button>
-    </div>
-  `;
+    </div>`;
 
-  card.querySelectorAll("[data-kat]").forEach(b => {
-    b.addEventListener("click", () => {
-      day.kategorie = b.dataset.kat;
+  if (!istKochtag(day)) {
+    // Reste- und Brotzeit-Tage haben kein Rezept, nur eine kurze Notiz.
+    card.classList.add("kein-kochtag");
+    card.innerHTML = `
+      ${kopf}
+      <div class="tag-art">${escapeHtml(ART_LABEL[day.art])}</div>
+      <input type="text" class="tag-notiz" value="${escapeAttr(day.notiz || "")}"
+        placeholder="${day.art === "reste" ? "woher, zum Beispiel von Mittwoch" : "was dazu, zum Beispiel Brot und Aufstriche"}"
+        aria-label="Notiz zu diesem Tag">
+      <div class="day-actions">
+        <button class="btn secondary" type="button" data-act="wechsel">${day.art === "reste" ? "zu Brotzeit" : "zu Reste"}</button>
+        <button class="btn secondary" type="button" data-act="del">Entfernen</button>
+      </div>
+    `;
+    card.querySelector(".tag-notiz").addEventListener("input", (e) => {
+      day.notiz = e.target.value;
+      savePlan();
+      aktualisiereKopiertext();
+    });
+    card.querySelector('[data-act="wechsel"]').addEventListener("click", () => {
+      day.art = day.art === "reste" ? "brotzeit" : "reste";
       savePlan();
       render();
     });
-  });
+  } else {
+    const selected = rezeptMitId(day.recipeId);
+    const fehlend = day.recipeId && !selected;
+    const lowCarbWarn = day.sporttag && selected && (selected.tags || []).includes("Low Carb");
+    const { passend, weitere } = passendeRezepte(day.kategorie, day.sporttag);
+    const portionen = tagPortionen(day);
+    const basis = selected ? (selected.basis || 2) : 2;
+
+    const opt = r => `<option value="${escapeAttr(r.id)}"${r.id === day.recipeId ? " selected" : ""}>${escapeHtml(r.name + ((r.tags || []).includes("SPORT") ? " · SPORT" : ""))}</option>`;
+
+    const infoZeile = selected ? [
+      selected.kcal ? selected.kcal + " kcal" : "",
+      selected.protein ? selected.protein + " g Eiweiß" : "",
+      salzWert(selected) != null ? salzText(salzWert(selected)) + " Salz" : "",
+      zeitText(selected)
+    ].filter(Boolean).map(escapeHtml).join(" · ") : "";
+
+    card.innerHTML = `
+      ${kopf}
+      <div class="segmented klein">
+        ${KATEGORIEN.map(k => `<button type="button" data-kat="${k.key}"${k.key === day.kategorie ? ' class="aktiv"' : ""}>${escapeHtml(k.label)}</button>`).join("")}
+      </div>
+      <select aria-label="Rezept für diese Mahlzeit">
+        <option value="">Rezept wählen</option>
+        ${fehlend ? `<option value="${escapeAttr(day.recipeId)}" selected>Unbekannt: ${escapeHtml(day.recipeId)}</option>` : ""}
+        ${passend.length ? `<optgroup label="Passend zu ${escapeAttr(katLabel(day.kategorie))}">${passend.map(opt).join("")}</optgroup>` : ""}
+        ${weitere.length ? `<optgroup label="Weitere Rezepte">${weitere.map(opt).join("")}</optgroup>` : ""}
+      </select>
+      ${selected ? `<div class="row-between portionen-zeile">
+        <span class="prep-info">Portionen, Rezeptbasis ${basis}</span>
+        <div class="stepper">
+          <button type="button" data-p="-0.5" aria-label="Weniger Portionen">−</button>
+          <span class="val">${escapeHtml(portionenText(portionen))}</span>
+          <button type="button" data-p="0.5" aria-label="Mehr Portionen">+</button>
+        </div>
+      </div>` : ""}
+      ${infoZeile ? `<div class="day-info">${infoZeile}</div>` : ""}
+      ${lowCarbWarn ? `<div class="warn-lowcarb">Low Carb an einem Sporttag, laut Vorgabe eigentlich nicht vorgesehen.</div>` : ""}
+      ${selected && selected.rest ? `<div class="day-rest">Bleibt übrig: ${escapeHtml(String(selected.rest))}</div>` : ""}
+      <div class="day-actions">
+        ${selected ? `<button class="btn secondary" type="button" data-act="open">Rezept öffnen</button>` : ""}
+        ${selected ? `<button class="btn secondary${istGekocht(day, selected) ? " an" : ""}" type="button" data-act="gekocht">${istGekocht(day, selected) ? "gekocht ✓" : "gekocht"}</button>` : ""}
+        <button class="btn secondary" type="button" data-act="del">Entfernen</button>
+      </div>
+    `;
+
+    card.querySelectorAll("[data-kat]").forEach(b => {
+      b.addEventListener("click", () => {
+        day.kategorie = b.dataset.kat;
+        savePlan();
+        render();
+      });
+    });
+    card.querySelector("select").addEventListener("change", (e) => {
+      day.recipeId = e.target.value;
+      day.portionen = null;
+      savePlan();
+      render();
+    });
+    card.querySelectorAll("[data-p]").forEach(b => {
+      b.addEventListener("click", () => {
+        day.portionen = portionenNormal(tagPortionen(day) + parseFloat(b.dataset.p));
+        savePlan();
+        render();
+      });
+    });
+    const openBtn = card.querySelector('[data-act="open"]');
+    if (openBtn) openBtn.addEventListener("click", () => openDetail(selected.id));
+    const gekochtBtn = card.querySelector('[data-act="gekocht"]');
+    if (gekochtBtn) {
+      gekochtBtn.addEventListener("click", () => {
+        const datum = day.datum || heuteIso();
+        patchSetzen(selected.id, { gekocht_am: istGekocht(day, selected) ? undefined : datum });
+        render();
+      });
+    }
+  }
+
   card.querySelector(".day-datum-input").addEventListener("change", (e) => {
     const wert = e.target.value;
     if (!istIso(wert)) return;
@@ -1354,21 +1689,6 @@ function renderDayCard(day, idx) {
     savePlan();
     render();
   });
-  card.querySelector("select").addEventListener("change", (e) => {
-    day.recipeId = e.target.value;
-    savePlan();
-    render();
-  });
-  const openBtn = card.querySelector('[data-act="open"]');
-  if (openBtn) openBtn.addEventListener("click", () => openDetail(selected.id));
-  const gekochtBtn = card.querySelector('[data-act="gekocht"]');
-  if (gekochtBtn) {
-    gekochtBtn.addEventListener("click", () => {
-      const datum = day.datum || heuteIso();
-      patchSetzen(selected.id, { gekocht_am: istGekocht(day, selected) ? undefined : datum });
-      render();
-    });
-  }
   card.querySelector('[data-act="del"]').addEventListener("click", () => {
     plan.days.splice(idx, 1);
     savePlan();
@@ -1382,19 +1702,22 @@ function renderDayCard(day, idx) {
 
 function renderWochenuebersicht() {
   const wrap = document.createElement("div");
-  const mitRezept = plan.days.filter(d => RECIPES.find(r => r.id === d.recipeId));
-  if (!mitRezept.length) return wrap;
+  if (!plan.days.some(d => tagGericht(d))) return wrap;
 
   const gruppen = [];
   sortierteTage().forEach(({ d }) => {
-    const r = RECIPES.find(x => x.id === d.recipeId);
-    if (!r) return;
+    const gericht = tagGericht(d);
+    if (!gericht) return;
+    const r = rezeptMitId(d.recipeId);
     const key = tagAnzeige(d);
     let g = gruppen.find(x => x.key === key);
-    if (!g) { g = { key, zeilen: [], kcal: 0, protein: 0 }; gruppen.push(g); }
-    g.zeilen.push(`${katLabel(d.kategorie)}: ${r.name}${d.sporttag ? " (Sport)" : ""}`);
-    g.kcal += Number(r.kcal) || 0;
-    g.protein += Number(r.protein) || 0;
+    if (!g) { g = { key, zeilen: [], kcal: 0, protein: 0, salz: 0, hatSalz: false }; gruppen.push(g); }
+    g.zeilen.push(`${istKochtag(d) ? katLabel(d.kategorie) + ": " : ""}${gericht}${d.sporttag ? " (Sport)" : ""}`);
+    if (r) {
+      g.kcal += Number(r.kcal) || 0;
+      g.protein += Number(r.protein) || 0;
+      if (salzWert(r) != null) { g.salz += salzWert(r); g.hatSalz = true; }
+    }
   });
 
   const label = document.createElement("span");
@@ -1411,7 +1734,7 @@ function renderWochenuebersicht() {
     <div class="uebersicht-tag">
       <div class="uebersicht-kopf">
         <span>${escapeHtml(g.key)}</span>
-        <span class="uebersicht-zahlen">${g.kcal} kcal · ${g.protein} g EW</span>
+        <span class="uebersicht-zahlen">${g.kcal || g.protein ? `${g.kcal} kcal · ${g.protein} g EW` : ""}${g.hatSalz ? ` · ${salzText(g.salz)} Salz` : ""}</span>
       </div>
       ${g.zeilen.map(z => `<div class="uebersicht-zeile">${escapeHtml(z)}</div>`).join("")}
     </div>
@@ -1745,11 +2068,28 @@ function parseImportText(text) {
       const sportMatch = name.match(/^(.*?)\s*\((?:sporttag|sport)\)\s*$/i);
       if (sportMatch) { name = sportMatch[1].trim(); sporttag = true; }
 
+      let portionen = null;
+      const mengeMatch = name.match(/^(.*?)\s*[x×]\s*(\d+(?:[.,]\d)?)\s*$/i);
+      if (mengeMatch) {
+        name = mengeMatch[1].trim();
+        portionen = portionenNormal(String(mengeMatch[2]).replace(",", "."));
+      }
+
+      const datum = labelZuIso(labelTeil);
+      const eintrag = { datum, label: datum ? tagLabel(datum) : labelTeil, kategorie, sporttag, portionen, art: "rezept", notiz: "", recipeId: "" };
+
+      // Reste- und Brotzeit-Tage tragen kein Rezept, nur das Stichwort.
+      const artMatch = name.match(/^(reste|brotzeit)\b[,:]?\s*(.*)$/i);
+      if (artMatch) {
+        if (!datum) ohneDatum++;
+        days.push(Object.assign(eintrag, { art: artMatch[1].toLowerCase(), notiz: artMatch[2].trim() }));
+        return;
+      }
+
       const r = findRecipeByName(name);
       if (r) {
-        const datum = labelZuIso(labelTeil);
         if (!datum) ohneDatum++;
-        days.push({ datum, label: datum ? tagLabel(datum) : labelTeil, kategorie, recipeId: r.id, sporttag });
+        days.push(Object.assign(eintrag, { recipeId: r.id }));
       } else {
         unmatched.push(line);
       }
@@ -1814,12 +2154,12 @@ function renderKopiertext() {
   label.textContent = "Kopiertext für den Chat";
   wrap.appendChild(label);
 
-  const offen = plan.days.filter(d => !RECIPES.find(r => r.id === d.recipeId)).length;
+  const offen = plan.days.filter(d => !tagGericht(d)).length;
   if (offen) {
     const hint = document.createElement("p");
     hint.className = "small-note";
     hint.style.marginTop = "0";
-    hint.textContent = `${offen} Mahlzeit(en) ohne gültiges Rezept, sie stehen nicht im Kopiertext.`;
+    hint.textContent = `${offen} Mahlzeit(en) ohne Rezept, sie stehen nicht im Kopiertext.`;
     wrap.appendChild(hint);
   }
 
@@ -1887,9 +2227,9 @@ function renderKopiertext() {
 function wochenText() {
   const zeilen = [];
   sortierteTage().forEach(({ d }) => {
-    const r = rezeptMitId(d.recipeId);
-    if (!r) return;
-    zeilen.push(`${tagAnzeige(d)}, ${katLabel(d.kategorie)}: ${r.name}`);
+    const gericht = tagGericht(d);
+    if (!gericht) return;
+    zeilen.push(`${tagAnzeige(d)}${istKochtag(d) ? ", " + katLabel(d.kategorie) : ""}: ${gericht}`);
   });
   const prep = plan.prep.filter(p => p.portionen > 0).map(p => {
     const r = rezeptMitId(p.id);
@@ -1910,10 +2250,13 @@ function aktualisiereKopiertext() {
 function buildKopiertext() {
   const lines = [];
   sortierteTage().forEach(({ d }) => {
-    const r = RECIPES.find(x => x.id === d.recipeId);
-    if (!r) return;
+    const gericht = tagGericht(d);
+    if (!gericht) return;
     const kat = d.kategorie && d.kategorie !== "abendessen" ? ` (${katLabel(d.kategorie)})` : "";
-    lines.push(`${tagAnzeige(d)}${kat}: ${r.name}${d.sporttag ? " (Sporttag)" : ""}`);
+    // Die Portionsangabe steht nur da, wenn sie von der Rezeptbasis abweicht.
+    const r = rezeptMitId(d.recipeId);
+    const menge = r && tagPortionen(d) !== (r.basis || 2) ? ` x${portionenText(tagPortionen(d))}` : "";
+    lines.push(`${tagAnzeige(d)}${kat}: ${gericht}${menge}${d.sporttag ? " (Sporttag)" : ""}`);
   });
   const prepLines = prepEintraege().map(p => {
     const r = RECIPES.find(x => x.id === p.id);
@@ -1950,6 +2293,13 @@ function wochenHinweise() {
   gerichte.forEach(x => { zaehler[x.r.id] = (zaehler[x.r.id] || 0) + 1; });
   const doppelt = Object.keys(zaehler).filter(id => zaehler[id] > 1).map(id => rezeptMitId(id).name);
   if (doppelt.length) hinweise.push(`Doppelt eingeplant: ${doppelt.join(", ")}.`);
+
+  const mitSalz = gerichte.filter(x => salzWert(x.r) != null);
+  if (mitSalz.length) {
+    const tage = new Set(plan.days.map(x => x.datum || x.label)).size || 1;
+    const proTag = mitSalz.reduce((a, x) => a + salzWert(x.r), 0) / tage;
+    hinweise.push(`Salz aus den geplanten Gerichten: im Schnitt ${salzText(proTag)} pro Tag und Person, ohne Frühstück, Brotzeit und Vorratsfach. Einen Zielwert gibt keine Projektdatei vor, den setzt ihr mit dem Arzt.`);
+  }
 
   const heute = new Date();
   const kuerzlich = gerichte.filter(x => {
@@ -1995,7 +2345,7 @@ function rohliste() {
 
   plan.days.forEach(d => {
     const r = rezeptMitId(d.recipeId);
-    if (r) addiere(r, 1);
+    if (r) addiere(r, tagPortionen(d) / (r.basis || 2));
   });
   plan.prep.filter(p => p.portionen > 0).forEach(p => {
     const r = rezeptMitId(p.id);
@@ -2022,6 +2372,14 @@ function renderDaten() {
 
   const geaendert = geaenderteRezepte();
 
+  if (driftHinweis.length) {
+    const warn = document.createElement("div");
+    warn.className = "note-box exception";
+    warn.style.marginBottom = "14px";
+    warn.innerHTML = `<strong>Original hat sich geändert</strong><p>Bei ${escapeHtml(driftHinweis.join(", "))} sieht das Feld in ${escapeHtml(DATA_FILE)} inzwischen anders aus als zu dem Zeitpunkt, als du es angepasst hast. Prüf, ob deine Änderung noch stimmt, oder setz sie zurück.</p>`;
+    wrap.appendChild(warn);
+  }
+
   const kopf = document.createElement("div");
   kopf.className = "day-card";
   kopf.style.marginBottom = "18px";
@@ -2031,6 +2389,7 @@ function renderDaten() {
       <div><strong>${ROH_RECIPES.length}</strong><span>Rezepte in ${escapeHtml(DATA_FILE)}</span></div>
       <div><strong>${geaendert.length}</strong><span>davon lokal angepasst</span></div>
     </div>
+    <p class="small-note" style="margin:4px 0 10px">Stand der Datei: ${escapeHtml(dateiStand || "unbekannt, der Server liefert kein Datum")}</p>
     <p class="small-note" style="margin-bottom:0">
       Änderungen aus der App liegen getrennt auf diesem Gerät und legen sich beim Laden über die Datei.
       Wird ${escapeHtml(DATA_FILE)} im Repo ausgetauscht, bleiben sie bestehen und greifen weiter, solange die Rezept-ID gleich bleibt.
@@ -2062,6 +2421,7 @@ function renderDaten() {
     if (p.notiz_eigen) felder.push("eigene Notiz");
     if (p.gekocht_am) felder.push("gekocht am");
     if (p.urteil) felder.push("Urteil");
+    if (driftHinweis.includes(r.name)) felder.push("Original geändert");
 
     const karte = document.createElement("div");
     karte.className = "day-card";
@@ -2175,7 +2535,100 @@ function renderDaten() {
       "Reicht dem Chat, um rezepte.json im Projekt nachzuziehen. Danach die neue Datei ins Repo legen und hier zurücksetzen."));
   }
 
+  // Sicherung
+  const label4 = document.createElement("span");
+  label4.className = "label";
+  label4.style.display = "block";
+  label4.style.margin = "24px 0 8px";
+  label4.textContent = "Sicherung";
+  wrap.appendChild(label4);
+
+  const sich = document.createElement("div");
+  sich.className = "day-card";
+  sich.innerHTML = `
+    <p class="small-note" style="margin-top:0">
+      Wochenplanung und eigene Anpassungen liegen im Speicher des Browsers.
+      Löschst du die App vom Homescreen oder räumt Safari auf, sind sie weg.
+      Die Sicherung enthält beides, nicht die Rezepte selbst.
+    </p>
+  `;
+
+  const sdl = document.createElement("button");
+  sdl.className = "btn primary full";
+  sdl.type = "button";
+  sdl.textContent = "Sicherung herunterladen";
+  sdl.addEventListener("click", () => datenDownload(`futterassi-sicherung-${heuteIso()}.json`, sicherungJson(), "application/json"));
+  sich.appendChild(sdl);
+
+  const scp = document.createElement("button");
+  scp.className = "btn secondary full";
+  scp.type = "button";
+  scp.style.marginTop = "8px";
+  scp.textContent = "Sicherung kopieren";
+  scp.addEventListener("click", () => copyToClipboard(sicherungJson(), scp, "Sicherung kopieren"));
+  sich.appendChild(scp);
+
+  const det = document.createElement("details");
+  det.className = "klapp";
+  det.style.marginTop = "12px";
+  det.innerHTML = `
+    <summary>Sicherung einlesen</summary>
+    <div class="klapp-inhalt">
+      <p class="small-note" style="margin-top:0">Ersetzt die aktuelle Planung und alle Anpassungen auf diesem Gerät.</p>
+      <div class="copy-panel"><textarea id="sicherung-text" placeholder="Inhalt der Sicherungsdatei hier einfügen"></textarea></div>
+    </div>
+  `;
+  const einlesen = document.createElement("button");
+  einlesen.className = "btn secondary full";
+  einlesen.type = "button";
+  einlesen.style.marginTop = "8px";
+  einlesen.textContent = "Einlesen";
+  einlesen.addEventListener("click", () => {
+    const text = det.querySelector("#sicherung-text").value;
+    if (!text.trim()) return;
+    if (!confirm("Planung und Anpassungen auf diesem Gerät ersetzen?")) return;
+    const meldung = sicherungEinlesen(text);
+    alert(meldung);
+    render();
+  });
+  det.querySelector(".klapp-inhalt").appendChild(einlesen);
+  sich.appendChild(det);
+  wrap.appendChild(sich);
+
   return wrap;
+}
+
+function sicherungJson() {
+  return JSON.stringify({
+    typ: "futterassi-sicherung",
+    version: 1,
+    erstellt: heuteIso(),
+    plan,
+    patches
+  }, null, 2);
+}
+
+function sicherungEinlesen(text) {
+  let daten;
+  try {
+    daten = JSON.parse(text);
+  } catch (e) {
+    return "Das war kein gültiges JSON, nichts geändert.";
+  }
+  if (!daten || daten.typ !== "futterassi-sicherung") return "Das sieht nicht nach einer Futterassi-Sicherung aus, nichts geändert.";
+
+  if (daten.patches && typeof daten.patches === "object") {
+    speichern(LS_PATCH, daten.patches);
+    patches = loadPatches();
+    RECIPES = mergeRecipes();
+    pruefePatchDrift();
+  }
+  if (daten.plan && typeof daten.plan === "object") {
+    speichern(LS_PLAN, daten.plan);
+    plan = loadPlan();
+    pruefePlanBezuege();
+  }
+  return `Eingelesen: ${plan.days.length} Mahlzeit(en), ${Object.keys(patches).length} angepasste Rezepte.`;
 }
 
 function textBlock(titel, text, notiz) {
@@ -2217,9 +2670,12 @@ function exportJson() {
   const daten = ROH_RECIPES.map(r => {
     const p = patches[r.id];
     if (!p || !Object.keys(p).length) return r;
-    return Object.assign({}, r, p);
+    const sauber = Object.assign({}, p);
+    delete sauber._stempel;
+    return Object.assign({}, r, sauber);
   });
-  return JSON.stringify(daten, null, 2);
+  const inhalt = DATEI_WRAPPER ? { stand: heuteIso(), rezepte: daten } : daten;
+  return JSON.stringify(inhalt, null, 2);
 }
 
 function aenderungsText() {
