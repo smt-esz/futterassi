@@ -65,7 +65,7 @@ let speicherDefekt = false;
 // ---------- Zustand laden und speichern ----------
 
 function loadUi() {
-  const d = { view: "katalog", search: "", tags: [], typen: [], showRaus: false, schnell: false };
+  const d = { view: "katalog", search: "", tags: [], typen: [], showRaus: false, schnell: false, planAnsicht: "planen" };
   try {
     const raw = JSON.parse(localStorage.getItem(LS_UI));
     if (!raw || typeof raw !== "object") return d;
@@ -75,7 +75,8 @@ function loadUi() {
       tags: Array.isArray(raw.tags) ? raw.tags.filter(t => FILTER_TAGS.includes(t)) : [],
       typen: Array.isArray(raw.typen) ? raw.typen.filter(t => typeof t === "string") : [],
       showRaus: raw.showRaus === true,
-      schnell: raw.schnell === true
+      schnell: raw.schnell === true,
+      planAnsicht: raw.planAnsicht === "woche" ? "woche" : "planen"
     };
   } catch (e) {
     return d;
@@ -254,6 +255,7 @@ async function init() {
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
     if (cook) closeCook();
+    else if (planSheet) planSheetSchliessen();
     else if (editor) editorAbbrechen();
     else if (detail) closeDetail();
   });
@@ -578,9 +580,12 @@ function statusText(status) {
 }
 
 function renderCard(r) {
-  const card = document.createElement("button");
-  card.type = "button";
+  // Kein button-Element mehr, weil in der Fußzeile ein eigener Knopf sitzt und
+  // ein Knopf im Knopf ungültiges Markup wäre.
+  const card = document.createElement("div");
   card.className = "card card-button";
+  card.setAttribute("role", "button");
+  card.tabIndex = 0;
   const cat = mapCategory(r);
   if (cat) card.setAttribute("data-category", cat);
 
@@ -602,10 +607,130 @@ function renderCard(r) {
   card.innerHTML = `
     <h3>${escapeHtml(r.name)}</h3>
     <div class="card-meta">${badges.join("")}</div>
-    <div class="card-footer"><div class="metrics">${metrics.join("")}</div></div>
+    <div class="card-footer">
+      <div class="metrics">${metrics.join("")}</div>
+      <button class="card-plan" type="button" aria-label="${escapeAttr(r.name)} einplanen">+ Einplanen</button>
+    </div>
   `;
   card.addEventListener("click", () => openDetail(r.id));
+  card.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openDetail(r.id); }
+  });
+  card.querySelector(".card-plan").addEventListener("click", (e) => {
+    e.stopPropagation();
+    planSheetOeffnen(r.id);
+  });
   return card;
+}
+
+// ---------- EINPLANEN AUS DEM KATALOG ----------
+
+let planSheet = null;   // { recipeId, datum, kat }
+
+function planSheetOeffnen(recipeId, datum, kat) {
+  const r = rezeptMitId(recipeId);
+  if (!r) return;
+  const vorschlag = KATEGORIE_KEYS.includes(r.typ) ? r.typ : "abendessen";
+  planSheet = { recipeId, datum: datum || heuteIso(), kat: kat || vorschlag };
+  scrollSperre(true);
+  drawPlanSheet();
+}
+
+function planSheetSchliessen() {
+  planSheet = null;
+  const el = document.getElementById("plan-sheet");
+  if (el) el.remove();
+  if (!detail && !cook) scrollSperre(false);
+}
+
+function drawPlanSheet() {
+  if (!planSheet) return;
+  const r = rezeptMitId(planSheet.recipeId);
+  if (!r) return planSheetSchliessen();
+
+  let el = document.getElementById("plan-sheet");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "plan-sheet";
+    el.className = "sheet";
+    document.body.appendChild(el);
+    el.addEventListener("click", (e) => { if (e.target === el) planSheetSchliessen(); });
+  }
+
+  const start = new Date();
+  const tage = [];
+  for (let i = 0; i < 14; i++) tage.push(isoVon(plusTage(start, i)));
+
+  const tag = tagObjekt(planSheet.datum, false);
+  const belegt = tag && tag.mahlzeiten[planSheet.kat];
+  const belegtName = belegt ? slotGericht(belegt) : "";
+
+  el.innerHTML = `
+    <div class="sheet-inhalt">
+      <div class="sheet-kopf">
+        <div>
+          <span class="label">Einplanen</span>
+          <div class="sheet-titel">${escapeHtml(r.name)}</div>
+        </div>
+        <button type="button" class="back" aria-label="Schließen">&times;</button>
+      </div>
+
+      <span class="label" style="display:block;margin:16px 0 8px">Tag</span>
+      <div class="sheet-tage">
+        ${tage.map(iso => {
+          const d = dateVon(iso);
+          const t = plan.tage.find(x => x.datum === iso);
+          const anzahl = t ? KATEGORIE_KEYS.filter(k => slotGefuellt(t.mahlzeiten[k])).length : 0;
+          return `<button type="button" class="sheet-tag${iso === planSheet.datum ? " aktiv" : ""}" data-iso="${iso}">
+            <span class="sheet-wt">${WOCHENTAG_KURZ[d.getDay()]}</span>
+            <span class="sheet-nr">${d.getDate()}</span>
+            <span class="sheet-punkte">${Array.from({ length: anzahl }).map(() => "<i></i>").join("")}</span>
+          </button>`;
+        }).join("")}
+      </div>
+
+      <span class="label" style="display:block;margin:16px 0 8px">Mahlzeit</span>
+      <div class="segmented">
+        ${KATEGORIEN.map(k => `<button type="button" data-kat="${k.key}"${k.key === planSheet.kat ? ' class="aktiv"' : ""}>${escapeHtml(k.label)}</button>`).join("")}
+      </div>
+
+      ${belegtName ? `<p class="small-note" style="margin:12px 0 0">${escapeHtml(tagLabel(planSheet.datum))}, ${escapeHtml(katLabel(planSheet.kat))} ist schon belegt mit ${escapeHtml(belegtName)}. Einplanen ersetzt das.</p>` : ""}
+
+      <button class="btn primary full" type="button" id="sheet-ok" style="margin-top:16px">
+        Für ${escapeHtml(tagLabel(planSheet.datum))}, ${escapeHtml(katLabel(planSheet.kat))} einplanen
+      </button>
+    </div>
+  `;
+
+  el.querySelector(".back").addEventListener("click", planSheetSchliessen);
+  el.querySelectorAll("[data-iso]").forEach(b => {
+    b.addEventListener("click", () => { planSheet.datum = b.dataset.iso; drawPlanSheet(); });
+  });
+  el.querySelectorAll("[data-kat]").forEach(b => {
+    b.addEventListener("click", () => { planSheet.kat = b.dataset.kat; drawPlanSheet(); });
+  });
+  el.querySelector("#sheet-ok").addEventListener("click", () => {
+    slotSetzen(planSheet.datum, planSheet.kat, { art: "rezept", recipeId: planSheet.recipeId, portionen: null, notiz: "" });
+    const wohin = `${tagLabel(planSheet.datum)}, ${katLabel(planSheet.kat)}`;
+    kalenderAnker = isoVon(montagVon(dateVon(planSheet.datum)));
+    gewaehltesDatum = planSheet.datum;
+    planSheetSchliessen();
+    pruefePlanBezuege();
+    render();
+    meldung(`Eingeplant für ${wohin}`);
+  });
+}
+
+// Kurze Rückmeldung am unteren Rand, verschwindet von allein.
+function meldung(text) {
+  const alt = document.getElementById("toast");
+  if (alt) alt.remove();
+  const el = document.createElement("div");
+  el.id = "toast";
+  el.className = "toast";
+  el.textContent = text;
+  document.body.appendChild(el);
+  setTimeout(() => { if (el.parentNode) el.remove(); }, 2600);
 }
 
 // ---------- DETAIL ----------
@@ -674,7 +799,11 @@ function drawDetail() {
   overlay.innerHTML = `
     <div class="overlay-head">
       <button class="back" type="button" aria-label="Zurück">&larr;</button>
-      <button class="btn secondary klein" type="button" id="btn-edit">Anpassen</button>
+      <div class="overlay-head-aktionen">
+        <button class="btn secondary klein" type="button" id="btn-plan">Einplanen</button>
+        <button class="btn secondary klein" type="button" id="btn-edit">Anpassen</button>
+        <button class="btn primary klein js-cook" type="button">Kochmodus</button>
+      </div>
     </div>
     <h1 class="detail-title">${escapeHtml(r.name)}</h1>
     <div class="recipe-meta" style="margin-bottom:18px">${metaBadges.join("")}</div>
@@ -711,12 +840,13 @@ function drawDetail() {
 
     <div class="detail-actions">
       <button class="btn secondary full" type="button" id="btn-copy">Zutaten kopieren</button>
-      <button class="btn primary full" type="button" id="btn-cook">Kochmodus</button>
+      <button class="btn primary full js-cook" type="button">Kochmodus</button>
     </div>
   `;
 
   overlay.querySelector(".back").addEventListener("click", closeDetail);
   overlay.querySelector("#btn-edit").addEventListener("click", () => editorOeffnen(r.id));
+  overlay.querySelector("#btn-plan").addEventListener("click", () => planSheetOeffnen(r.id));
 
   overlay.querySelectorAll(".portion-control button").forEach(b => {
     b.addEventListener("click", () => {
@@ -733,7 +863,10 @@ function drawDetail() {
     copyToClipboard(lines.join("\n"), e.currentTarget, "Zutaten kopieren");
   });
 
-  overlay.querySelector("#btn-cook").addEventListener("click", () => openCookMode(r, detail.portionen));
+  // Oben in der Kopfzeile und unten unter dem Rezept, beide starten dasselbe.
+  overlay.querySelectorAll(".js-cook").forEach(b => {
+    b.addEventListener("click", () => openCookMode(r, detail.portionen));
+  });
 
   drawZutaten();
 }
@@ -1459,6 +1592,28 @@ function renderPlanung() {
   const wrap = document.createElement("div");
   wrap.className = "section";
 
+  const um = document.createElement("div");
+  um.className = "segmented";
+  um.style.marginBottom = "16px";
+  um.innerHTML = `
+    <button type="button" data-ansicht="planen"${ui.planAnsicht !== "woche" ? ' class="aktiv"' : ""}>Planen</button>
+    <button type="button" data-ansicht="woche"${ui.planAnsicht === "woche" ? ' class="aktiv"' : ""}>Wochenblatt</button>
+  `;
+  um.querySelectorAll("[data-ansicht]").forEach(b => {
+    b.addEventListener("click", () => {
+      ui.planAnsicht = b.dataset.ansicht;
+      saveUi();
+      render();
+      window.scrollTo(0, 0);
+    });
+  });
+  wrap.appendChild(um);
+
+  if (ui.planAnsicht === "woche") {
+    wrap.appendChild(renderWochenblatt());
+    return wrap;
+  }
+
   if (planHinweis) {
     const w = document.createElement("div");
     w.className = "note-box exception";
@@ -1949,6 +2104,128 @@ function renderWochenuebersicht() {
   wrap.appendChild(note);
 
   return wrap;
+}
+
+// ---------- WOCHENBLATT ----------
+
+// Alles, was in der geplanten Woche zu tun ist, von der ersten bis zur letzten
+// Mahlzeit, in Tagesreihenfolge und mit den Zutaten in der geplanten Menge.
+function renderWochenblatt() {
+  const wrap = document.createElement("div");
+  const slots = alleSlots();
+
+  if (!slots.length) {
+    const leer = document.createElement("p");
+    leer.className = "small-note";
+    leer.textContent = "Noch nichts geplant. Wechsel auf Planen oder tipp im Katalog bei einem Rezept auf Einplanen.";
+    wrap.appendChild(leer);
+    return wrap;
+  }
+
+  const von = slots[0].tag.datum;
+  const bis = slots[slots.length - 1].tag.datum;
+  const gerichte = new Set(slots.filter(e => e.slot.art === "rezept").map(e => e.slot.recipeId));
+  const tageAnzahl = new Set(slots.map(e => e.tag.datum)).size;
+
+  const kopf = document.createElement("div");
+  kopf.className = "wb-kopf";
+  kopf.innerHTML = `
+    <div class="wb-zeitraum">${escapeHtml(tagLabel(von))} bis ${escapeHtml(tagLabel(bis))}</div>
+    <div class="wb-zahlen">${slots.length} Mahlzeiten · ${gerichte.size} Gerichte · ${tageAnzahl} Tage</div>
+  `;
+  wrap.appendChild(kopf);
+
+  const gruppen = vorkochGruppen();
+  if (gruppen.length) {
+    const vk = document.createElement("div");
+    vk.className = "note-box";
+    vk.style.marginBottom = "16px";
+    vk.innerHTML = `<strong>Vorkochen</strong>${gruppen.map(g =>
+      `<p>${escapeHtml(tagLabel(g.kochtag))}: ${escapeHtml(g.rezept.name)}, ${escapeHtml(portionenText(g.portionen))} Portionen für ${g.nutzung.length} Mahlzeiten</p>`).join("")}`;
+    wrap.appendChild(vk);
+  }
+
+  let letzterTag = "";
+  slots.forEach(({ tag, kat, slot }) => {
+    if (tag.datum !== letzterTag) {
+      letzterTag = tag.datum;
+      const kopfzeile = document.createElement("div");
+      kopfzeile.className = "wb-tag";
+      kopfzeile.innerHTML = `<span>${escapeHtml(tagLabel(tag.datum))}</span>${tag.sporttag ? `<span class="wb-sport">Sporttag</span>` : ""}`;
+      wrap.appendChild(kopfzeile);
+    }
+    wrap.appendChild(renderWochenblattKarte(tag, kat, slot));
+  });
+
+  const hinweis = document.createElement("p");
+  hinweis.className = "small-note";
+  hinweis.style.marginTop = "18px";
+  hinweis.textContent = "Die Zutatenmengen sind auf die geplanten Portionen umgerechnet, nicht auf die Rezeptbasis.";
+  wrap.appendChild(hinweis);
+
+  return wrap;
+}
+
+function renderWochenblattKarte(tag, kat, slot) {
+  const karte = document.createElement("div");
+  karte.className = "wb-karte";
+
+  if (slot.art !== "rezept") {
+    karte.classList.add("schlicht");
+    karte.innerHTML = `
+      <span class="mahlzeit-name" data-typ="${escapeAttr(kat)}">${escapeHtml(katLabel(kat))}</span>
+      <span class="wb-name">${escapeHtml(slotGericht(slot))}</span>
+    `;
+    return karte;
+  }
+
+  const r = rezeptMitId(slot.recipeId);
+  if (!r) return karte;
+
+  const portionen = slotPortionen(slot);
+  const factor = portionen / (r.basis || 2);
+  const vk = vorkochInfo(tag.datum, kat);
+
+  const infos = [
+    `${portionenText(portionen)} Portionen`,
+    zeitText(r),
+    r.kcal ? `${r.kcal} kcal` : "",
+    r.protein ? `${r.protein} g Eiweiß` : "",
+    salzWert(r) != null ? `${salzText(salzWert(r))} Salz` : ""
+  ].filter(Boolean);
+
+  karte.innerHTML = `
+    <div class="wb-kartenkopf">
+      <span class="mahlzeit-name" data-typ="${escapeAttr(kat)}">${escapeHtml(katLabel(kat))}</span>
+      <span class="wb-name">${escapeHtml(r.name)}</span>
+    </div>
+    <div class="wb-infos">${infos.map(escapeHtml).join(" · ")}</div>
+    ${vk && vk.gruppe.nutzung.length > 1 ? `<div class="mahlzeit-vk">${vk.kochtag
+      ? `hier ${escapeHtml(portionenText(vk.gruppe.portionen))} Portionen kochen, deckt ${vk.gruppe.nutzung.length} Mahlzeiten`
+      : `vorgekocht am ${escapeHtml(tagLabel(vk.gruppe.kochtag))}${vk.info.lagerung === "einfrieren" ? ", aus dem Gefrierfach" : ""}`}</div>` : ""}
+    ${r.ausnahme && r.leichter ? `<div class="warn-lowcarb">Ausnahmegericht. ${escapeHtml(r.leichter)}</div>` : ""}
+    ${r.varianten ? `<div class="day-rest">Varianten: ${escapeHtml(r.varianten)}</div>` : ""}
+    <details class="klapp wb-klapp">
+      <summary>Zutaten für ${escapeHtml(portionenText(portionen))} Portionen</summary>
+      <div class="klapp-inhalt">
+        <ul class="ingredients">
+          ${(r.zutaten || []).map(z => `<li><span>${escapeHtml(z && z.name)}</span><span class="amount">${escapeHtml(zutatLine(z, factor, true))}</span></li>`).join("")}
+        </ul>
+      </div>
+    </details>
+    <div class="wb-aktionen">
+      <button type="button" class="chip" data-act="detail">Rezept</button>
+      <button type="button" class="chip stark" data-act="kochen">Kochmodus</button>
+    </div>
+  `;
+
+  karte.querySelector('[data-act="detail"]').addEventListener("click", () => openDetail(r.id));
+  karte.querySelector('[data-act="kochen"]').addEventListener("click", () => {
+    const menge = vk && vk.kochtag ? vk.gruppe.portionen : portionen;
+    openCookMode(r, menge);
+  });
+
+  return karte;
 }
 
 // ---------- IMPORT ----------

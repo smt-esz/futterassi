@@ -533,7 +533,9 @@ input.day-label {
 .note-box.eigen { border-left-color: var(--accent); background: #FBEDE8; }
 .note-box p + p { margin-top: 8px; }
 
-.overlay-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.overlay-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.overlay-head-aktionen { display: flex; align-items: center; gap: 8px; }
+.overlay-head-aktionen .btn { padding: 0 14px; font-size: 13px; }
 .btn.klein { min-height: 44px; padding: 0 16px; font-size: 14px; }
 .btn.secondary.an { background: var(--text); color: #fff; }
 
@@ -649,3 +651,86 @@ body.timer-an .overlay { padding-bottom: 96px; }
   .mahlzeit-kopf { grid-template-columns: 76px 1fr 20px; gap: 8px; }
   .mahlzeit-vk { margin-left: 84px; }
 }
+
+/* ---------------------------------------------------------
+   14. EINPLANEN AUS DEM KATALOG
+   --------------------------------------------------------- */
+
+.card-footer { align-items: flex-end; }
+.card-plan {
+  flex: 0 0 auto; min-height: 40px; padding: 0 14px;
+  border: 1.5px solid var(--line); border-radius: 999px;
+  background: var(--surface); color: var(--text);
+  font-size: 12px; font-weight: 750; white-space: nowrap;
+}
+.card-plan:active { background: var(--chip-bg); }
+
+.sheet {
+  position: fixed; inset: 0; z-index: 1100;
+  display: flex; align-items: flex-end; justify-content: center;
+  background: rgba(23, 25, 22, .45);
+}
+.sheet-inhalt {
+  width: min(100%, 560px);
+  max-height: 88vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  padding: 18px 18px max(22px, env(safe-area-inset-bottom));
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--bg); box-shadow: var(--shadow-floating);
+}
+.sheet-kopf { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.sheet-titel { margin-top: 4px; font-family: var(--font-display); font-size: 22px; font-weight: 750; letter-spacing: -.03em; line-height: 1.1; }
+.sheet-tage { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
+.sheet-tage::-webkit-scrollbar { display: none; }
+.sheet-tag {
+  flex: 0 0 auto; display: grid; justify-items: center; gap: 2px;
+  min-width: 54px; padding: 8px 4px 6px;
+  border: 1.5px solid var(--line); border-radius: var(--radius-md);
+  background: var(--surface); color: var(--text);
+}
+.sheet-wt { font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.sheet-nr { font-family: var(--font-number); font-size: 17px; font-weight: 700; }
+.sheet-punkte { display: flex; gap: 3px; height: 5px; }
+.sheet-punkte i { width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+.sheet-tag.aktiv { border-color: var(--text); background: var(--text); color: #fff; }
+.sheet-tag.aktiv .sheet-wt { color: rgba(255,255,255,.7); }
+.sheet-tag.aktiv .sheet-punkte i { background: #fff; }
+
+.toast {
+  position: fixed; z-index: 1200;
+  left: 16px; right: 16px; bottom: max(80px, calc(env(safe-area-inset-bottom) + 72px));
+  margin: 0 auto; width: fit-content; max-width: calc(100% - 32px);
+  padding: 14px 20px; border-radius: 999px;
+  background: var(--text); color: #F7F7F2;
+  font-size: 14px; font-weight: 650; text-align: center;
+  box-shadow: var(--shadow-floating);
+}
+
+/* ---------------------------------------------------------
+   15. WOCHENBLATT
+   --------------------------------------------------------- */
+
+.wb-kopf { margin-bottom: 16px; }
+.wb-zeitraum { font-family: var(--font-display); font-size: 26px; font-weight: 750; letter-spacing: -.035em; }
+.wb-zahlen { margin-top: 4px; font-family: var(--font-number); font-size: 12px; font-weight: 650; color: var(--muted); }
+
+.wb-tag {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 12px;
+  margin: 22px 2px 10px; padding-bottom: 6px; border-bottom: 2px solid var(--text);
+  font-family: var(--font-display); font-size: 20px; font-weight: 750; letter-spacing: -.02em;
+}
+.wb-sport { font-family: var(--font-body); font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--teal); }
+
+.wb-karte {
+  display: grid; gap: 10px; margin-bottom: 10px; padding: 16px;
+  border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+.wb-karte.schlicht { grid-template-columns: auto 1fr; align-items: center; box-shadow: none; background: transparent; border-style: dashed; }
+.wb-kartenkopf { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 10px; }
+.wb-name { font-family: var(--font-display); font-size: 19px; font-weight: 750; letter-spacing: -.02em; line-height: 1.15; }
+.wb-infos { font-family: var(--font-number); font-size: 11.5px; font-weight: 650; color: var(--muted); }
+.wb-klapp { margin: 0; }
+.wb-klapp .ingredients li { padding: 10px 0; font-size: 15px; }
+.wb-aktionen { display: flex; gap: 8px; }
+.wb-aktionen .chip { min-height: 44px; }
+.wb-aktionen .chip.stark { border-color: var(--text); background: var(--text); color: #fff; }
