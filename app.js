@@ -57,6 +57,7 @@ let editor = null;          // { id, basis, zutaten, schritte, notiz_eigen }
 let cook = null;            // { el, recipe, i, portionen, zutatenOffen, touchX }
 let importErgebnis = null;  // bleibt über das Neuzeichnen hinweg sichtbar
 let planHinweis = "";
+let geteilterPlan = null;
 let dateiStand = "";
 let DATEI_WRAPPER = false;
 let driftHinweis = [];
@@ -65,7 +66,7 @@ let speicherDefekt = false;
 // ---------- Zustand laden und speichern ----------
 
 function loadUi() {
-  const d = { view: "katalog", search: "", tags: [], typen: [], showRaus: false, schnell: false, planAnsicht: "planen" };
+  const d = { view: "katalog", search: "", tags: [], typen: [], showRaus: false, schnell: false, planAnsicht: "planen", textgroesse: "normal" };
   try {
     const raw = JSON.parse(localStorage.getItem(LS_UI));
     if (!raw || typeof raw !== "object") return d;
@@ -76,6 +77,7 @@ function loadUi() {
       typen: Array.isArray(raw.typen) ? raw.typen.filter(t => typeof t === "string") : [],
       showRaus: raw.showRaus === true,
       schnell: raw.schnell === true,
+      textgroesse: ["normal", "gross", "riesig"].includes(raw.textgroesse) ? raw.textgroesse : "normal",
       planAnsicht: raw.planAnsicht === "woche" ? "woche" : "planen"
     };
   } catch (e) {
@@ -252,6 +254,12 @@ async function init() {
     });
   });
 
+  // Zusammenkneifen zum Zoomen abfangen. Mit nassen Fingern verrutscht die
+  // Ansicht sonst und lässt sich beim Kochen kaum zurückstellen.
+  ["gesturestart", "gesturechange", "gestureend"].forEach(typ => {
+    document.addEventListener(typ, (e) => e.preventDefault(), { passive: false });
+  });
+
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
     if (cook) closeCook();
@@ -265,6 +273,8 @@ async function init() {
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register(SW_FILE).catch(() => {});
   }
+
+  geteiltenPlanLesen();
 
   // Ein aus der alten Form umgebauter Plan wird einmal in der neuen Form
   // festgeschrieben, damit nicht bei jedem Start neu umgebaut wird.
@@ -358,7 +368,13 @@ function pruefePlanBezuege() {
     : "";
 }
 
+function textgroesseAnwenden() {
+  document.body.classList.toggle("text-gross", ui.textgroesse === "gross");
+  document.body.classList.toggle("text-riesig", ui.textgroesse === "riesig");
+}
+
 function render() {
+  textgroesseAnwenden();
   document.querySelectorAll(".tab").forEach(b => {
     const aktiv = b.dataset.view === ui.view;
     b.classList.toggle("active", aktiv);
@@ -372,7 +388,8 @@ function render() {
     w.textContent = "Dieses Gerät speichert gerade nichts dauerhaft, die Planung ist nach dem Schließen weg. Privater Safari-Modus oder voller Speicher.";
     app.appendChild(w);
   }
-  if (ui.view === "planung") app.appendChild(renderPlanung());
+  if (geteilterPlan) app.appendChild(renderGeteilt());
+  else if (ui.view === "planung") app.appendChild(renderPlanung());
   else if (ui.view === "daten") app.appendChild(renderDaten());
   else app.appendChild(renderKatalog());
 }
@@ -799,14 +816,14 @@ function drawDetail() {
   overlay.innerHTML = `
     <div class="overlay-head">
       <button class="back" type="button" aria-label="Zurück">&larr;</button>
-      <div class="overlay-head-aktionen">
-        <button class="btn secondary klein" type="button" id="btn-plan">Einplanen</button>
-        <button class="btn secondary klein" type="button" id="btn-edit">Anpassen</button>
-        <button class="btn primary klein js-cook" type="button">Kochmodus</button>
-      </div>
+      <button class="btn primary klein js-cook" type="button">Kochmodus</button>
     </div>
     <h1 class="detail-title">${escapeHtml(r.name)}</h1>
-    <div class="recipe-meta" style="margin-bottom:18px">${metaBadges.join("")}</div>
+    <div class="recipe-meta">${metaBadges.join("")}</div>
+    <div class="detail-chips">
+      <button type="button" class="chip" id="btn-plan">Einplanen</button>
+      <button type="button" class="chip" id="btn-edit">Anpassen</button>
+    </div>
 
     ${r.ausnahme && r.leichter ? `<div class="note-box exception" style="margin-bottom:10px"><strong>Leichter gebaut</strong><p>${escapeHtml(r.leichter)}</p></div>` : ""}
     ${r.varianten ? `<div class="note-box" style="margin-bottom:10px"><strong>Varianten</strong><p>${escapeHtml(r.varianten)}</p></div>` : ""}
@@ -835,7 +852,7 @@ function drawDetail() {
 
     <span class="label" style="display:block;margin-bottom:8px">Zubereitung</span>
     <ol class="steps" style="margin-bottom:28px">
-      ${(r.schritte || []).map(s => `<li><p>${escapeHtml(s)}</p></li>`).join("")}
+      ${(r.schritte || []).map(s => `<li><p>${escapeHtml(schrittText(s))}</p></li>`).join("")}
     </ol>
 
     <div class="detail-actions">
@@ -895,7 +912,7 @@ function zutatLine(z, factor, onlyMenge) {
   if (!z) return "";
   let menge = "";
   if (z.menge != null && z.menge !== "" && !isNaN(Number(z.menge))) {
-    menge = `${round1(Number(z.menge) * factor)}${z.einheit ? " " + z.einheit : ""}`;
+    menge = `${String(round1(Number(z.menge) * factor)).replace(".", ",")}${z.einheit ? " " + z.einheit : ""}`;
   } else {
     menge = z.einheit || "";
   }
@@ -922,7 +939,7 @@ function editorOeffnen(id) {
       einheit: z.einheit || "",
       name: z.name || ""
     })),
-    schritte: (r.schritte || []).slice(),
+    schritte: (r.schritte || []).slice(),   // Originalform, für den Erhalt der Verweise
     notiz_eigen: r.notiz_eigen || ""
   };
   scrollSperre(true);
@@ -981,7 +998,7 @@ function drawEditor() {
 
     <span class="label" style="display:block;margin:24px 0 8px">Zubereitung</span>
     <p class="small-note" style="margin-top:0">Ein Schritt pro Zeile. Leere Zeilen fallen weg.</p>
-    <textarea id="edit-schritte" class="edit-flaeche" aria-label="Zubereitungsschritte">${escapeHtml(editor.schritte.join("\n"))}</textarea>
+    <textarea id="edit-schritte" class="edit-flaeche" aria-label="Zubereitungsschritte">${escapeHtml(editor.schritte.map(schrittText).join("\n"))}</textarea>
 
     <span class="label" style="display:block;margin:24px 0 8px">Meine Notiz</span>
     <textarea id="edit-notiz" aria-label="Eigene Notiz" placeholder="Was beim nächsten Mal anders soll">${escapeHtml(editor.notiz_eigen)}</textarea>
@@ -1002,7 +1019,17 @@ function drawEditor() {
       editor.zutaten[i].einheit = zeile.querySelector(".edit-einheit").value;
       editor.zutaten[i].name = zeile.querySelector(".edit-name").value;
     });
-    editor.schritte = overlay.querySelector("#edit-schritte").value.split(/\n/).map(x => x.trim()).filter(Boolean);
+    // Unveränderte Zeilen behalten ihre Zutatenverweise, geänderte werden
+    // wieder zu reinem Text.
+    const alteSchritte = editor.schritte;
+    editor.schritte = overlay.querySelector("#edit-schritte").value
+      .split(/\n/).map(x => x.trim()).filter(Boolean)
+      .map((zeile, i) => {
+        const alt = alteSchritte[i];
+        if (alt && typeof alt === "object" && schrittText(alt) === zeile) return alt;
+        const passend = alteSchritte.find(a => schrittText(a) === zeile);
+        return passend && typeof passend === "object" ? passend : zeile;
+      });
     editor.notiz_eigen = overlay.querySelector("#edit-notiz").value.trim();
   };
 
@@ -1094,6 +1121,29 @@ function editorSpeichern() {
   render();
 }
 
+// ---------- SCHRITTE ----------
+
+// Ein Schritt ist entweder ein Text wie bisher oder ein Objekt
+// { text, zutaten: [...] }. In der Liste zutaten stehen entweder die Positionen
+// der Zutat (0 für die erste) oder ihr Feld ref, sonst ihr Name.
+function schrittText(s) {
+  if (typeof s === "string") return s;
+  return s && typeof s === "object" ? String(s.text || "") : "";
+}
+
+function schrittRefs(s) {
+  if (!s || typeof s !== "object" || !Array.isArray(s.zutaten)) return null;
+  return s.zutaten;
+}
+
+function zutatZuRef(r, ref) {
+  const liste = r.zutaten || [];
+  if (typeof ref === "number") return liste[ref] || null;
+  const gesucht = normName(ref);
+  if (!gesucht) return null;
+  return liste.find(z => z && (normName(z.ref) === gesucht || normName(z.name) === gesucht)) || null;
+}
+
 // ---------- KOCHMODUS ----------
 
 function openCookMode(r, portionen) {
@@ -1145,12 +1195,22 @@ function drawCook() {
       </div>
       <div class="cook-progress-bar"><span style="width:${breite}%"></span></div>
       <div class="cook-title">${escapeHtml(r.name)} · ${cook.portionen} Portionen</div>
-      ${timerZeile(gesamt ? steps[cook.i] : "")}
+      ${timerZeile(gesamt ? schrittText(steps[cook.i]) : "")}
     </div>
     ${cook.zutatenOffen
       ? `<div class="cook-zutaten"><ul>${(r.zutaten || []).map(z =>
           `<li><span>${escapeHtml(z && z.name)}</span><span>${escapeHtml(zutatLine(z, factor, true))}</span></li>`).join("")}</ul></div>`
-      : `<div class="cook-step" id="cook-step"><p>${escapeHtml(gesamt ? steps[cook.i] : "Für dieses Rezept sind keine Schritte hinterlegt.")}</p></div>`}
+      : `<div class="cook-step" id="cook-step">
+           <div>
+             <p>${escapeHtml(gesamt ? schrittText(steps[cook.i]) : "Für dieses Rezept sind keine Schritte hinterlegt.")}</p>
+             ${gesamt ? (() => {
+               const treffer = schrittZutaten(r, steps[cook.i]);
+               return treffer.length
+                 ? `<div class="cook-mengen">${treffer.map(z => `<span>${escapeHtml(zutatLine(z, factor))}</span>`).join("")}</div>`
+                 : "";
+             })() : ""}
+           </div>
+         </div>`}
     <div class="cook-actions">
       <button class="btn secondary" type="button" id="cook-prev" ${cook.i === 0 ? "disabled" : ""}>Zurück</button>
       <button class="btn primary" type="button" id="cook-next">${cook.i < gesamt - 1 ? "Weiter" : "Fertig"}</button>
@@ -1174,7 +1234,7 @@ function drawCook() {
       const wert = b.dataset.timer;
       if (wert === "stop") timerStopp();
       else if (wert === "uhr") {
-        const zeiten = findeZeiten((cook.recipe.schritte || [])[cook.i] || "");
+        const zeiten = findeZeiten(schrittText((cook.recipe.schritte || [])[cook.i]));
         anUhrUebergeben(zeiten[0] || 10);
         return;
       } else timerStart(parseInt(wert, 10));
@@ -1384,6 +1444,35 @@ function anUhrUebergeben(minuten) {
   }
 }
 
+// Welche Zutaten kommen in diesem Schritt vor? Verglichen werden die Wörter des
+// Zutatennamens mit dem Schritttext, dazu eine grobe Endungsbereinigung, damit
+// "Zwiebel" auch "Zwiebeln würfeln" trifft.
+function schrittZutaten(r, schritt) {
+  const refs = schrittRefs(schritt);
+  if (refs) {
+    const treffer = refs.map(ref => zutatZuRef(r, ref)).filter(Boolean);
+    if (treffer.length) return treffer;
+  }
+
+  // Ohne gepflegte Verweise wird geraten: Wörter des Schritttextes gegen
+  // Zutatennamen, mit grober Endungsbereinigung.
+  const text = normName(schrittText(schritt));
+  if (!text) return [];
+  const stamm = w => w.replace(/(en|er|n|e|s)$/, "");
+  const schrittWorte = text.split(" ").map(stamm).filter(w => w.length >= 4);
+  const treffer = [];
+
+  (r.zutaten || []).forEach(z => {
+    if (!z || !z.name) return;
+    const basis = normName(String(z.name).split("(")[0].split(",")[0]);
+    const worte = basis.split(" ").filter(w => w.length >= 4).map(stamm);
+    const passt = worte.some(w => schrittWorte.some(sw => w.includes(sw) || sw.includes(w)));
+    if (passt && !treffer.includes(z)) treffer.push(z);
+  });
+
+  return treffer.slice(0, 6);
+}
+
 function schrittVor() {
   if (!cook) return;
   if (cook.zutatenOffen) { cook.zutatenOffen = false; drawCook(); return; }
@@ -1515,10 +1604,11 @@ function tagHatInhalt(tag) {
 }
 
 // Alle belegten Mahlzeiten der Woche, sortiert nach Datum und Tageszeit.
-function alleSlots() {
+function alleSlots(quelle) {
+  const q = quelle || plan;
   const rang = k => Math.max(0, KATEGORIE_KEYS.indexOf(k));
   const raus = [];
-  plan.tage.forEach(tag => {
+  q.tage.forEach(tag => {
     KATEGORIE_KEYS.forEach(k => {
       const slot = tag.mahlzeiten[k];
       if (slotGefuellt(slot)) raus.push({ tag, kat: k, slot });
@@ -1536,9 +1626,9 @@ function sortierteTage() {
 
 // Steht dasselbe Gericht an mehreren Stellen der Woche, wird es einmal gekocht,
 // und zwar am frühesten Termin. Die Menge ist die Summe aller Portionen.
-function vorkochGruppen() {
+function vorkochGruppen(quelle) {
   const nachRezept = new Map();
-  alleSlots().forEach(eintrag => {
+  alleSlots(quelle).forEach(eintrag => {
     if (eintrag.slot.art !== "rezept") return;
     const id = eintrag.slot.recipeId;
     if (!nachRezept.has(id)) nachRezept.set(id, []);
@@ -1568,8 +1658,8 @@ function vorkochGruppen() {
 }
 
 // Zu welcher Vorkoch-Gruppe gehört diese Mahlzeit, und ist sie der Kochtag?
-function vorkochInfo(datum, kat) {
-  for (const g of vorkochGruppen()) {
+function vorkochInfo(datum, kat, quelle) {
+  for (const g of vorkochGruppen(quelle)) {
     const treffer = g.nutzung.find(n => n.eintrag.tag.datum === datum && n.eintrag.kat === kat);
     if (treffer) return { gruppe: g, kochtag: treffer.abstand === 0 && g.nutzung[0].eintrag.kat === kat, info: treffer };
   }
@@ -2110,9 +2200,9 @@ function renderWochenuebersicht() {
 
 // Alles, was in der geplanten Woche zu tun ist, von der ersten bis zur letzten
 // Mahlzeit, in Tagesreihenfolge und mit den Zutaten in der geplanten Menge.
-function renderWochenblatt() {
+function renderWochenblatt(quelle) {
   const wrap = document.createElement("div");
-  const slots = alleSlots();
+  const slots = alleSlots(quelle);
 
   if (!slots.length) {
     const leer = document.createElement("p");
@@ -2135,7 +2225,7 @@ function renderWochenblatt() {
   `;
   wrap.appendChild(kopf);
 
-  const gruppen = vorkochGruppen();
+  const gruppen = vorkochGruppen(quelle);
   if (gruppen.length) {
     const vk = document.createElement("div");
     vk.className = "note-box";
@@ -2154,7 +2244,7 @@ function renderWochenblatt() {
       kopfzeile.innerHTML = `<span>${escapeHtml(tagLabel(tag.datum))}</span>${tag.sporttag ? `<span class="wb-sport">Sporttag</span>` : ""}`;
       wrap.appendChild(kopfzeile);
     }
-    wrap.appendChild(renderWochenblattKarte(tag, kat, slot));
+    wrap.appendChild(renderWochenblattKarte(tag, kat, slot, quelle));
   });
 
   const hinweis = document.createElement("p");
@@ -2166,7 +2256,7 @@ function renderWochenblatt() {
   return wrap;
 }
 
-function renderWochenblattKarte(tag, kat, slot) {
+function renderWochenblattKarte(tag, kat, slot, quelle) {
   const karte = document.createElement("div");
   karte.className = "wb-karte";
 
@@ -2184,7 +2274,7 @@ function renderWochenblattKarte(tag, kat, slot) {
 
   const portionen = slotPortionen(slot);
   const factor = portionen / (r.basis || 2);
-  const vk = vorkochInfo(tag.datum, kat);
+  const vk = vorkochInfo(tag.datum, kat, quelle);
 
   const infos = [
     `${portionenText(portionen)} Portionen`,
@@ -2228,6 +2318,150 @@ function renderWochenblattKarte(tag, kat, slot) {
   return karte;
 }
 
+// ---------- PLAN TEILEN ----------
+
+// Der Plan wird in einen kurzen Code gepackt, der als Text weitergegeben oder
+// an die Adresse der App gehängt werden kann. Kein Server, alles im Link.
+const CODE_PRAEFIX = "futterassi1:";
+const ART_CODE = ["rezept", "reste", "brotzeit"];
+
+function b64Encode(text) {
+  const bytes = new TextEncoder().encode(text);
+  let bin = "";
+  bytes.forEach(b => { bin += String.fromCharCode(b); });
+  return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+function b64Decode(code) {
+  const roh = String(code).replace(/-/g, "+").replace(/_/g, "/");
+  const bin = atob(roh + "=".repeat((4 - roh.length % 4) % 4));
+  const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
+function planCode(quelle) {
+  const q = quelle || plan;
+  const daten = {
+    v: 1,
+    t: q.tage.filter(tagHatInhalt).map(tag => [
+      tag.datum,
+      tag.sporttag ? 1 : 0,
+      KATEGORIE_KEYS.map((k, i) => {
+        const slot = tag.mahlzeiten[k];
+        if (!slotGefuellt(slot)) return null;
+        return [i, ART_CODE.indexOf(slot.art), slot.art === "rezept" ? slot.recipeId : (slot.notiz || ""), slot.portionen || 0];
+      }).filter(Boolean)
+    ])
+  };
+  return CODE_PRAEFIX + b64Encode(JSON.stringify(daten));
+}
+
+function planAusCode(text) {
+  const roh = String(text || "").trim();
+  const stelle = roh.indexOf(CODE_PRAEFIX);
+  if (stelle < 0) return null;
+  const code = roh.slice(stelle + CODE_PRAEFIX.length).split(/[\s"'<>]/)[0];
+  let daten;
+  try {
+    daten = JSON.parse(b64Decode(code));
+  } catch (e) {
+    return null;
+  }
+  if (!daten || daten.v !== 1 || !Array.isArray(daten.t)) return null;
+
+  const tage = [];
+  daten.t.forEach(eintrag => {
+    if (!Array.isArray(eintrag) || !istIso(eintrag[0])) return;
+    const mahlzeiten = {};
+    (Array.isArray(eintrag[2]) ? eintrag[2] : []).forEach(m => {
+      if (!Array.isArray(m)) return;
+      const kat = KATEGORIE_KEYS[m[0]];
+      const art = ART_CODE[m[1]] || "rezept";
+      if (!kat) return;
+      mahlzeiten[kat] = {
+        art,
+        recipeId: art === "rezept" ? String(m[2] || "") : "",
+        portionen: portionenNormal(m[3]),
+        notiz: art === "rezept" ? "" : String(m[2] || "")
+      };
+    });
+    tage.push({ datum: eintrag[0], sporttag: eintrag[1] === 1, mahlzeiten });
+  });
+  tage.sort((a, b) => (a.datum < b.datum ? -1 : 1));
+  return { tage };
+}
+
+function teilenLink(quelle) {
+  const basis = location.origin + location.pathname;
+  return `${basis}#plan=${planCode(quelle).slice(CODE_PRAEFIX.length)}`;
+}
+
+// Beim Start prüfen, ob die Adresse einen geteilten Plan mitbringt.
+function geteiltenPlanLesen() {
+  const treffer = String(location.hash || "").match(/[#&]plan=([^&]+)/);
+  if (!treffer) return;
+  const geteilt = planAusCode(CODE_PRAEFIX + treffer[1]);
+  if (!geteilt || !geteilt.tage.length) return;
+  geteilterPlan = geteilt;
+  ui.view = "planung";
+  try {
+    history.replaceState(null, "", location.pathname + location.search);
+  } catch (e) {
+    /* egal */
+  }
+}
+
+function renderGeteilt() {
+  const wrap = document.createElement("div");
+  wrap.className = "section";
+
+  const banner = document.createElement("div");
+  banner.className = "note-box geteilt";
+  banner.innerHTML = `
+    <strong>Geteilter Plan</strong>
+    <p>Diese Woche kommt aus einem Link, deine eigene Planung ist unberührt. Rezepte, Zutaten und Kochmodus funktionieren hier ganz normal.</p>
+  `;
+
+  const uebernehmen = document.createElement("button");
+  uebernehmen.className = "btn primary full";
+  uebernehmen.type = "button";
+  uebernehmen.style.marginTop = "10px";
+  uebernehmen.textContent = "Als meine Planung übernehmen";
+  uebernehmen.addEventListener("click", () => {
+    if (plan.tage.length && !confirm("Deine eigene Planung auf diesem Gerät ersetzen?")) return;
+    plan = { tage: geteilterPlan.tage };
+    savePlan();
+    geteilterPlan = null;
+    pruefePlanBezuege();
+    render();
+    meldung("Planung übernommen");
+  });
+  banner.appendChild(uebernehmen);
+
+  const code = document.createElement("button");
+  code.className = "btn secondary full";
+  code.type = "button";
+  code.style.marginTop = "8px";
+  code.textContent = "Code kopieren, für die App vom Homescreen";
+  code.addEventListener("click", () => copyToClipboard(planCode(geteilterPlan), code, "Code kopieren, für die App vom Homescreen"));
+  banner.appendChild(code);
+
+  const weg = document.createElement("button");
+  weg.className = "btn secondary full";
+  weg.type = "button";
+  weg.style.marginTop = "8px";
+  weg.textContent = "Zurück zu meiner Planung";
+  weg.addEventListener("click", () => {
+    geteilterPlan = null;
+    render();
+  });
+  banner.appendChild(weg);
+
+  wrap.appendChild(banner);
+  wrap.appendChild(renderWochenblatt(geteilterPlan));
+  return wrap;
+}
+
 // ---------- IMPORT ----------
 
 function renderImportPanel() {
@@ -2239,6 +2473,7 @@ function renderImportPanel() {
     <span class="label" style="display:block;margin-bottom:8px">Aus dem Chat übernehmen</span>
     <p class="small-note" style="margin-top:0">
       Plan-Text aus dem Chat hier einfügen, gleiches Format wie der Kopiertext oben.
+      Ein geteilter Link oder Code aus der App funktioniert hier ebenfalls.
       Ersetzt die aktuelle Wochenplanung auf diesem Gerät.
     </p>
     <div class="copy-panel">
@@ -2257,6 +2492,17 @@ Fr 21.08.: Reste von Mittwoch"></textarea>
     const text = box.querySelector("#import-text").value;
     if (!text.trim()) return;
     if (plan.tage.length && !confirm("Aktuelle Wochenplanung auf diesem Gerät ersetzen?")) return;
+    const ausCode = planAusCode(text);
+    if (ausCode) {
+      plan = { tage: ausCode.tage };
+      savePlan();
+      pruefePlanBezuege();
+      importErgebnis = `Geteilte Planung übernommen: ${ausCode.tage.length} Tag(e).`;
+      offenerSlot = null;
+      if (ausCode.tage.length) kalenderAnker = isoVon(montagVon(dateVon(ausCode.tage[0].datum)));
+      render();
+      return;
+    }
     const result = parseImportText(text);
     plan.tage = result.tage;
     savePlan();
@@ -2424,10 +2670,19 @@ function renderKopiertext() {
   teilen.textContent = "Woche teilen";
   teilen.addEventListener("click", () => {
     const text = wochenText();
-    if (navigator.share) navigator.share({ title: "Essensplan", text }).catch(() => {});
-    else copyToClipboard(text, teilen, "Woche teilen");
+    const url = teilenLink();
+    if (navigator.share) navigator.share({ title: "Essensplan", text, url }).catch(() => {});
+    else copyToClipboard(`${text}\n\n${url}`, teilen, "Woche teilen");
   });
   wrap.appendChild(teilen);
+
+  const linkBtn = document.createElement("button");
+  linkBtn.type = "button";
+  linkBtn.className = "btn secondary full";
+  linkBtn.style.marginTop = "8px";
+  linkBtn.textContent = "Link zur Woche kopieren";
+  linkBtn.addEventListener("click", () => copyToClipboard(teilenLink(), linkBtn, "Link zur Woche kopieren"));
+  wrap.appendChild(linkBtn);
 
   const zutaten = rohliste();
   if (zutaten.length) {
@@ -2756,6 +3011,33 @@ function renderDaten() {
       "Reicht dem Chat, um rezepte.json im Projekt nachzuziehen. Danach die neue Datei ins Repo legen und hier zurücksetzen."));
   }
 
+  // Darstellung
+  const labelD = document.createElement("span");
+  labelD.className = "label";
+  labelD.style.display = "block";
+  labelD.style.margin = "24px 0 8px";
+  labelD.textContent = "Darstellung";
+  wrap.appendChild(labelD);
+
+  const dar = document.createElement("div");
+  dar.className = "day-card";
+  dar.style.marginBottom = "18px";
+  dar.innerHTML = `
+    <p class="small-note" style="margin-top:0">Schriftgröße für Rezepte, Zutaten und Kochmodus. Die Seite selbst bleibt fest, damit beim Kochen nichts verrutscht.</p>
+    <div class="segmented">
+      ${[["normal", "Normal"], ["gross", "Groß"], ["riesig", "Riesig"]].map(([k, t]) =>
+        `<button type="button" data-groesse="${k}"${ui.textgroesse === k ? ' class="aktiv"' : ""}>${t}</button>`).join("")}
+    </div>
+  `;
+  dar.querySelectorAll("[data-groesse]").forEach(b => {
+    b.addEventListener("click", () => {
+      ui.textgroesse = b.dataset.groesse;
+      saveUi();
+      render();
+    });
+  });
+  wrap.appendChild(dar);
+
   // Sicherung
   const label4 = document.createElement("span");
   label4.className = "label";
@@ -2912,7 +3194,7 @@ function aenderungsText() {
     }
     if (p.schritte) {
       zeilen.push("Schritte neu:");
-      p.schritte.forEach((x, i) => zeilen.push(`  ${i + 1}. ${x}`));
+      p.schritte.forEach((x, i) => zeilen.push(`  ${i + 1}. ${schrittText(x)}`));
     }
     if (p.notiz_eigen) zeilen.push(`notiz_eigen: ${p.notiz_eigen}`);
     if (p.gekocht_am) zeilen.push(`gekocht_am: ${p.gekocht_am}`);

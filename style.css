@@ -734,3 +734,68 @@ body.timer-an .overlay { padding-bottom: 96px; }
 .wb-aktionen { display: flex; gap: 8px; }
 .wb-aktionen .chip { min-height: 44px; }
 .wb-aktionen .chip.stark { border-color: var(--text); background: var(--text); color: #fff; }
+
+/* ---------------------------------------------------------
+   16. FESTE BREITE, KEIN SEITLICHES VERSCHIEBEN
+   Lange Rezeptnamen haben die Karten vorher aufgedehnt und die
+   ganze Seite verschiebbar gemacht.
+   --------------------------------------------------------- */
+
+html, body { overflow-x: hidden; max-width: 100%; }
+/* touch-action nur gegen den Doppeltipp-Zoom. Ein pan-y hier würde die
+   seitlich scrollenden Chip-Reihen mit blockieren, das Zusammenkneifen wird
+   deshalb in app.js über gesturestart abgefangen. */
+body { touch-action: manipulation; }
+
+.app, .overlay, .sheet-inhalt, .card, .day-card, .wb-karte { max-width: 100%; }
+h1, h2, h3, .detail-title, .card h3, .wb-name, .prep-name, .mahlzeit-gericht,
+.sheet-titel, .day-datum, .cook-step p, .uebersicht-zeile, .ingredients li {
+  overflow-wrap: anywhere;
+}
+.mahlzeit-gericht, .wb-name, .prep-kopf > .prep-name, .uebersicht-kopf > span:first-child,
+.card-footer > .metrics, .row-between > span:first-child, .vk-zeile > span:first-child {
+  min-width: 0;
+}
+.card-footer { flex-wrap: wrap; }
+.detail-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 18px; }
+
+/* ---------------------------------------------------------
+   17. MENGEN IM KOCHSCHRITT
+   --------------------------------------------------------- */
+
+.cook-step > div { width: 100%; }
+.cook-mengen { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.cook-mengen span {
+  padding: 8px 14px; border-radius: 999px;
+  background: #23261F; color: #F7F7F2;
+  font-family: var(--font-number); font-size: clamp(15px, 4vw, 19px); font-weight: 650;
+}
+
+/* ---------------------------------------------------------
+   18. SCHRIFTGRÖSSE, EINSTELLBAR IM REITER DATEN
+   --------------------------------------------------------- */
+
+body.text-gross .ingredients li,
+body.text-gross .steps li p,
+body.text-gross .note-box p,
+body.text-gross .klapp-zeile span,
+body.text-gross .wb-name,
+body.text-gross .mahlzeit-gericht { font-size: 19px; }
+body.text-gross .card h3 { font-size: 25px; }
+body.text-gross .cook-step p { font-size: clamp(34px, 8vw, 60px); }
+body.text-gross .cook-mengen span { font-size: clamp(17px, 4.5vw, 21px); }
+body.text-gross .small-note, body.text-gross .day-info, body.text-gross .wb-infos { font-size: 14.5px; }
+
+body.text-riesig .ingredients li,
+body.text-riesig .steps li p,
+body.text-riesig .note-box p,
+body.text-riesig .klapp-zeile span,
+body.text-riesig .wb-name,
+body.text-riesig .mahlzeit-gericht { font-size: 21px; }
+body.text-riesig .card h3 { font-size: 27px; }
+body.text-riesig .cook-step p { font-size: clamp(38px, 9vw, 66px); }
+body.text-riesig .cook-mengen span { font-size: clamp(19px, 5vw, 23px); }
+body.text-riesig .small-note, body.text-riesig .day-info, body.text-riesig .wb-infos { font-size: 16px; }
+
+/* Geteilter Plan aus einem Link */
+.note-box.geteilt { border-left-color: var(--accent); background: #FBEDE8; margin-bottom: 18px; }
