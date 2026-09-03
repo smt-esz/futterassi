@@ -686,6 +686,12 @@ function drawPlanSheet() {
   const r = rezeptMitId(planSheet.recipeId);
   if (!r) return planSheetSchliessen();
 
+  // Scrollstände merken, das Blatt wird beim Umschalten neu aufgebaut.
+  const altInhalt = document.querySelector("#plan-sheet .sheet-inhalt");
+  const altTage = document.querySelector("#plan-sheet .sheet-tage");
+  const standHoch = altInhalt ? altInhalt.scrollTop : 0;
+  const standQuer = altTage ? altTage.scrollLeft : 0;
+
   let el = document.getElementById("plan-sheet");
   if (!el) {
     el = document.createElement("div");
@@ -739,6 +745,11 @@ function drawPlanSheet() {
       </button>
     </div>
   `;
+
+  const inhaltNeu = el.querySelector(".sheet-inhalt");
+  const tageNeu = el.querySelector(".sheet-tage");
+  if (inhaltNeu) inhaltNeu.scrollTop = standHoch;
+  if (tageNeu) tageNeu.scrollLeft = standQuer;
 
   el.querySelector(".back").addEventListener("click", planSheetSchliessen);
   el.querySelectorAll("[data-iso]").forEach(b => {
@@ -1576,10 +1587,11 @@ function drawAusbeute() {
     </div>
   `;
 
+  const anzeige = el.querySelector(".portion-value");
   el.querySelectorAll("[data-a]").forEach(b => {
     b.addEventListener("click", () => {
       ausbeute.wert = portionenNormal(ausbeute.wert + parseFloat(b.dataset.a));
-      drawAusbeute();
+      if (anzeige) anzeige.textContent = portionenText(ausbeute.wert);
     });
   });
   el.querySelector(".back").addEventListener("click", ausbeuteSchliessen);
@@ -2611,22 +2623,37 @@ function drawAbschluss() {
   const notizFeld = el.querySelector("#ab-notiz");
   notizFeld.addEventListener("input", (e) => { abschluss.notiz = e.target.value; });
 
+  // Beim Antippen wird nur die betroffene Karte angepasst. Ein Neuaufbau des
+  // ganzen Blattes würde den Bildschirm jedes Mal nach oben springen lassen.
   el.querySelectorAll(".ab-karte").forEach(karte => {
     const g = abschluss.gerichte[parseInt(karte.dataset.i, 10)];
-    karte.querySelectorAll("[data-urteil]").forEach(b => {
-      b.addEventListener("click", () => { g.urteil = g.urteil === b.dataset.urteil ? "" : b.dataset.urteil; drawAbschluss(); });
-    });
-    karte.querySelectorAll("[data-kind]").forEach(b => {
+
+    const markiere = (knoepfe, treffer) => {
+      knoepfe.forEach(b => b.classList.toggle("aktiv", b === treffer));
+    };
+
+    const urteilKnoepfe = [...karte.querySelectorAll("[data-urteil]")];
+    urteilKnoepfe.forEach(b => {
       b.addEventListener("click", () => {
-        g.kind = b.dataset.kind === "ja" ? true : b.dataset.kind === "nein" ? false : null;
-        drawAbschluss();
+        g.urteil = g.urteil === b.dataset.urteil ? "" : b.dataset.urteil;
+        markiere(urteilKnoepfe, g.urteil ? b : null);
       });
     });
+
+    const kindKnoepfe = [...karte.querySelectorAll("[data-kind]")];
+    kindKnoepfe.forEach(b => {
+      b.addEventListener("click", () => {
+        g.kind = b.dataset.kind === "ja" ? true : b.dataset.kind === "nein" ? false : null;
+        markiere(kindKnoepfe, b);
+      });
+    });
+
+    const wert = karte.querySelector(".stepper .val");
     karte.querySelectorAll("[data-real]").forEach(b => {
       b.addEventListener("click", () => {
         const start = g.real == null ? g.portionen : g.real;
         g.real = portionenNormal(start + parseFloat(b.dataset.real));
-        drawAbschluss();
+        if (wert) wert.textContent = portionenText(g.real);
       });
     });
   });
