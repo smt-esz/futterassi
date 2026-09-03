@@ -38,13 +38,14 @@ const LS_PLAN = "futterassi_plan_v1";
 const LS_UI = "futterassi_ui_v1";
 const LS_PATCH = "futterassi_patch_v1";
 const LS_TIMER = "futterassi_timer_v1";
+const LS_ARCHIV = "futterassi_archiv_v1";
 
 // Name des Kurzbefehls auf dem iPhone, an den der Timer übergeben wird.
 const SHORTCUT_NAME = "Küchentimer";
 
 // Felder, die in der App geändert werden dürfen. Alles andere bleibt so, wie es
 // aus rezepte.json kommt. notiz_eigen ist das einzige neue Feld.
-const PATCH_FELDER = ["zutaten", "schritte", "basis", "notiz_eigen", "gekocht_am", "urteil", "favorit", "_stempel"];
+const PATCH_FELDER = ["zutaten", "schritte", "basis", "notiz_eigen", "gekocht_am", "urteil", "favorit", "portionen_real", "kind_isst", "_stempel"];
 
 let ROH_RECIPES = [];   // exakt so, wie sie aus rezepte.json kommen
 let RECIPES = [];       // mit den lokalen Änderungen darübergelegt
@@ -58,6 +59,8 @@ let cook = null;            // { el, recipe, i, portionen, zutatenOffen, touchX 
 let importErgebnis = null;  // bleibt über das Neuzeichnen hinweg sichtbar
 let planHinweis = "";
 let geteilterPlan = null;
+let archiv = loadArchiv();
+let abschluss = null;   // { gerichte: [...], notiz }
 let dateiStand = "";
 let DATEI_WRAPPER = false;
 let driftHinweis = [];
@@ -162,6 +165,21 @@ function loadPatches() {
   return sauber;
 }
 
+function loadArchiv() {
+  let raw = null;
+  try {
+    raw = JSON.parse(localStorage.getItem(LS_ARCHIV));
+  } catch (e) {
+    return [];
+  }
+  if (!Array.isArray(raw)) return [];
+  return raw.filter(w => w && typeof w === "object" && Array.isArray(w.gerichte));
+}
+
+function saveArchiv() {
+  speichern(LS_ARCHIV, archiv);
+}
+
 function savePatches() {
   speichern(LS_PATCH, patches);
 }
@@ -263,6 +281,8 @@ async function init() {
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
     if (cook) closeCook();
+    else if (ausbeute) ausbeuteSchliessen();
+    else if (abschluss) abschlussSchliessen();
     else if (planSheet) planSheetSchliessen();
     else if (editor) editorAbbrechen();
     else if (detail) closeDetail();
@@ -612,6 +632,7 @@ function renderCard(r) {
   if (r.ausnahme) badges.push(`<span class="badge exception">AUSNAHME</span>`);
   if ((r.tags || []).includes("SPORT")) badges.push(`<span class="badge sport">SPORT</span>`);
   if (r.rest) badges.push(`<span class="badge rest">REST</span>`);
+  if (r.urteil === "kommt wieder") badges.push(`<span class="badge gut">KOMMT WIEDER</span>`);
   if (r.prep && r.prep.geeignet) badges.push(`<span class="badge">PREP</span>`);
 
   const metrics = [];
@@ -768,7 +789,7 @@ function openDetail(idOderRezept) {
   const id = typeof idOderRezept === "string" ? idOderRezept : (idOderRezept && idOderRezept.id);
   const r = rezeptMitId(id);
   if (!r) return;
-  detail = { id, portionen: r.basis || 2, erledigt: new Set() };
+  detail = { id, portionen: ergiebigkeit(r), erledigt: new Set() };
   scrollSperre(true);
   drawDetail();
   const overlay = document.getElementById("overlay");
@@ -811,6 +832,8 @@ function drawDetail() {
     klapp.push(["Meal Prep", teile.join(", ")]);
   }
   if (r.gekocht_am) klapp.push(["Zuletzt gekocht", String(r.gekocht_am) + (r.urteil ? `, ${r.urteil}` : "")]);
+  if (typeof r.kind_isst === "boolean") klapp.push(["Kind", r.kind_isst ? "hat gegessen" : "hat nicht gegessen"]);
+  if (r.portionen_real) klapp.push(["Tatsächliche Portionen", portionenText(r.portionen_real)]);
   if (r.quelle) klapp.push(["Quelle", String(r.quelle)]);
 
   overlay.innerHTML = `
@@ -838,10 +861,10 @@ function drawDetail() {
 
     <span class="label" style="display:block;margin:22px 0 8px">Portionen</span>
     <div class="portions" style="margin-bottom:24px">
-      <span class="small-note" style="margin:0">Rezeptbasis ${escapeHtml(r.basis || 2)}</span>
+      <span class="small-note" style="margin:0">Rezeptbasis ${escapeHtml(r.basis || 2)}${r.portionen_real ? `, gemessen ${escapeHtml(portionenText(r.portionen_real))}` : ""}</span>
       <div class="portion-control">
         <button type="button" data-d="-1" aria-label="Weniger Portionen">−</button>
-        <span class="portion-value">${detail.portionen}</span>
+        <span class="portion-value">${escapeHtml(portionenText(detail.portionen))}</span>
         <button type="button" data-d="1" aria-label="Mehr Portionen">+</button>
       </div>
     </div>
@@ -868,14 +891,14 @@ function drawDetail() {
   overlay.querySelectorAll(".portion-control button").forEach(b => {
     b.addEventListener("click", () => {
       const d = parseInt(b.dataset.d, 10);
-      detail.portionen = Math.min(20, Math.max(1, detail.portionen + d));
-      overlay.querySelector(".portion-value").textContent = detail.portionen;
+      detail.portionen = Math.min(20, Math.max(0.5, detail.portionen + d * 0.5));
+      overlay.querySelector(".portion-value").textContent = portionenText(detail.portionen);
       drawZutaten();
     });
   });
 
   overlay.querySelector("#btn-copy").addEventListener("click", (e) => {
-    const factor = detail.portionen / (r.basis || 2);
+    const factor = detail.portionen / ergiebigkeit(r);
     const lines = (r.zutaten || []).map(z => zutatLine(z, factor));
     copyToClipboard(lines.join("\n"), e.currentTarget, "Zutaten kopieren");
   });
@@ -891,7 +914,7 @@ function drawDetail() {
 function drawZutaten() {
   const r = detailRezept();
   if (!r) return;
-  const factor = detail.portionen / (r.basis || 2);
+  const factor = detail.portionen / ergiebigkeit(r);
   const el = document.getElementById("zutaten-list");
   if (!el) return;
   el.innerHTML = (r.zutaten || []).map((z, i) => {
@@ -918,6 +941,14 @@ function zutatLine(z, factor, onlyMenge) {
   }
   if (onlyMenge) return menge;
   return `${menge ? menge + " " : ""}${z.name || ""}`.trim();
+}
+
+// Wie viele Portionen kommen bei den Mengen aus der Datei wirklich heraus.
+// Sobald portionen_real gemessen ist, gilt der Wert, sonst die Rezeptbasis.
+function ergiebigkeit(r) {
+  const real = Number(r && r.portionen_real);
+  if (isFinite(real) && real > 0) return real;
+  return (r && r.basis) || 2;
 }
 
 function round1(n) {
@@ -1150,7 +1181,7 @@ function openCookMode(r, portionen) {
   const el = document.createElement("div");
   el.className = "cook fullscreen";
   document.body.appendChild(el);
-  cook = { el, recipe: r, i: 0, portionen: portionen || r.basis || 2, zutatenOffen: false, touchX: null };
+  cook = { el, recipe: r, i: 0, portionen: portionen || ergiebigkeit(r), zutatenOffen: false, touchX: null };
   scrollSperre(true);
   wakeLockAn();
 
@@ -1184,7 +1215,7 @@ function drawCook() {
   const gesamt = steps.length;
   const anzeigeNr = gesamt ? cook.i + 1 : 0;
   const breite = gesamt ? Math.round(((cook.i + 1) / gesamt) * 100) : 0;
-  const factor = cook.portionen / (r.basis || 2);
+  const factor = cook.portionen / ergiebigkeit(r);
 
   cook.el.innerHTML = `
     <div>
@@ -1194,7 +1225,7 @@ function drawCook() {
         <button class="cook-zutaten-btn" type="button">${cook.zutatenOffen ? "Schritt" : "Zutaten"}</button>
       </div>
       <div class="cook-progress-bar"><span style="width:${breite}%"></span></div>
-      <div class="cook-title">${escapeHtml(r.name)} · ${cook.portionen} Portionen</div>
+      <div class="cook-title">${escapeHtml(r.name)} · ${escapeHtml(portionenText(cook.portionen))} Portionen</div>
       ${timerZeile(gesamt ? schrittText(steps[cook.i]) : "")}
     </div>
     ${cook.zutatenOffen
@@ -1478,7 +1509,89 @@ function schrittVor() {
   if (cook.zutatenOffen) { cook.zutatenOffen = false; drawCook(); return; }
   const gesamt = (cook.recipe.schritte || []).length;
   if (cook.i < gesamt - 1) { cook.i++; drawCook(); }
-  else closeCook();
+  else {
+    const r = cook.recipe;
+    const menge = cook.portionen;
+    closeCook();
+    mengeFragen(r, menge);
+  }
+}
+
+// Direkt nach dem Kochen steht der Topf da, das ist der ehrlichste Moment für
+// die Frage nach der Ausbeute. Übersprungen wird sie mit einem Tipper.
+function mengeFragen(r, gekochteMenge) {
+  ausbeute = {
+    id: r.id,
+    name: r.name,
+    gekocht: gekochteMenge,
+    wert: r.portionen_real ? Number(r.portionen_real) : ergiebigkeit(r)
+  };
+  scrollSperre(true);
+  drawAusbeute();
+}
+
+let ausbeute = null;
+
+function ausbeuteSchliessen() {
+  ausbeute = null;
+  const el = document.getElementById("ausbeute-sheet");
+  if (el) el.remove();
+  if (!detail && !cook) scrollSperre(false);
+}
+
+function drawAusbeute() {
+  if (!ausbeute) return;
+  let el = document.getElementById("ausbeute-sheet");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "ausbeute-sheet";
+    el.className = "sheet";
+    document.body.appendChild(el);
+    el.addEventListener("click", (e) => { if (e.target === el) ausbeuteSchliessen(); });
+  }
+
+  const r = rezeptMitId(ausbeute.id);
+  const basis = r ? (r.basis || 2) : 2;
+
+  el.innerHTML = `
+    <div class="sheet-inhalt">
+      <div class="sheet-kopf">
+        <div>
+          <span class="label">Fertig</span>
+          <div class="sheet-titel">${escapeHtml(ausbeute.name)}</div>
+        </div>
+        <button type="button" class="back" aria-label="Schließen">&times;</button>
+      </div>
+      <p class="small-note">Wie viele Portionen sind aus den Mengen des Rezepts geworden? Der Wert landet als portionen_real im Rezept, danach rechnet die App alle Mengen darauf um statt auf die geschätzte Basis.</p>
+      <div class="portions" style="margin:14px 0">
+        <span class="small-note" style="margin:0">Rezeptbasis ${escapeHtml(basis)}</span>
+        <div class="portion-control">
+          <button type="button" data-a="-0.5" aria-label="Weniger">−</button>
+          <span class="portion-value">${escapeHtml(portionenText(ausbeute.wert))}</span>
+          <button type="button" data-a="0.5" aria-label="Mehr">+</button>
+        </div>
+      </div>
+      <button class="btn primary full" type="button" id="aus-ok">Ausbeute merken</button>
+      <button class="btn secondary full" type="button" id="aus-weg" style="margin-top:8px">Überspringen</button>
+    </div>
+  `;
+
+  el.querySelectorAll("[data-a]").forEach(b => {
+    b.addEventListener("click", () => {
+      ausbeute.wert = portionenNormal(ausbeute.wert + parseFloat(b.dataset.a));
+      drawAusbeute();
+    });
+  });
+  el.querySelector(".back").addEventListener("click", ausbeuteSchliessen);
+  el.querySelector("#aus-weg").addEventListener("click", ausbeuteSchliessen);
+  el.querySelector("#aus-ok").addEventListener("click", () => {
+    patchSetzen(ausbeute.id, { portionen_real: ausbeute.wert, gekocht_am: heuteIso() });
+    const wert = ausbeute.wert;
+    ausbeuteSchliessen();
+    if (detail) drawDetail();
+    render();
+    meldung(`Gemerkt: ergibt ${portionenText(wert)} Portionen`);
+  });
 }
 
 function schrittZurueck() {
@@ -1757,11 +1870,85 @@ function renderPlanung() {
   }
   wrap.appendChild(dayList);
 
+  wrap.appendChild(renderVorschlaege());
   wrap.appendChild(renderVorkochen());
   wrap.appendChild(renderWochenuebersicht());
   wrap.appendChild(renderKopiertext());
+
+  if (plan.tage.length) {
+    const ab = document.createElement("button");
+    ab.type = "button";
+    ab.className = "btn secondary full";
+    ab.style.marginTop = "18px";
+    ab.textContent = "Woche abschließen";
+    ab.addEventListener("click", abschlussOeffnen);
+    wrap.appendChild(ab);
+
+    const hin = document.createElement("p");
+    hin.className = "small-note";
+    hin.textContent = "Bewerten, ins Archiv legen, Planung leeren. Geht auch ohne Bewertung.";
+    wrap.appendChild(hin);
+  }
+
   wrap.appendChild(renderImportPanel());
 
+  return wrap;
+}
+
+// ---------- VORSCHLÄGE ----------
+
+// Was kam gut an und ist lange her, dazu Kandidaten, die noch nie dran waren.
+// Alles, was in dieser Planung schon steht, fällt raus.
+function planVorschlaege() {
+  const drin = new Set(alleSlots().filter(e => e.slot.art === "rezept").map(e => e.slot.recipeId));
+  const frei = planbareRezepte().filter(r => !drin.has(r.id));
+
+  const tageSeit = r => {
+    if (!istIso(r.gekocht_am)) return null;
+    return Math.round((new Date() - dateVon(r.gekocht_am)) / 86400000);
+  };
+
+  const bewaehrt = frei
+    .filter(r => r.urteil === "kommt wieder" || r.favorit === true)
+    .map(r => ({ r, tage: tageSeit(r) }))
+    .filter(x => x.tage === null || x.tage >= 10)
+    .sort((a, b) => (b.tage === null ? 9999 : b.tage) - (a.tage === null ? 9999 : a.tage))
+    .map(x => ({ rezept: x.r, grund: x.tage === null ? "kam gut an" : `kam gut an, ${x.tage} Tage her` }));
+
+  const neue = frei
+    .filter(r => r.status === "kandidat" && !r.gekocht_am)
+    .sort((a, b) => a.name.localeCompare(b.name, "de"))
+    .map(r => ({ rezept: r, grund: "noch nie gekocht" }));
+
+  return bewaehrt.slice(0, 3).concat(neue.slice(0, 2));
+}
+
+function renderVorschlaege() {
+  const wrap = document.createElement("div");
+  const liste = planVorschlaege();
+  if (!liste.length) return wrap;
+
+  const label = document.createElement("span");
+  label.className = "label";
+  label.style.display = "block";
+  label.style.margin = "4px 0 8px";
+  label.textContent = "Vorschläge";
+  wrap.appendChild(label);
+
+  const box = document.createElement("div");
+  box.className = "vorschlaege";
+  liste.forEach(v => {
+    const knopf = document.createElement("button");
+    knopf.type = "button";
+    knopf.className = "vorschlag";
+    knopf.innerHTML = `
+      <span class="vorschlag-name">${escapeHtml(v.rezept.name)}</span>
+      <span class="prep-info">${escapeHtml(v.grund)}</span>
+    `;
+    knopf.addEventListener("click", () => planSheetOeffnen(v.rezept.id, gewaehltesDatum || heuteIso()));
+    box.appendChild(knopf);
+  });
+  wrap.appendChild(box);
   return wrap;
 }
 
@@ -1968,7 +2155,7 @@ function renderMahlzeit(datum, kategorie, tag) {
         ${weitere.length ? `<optgroup label="Weitere Rezepte">${weitere.map(opt).join("")}</optgroup>` : ""}
       </select>
       ${r ? `<div class="row-between portionen-zeile">
-        <span class="prep-info">Portionen, Rezeptbasis ${r.basis || 2}</span>
+        <span class="prep-info">Portionen${r.portionen_real ? `, Rezept ergibt ${escapeHtml(portionenText(r.portionen_real))}` : `, Rezeptbasis ${r.basis || 2}`}</span>
         <div class="stepper">
           <button type="button" data-p="-0.5" aria-label="Weniger Portionen">−</button>
           <span class="val">${escapeHtml(portionenText(slotPortionen(slot)))}</span>
@@ -2273,7 +2460,7 @@ function renderWochenblattKarte(tag, kat, slot, quelle) {
   if (!r) return karte;
 
   const portionen = slotPortionen(slot);
-  const factor = portionen / (r.basis || 2);
+  const factor = portionen / ergiebigkeit(r);
   const vk = vorkochInfo(tag.datum, kat, quelle);
 
   const infos = [
@@ -2316,6 +2503,202 @@ function renderWochenblattKarte(tag, kat, slot, quelle) {
   });
 
   return karte;
+}
+
+// ---------- WOCHE ABSCHLIESSEN ----------
+
+const URTEILE = ["kommt wieder", "war ok", "fliegt raus"];
+
+function abschlussOeffnen() {
+  const gesehen = new Map();
+  alleSlots().forEach(({ tag, slot }) => {
+    if (slot.art !== "rezept") return;
+    const r = rezeptMitId(slot.recipeId);
+    if (!r) return;
+    const vorhanden = gesehen.get(r.id);
+    const portionen = slotPortionen(slot);
+    if (vorhanden) {
+      vorhanden.portionen += portionen;
+      if (tag.datum > vorhanden.datum) vorhanden.datum = tag.datum;
+    } else {
+      gesehen.set(r.id, {
+        id: r.id,
+        name: r.name,
+        datum: tag.datum,
+        portionen,
+        urteil: r.urteil && URTEILE.includes(r.urteil) ? r.urteil : "",
+        kind: typeof r.kind_isst === "boolean" ? r.kind_isst : null,
+        real: null
+      });
+    }
+  });
+
+  abschluss = { gerichte: [...gesehen.values()], notiz: "" };
+  scrollSperre(true);
+  drawAbschluss();
+}
+
+function abschlussSchliessen() {
+  abschluss = null;
+  const el = document.getElementById("abschluss-sheet");
+  if (el) el.remove();
+  if (!detail && !cook) scrollSperre(false);
+}
+
+function drawAbschluss() {
+  if (!abschluss) return;
+  let el = document.getElementById("abschluss-sheet");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "abschluss-sheet";
+    el.className = "sheet";
+    document.body.appendChild(el);
+    el.addEventListener("click", (e) => { if (e.target === el) abschlussSchliessen(); });
+  }
+
+  const slots = alleSlots();
+  const von = slots.length ? tagLabel(slots[0].tag.datum) : "";
+  const bis = slots.length ? tagLabel(slots[slots.length - 1].tag.datum) : "";
+
+  el.innerHTML = `
+    <div class="sheet-inhalt">
+      <div class="sheet-kopf">
+        <div>
+          <span class="label">Woche abschließen</span>
+          <div class="sheet-titel">${escapeHtml(von)} bis ${escapeHtml(bis)}</div>
+        </div>
+        <button type="button" class="back" aria-label="Schließen">&times;</button>
+      </div>
+      <p class="small-note">Kurz durchgehen, dann wird die Planung geleert und landet im Archiv. Die Urteile schreibt die App in deine Rezepte, im Reiter Daten steht danach der Rückblick für den Chat.</p>
+
+      <div class="ab-liste">
+        ${abschluss.gerichte.map((g, i) => `
+          <div class="ab-karte" data-i="${i}">
+            <div class="ab-name">${escapeHtml(g.name)}</div>
+            <div class="prep-info">${escapeHtml(tagLabel(g.datum))} · ${escapeHtml(portionenText(g.portionen))} Portionen geplant</div>
+            <div class="segmented winzig">
+              ${URTEILE.map(u => `<button type="button" data-urteil="${escapeAttr(u)}"${g.urteil === u ? ' class="aktiv"' : ""}>${escapeHtml(u)}</button>`).join("")}
+            </div>
+            <div class="row-between">
+              <span class="prep-info">Kind hat gegessen</span>
+              <div class="segmented winzig">
+                <button type="button" data-kind="ja"${g.kind === true ? ' class="aktiv"' : ""}>ja</button>
+                <button type="button" data-kind="nein"${g.kind === false ? ' class="aktiv"' : ""}>nein</button>
+                <button type="button" data-kind="egal"${g.kind === null ? ' class="aktiv"' : ""}>keine Angabe</button>
+              </div>
+            </div>
+            <div class="row-between">
+              <span class="prep-info">Tatsächliche Portionen</span>
+              <div class="stepper">
+                <button type="button" data-real="-0.5" aria-label="Weniger">−</button>
+                <span class="val">${g.real == null ? "–" : escapeHtml(portionenText(g.real))}</span>
+                <button type="button" data-real="0.5" aria-label="Mehr">+</button>
+              </div>
+            </div>
+          </div>`).join("")}
+        ${abschluss.gerichte.length ? "" : `<p class="small-note">In dieser Woche steht kein Rezept, es gibt also nichts zu bewerten.</p>`}
+      </div>
+
+      <span class="label" style="display:block;margin:18px 0 8px">Notiz zur Woche</span>
+      <textarea id="ab-notiz" placeholder="Was lief gut, was nicht. Hat das Vorkochen gereicht, hat das Vorratsfach gereicht.">${escapeHtml(abschluss.notiz)}</textarea>
+
+      <button class="btn primary full" type="button" id="ab-ok" style="margin-top:14px">Abschließen und Planung leeren</button>
+      <button class="btn secondary full" type="button" id="ab-leer" style="margin-top:8px">Nur leeren, ohne Bewertung</button>
+      <button class="btn secondary full" type="button" id="ab-abbruch" style="margin-top:8px">Abbrechen</button>
+    </div>
+  `;
+
+  const notizFeld = el.querySelector("#ab-notiz");
+  notizFeld.addEventListener("input", (e) => { abschluss.notiz = e.target.value; });
+
+  el.querySelectorAll(".ab-karte").forEach(karte => {
+    const g = abschluss.gerichte[parseInt(karte.dataset.i, 10)];
+    karte.querySelectorAll("[data-urteil]").forEach(b => {
+      b.addEventListener("click", () => { g.urteil = g.urteil === b.dataset.urteil ? "" : b.dataset.urteil; drawAbschluss(); });
+    });
+    karte.querySelectorAll("[data-kind]").forEach(b => {
+      b.addEventListener("click", () => {
+        g.kind = b.dataset.kind === "ja" ? true : b.dataset.kind === "nein" ? false : null;
+        drawAbschluss();
+      });
+    });
+    karte.querySelectorAll("[data-real]").forEach(b => {
+      b.addEventListener("click", () => {
+        const start = g.real == null ? g.portionen : g.real;
+        g.real = portionenNormal(start + parseFloat(b.dataset.real));
+        drawAbschluss();
+      });
+    });
+  });
+
+  el.querySelector(".back").addEventListener("click", abschlussSchliessen);
+  el.querySelector("#ab-abbruch").addEventListener("click", abschlussSchliessen);
+  el.querySelector("#ab-leer").addEventListener("click", () => {
+    if (!confirm("Planung ohne Bewertung leeren?")) return;
+    planLeeren();
+    abschlussSchliessen();
+    render();
+    meldung("Planung geleert");
+  });
+  el.querySelector("#ab-ok").addEventListener("click", abschlussSpeichern);
+}
+
+function planLeeren() {
+  plan = { tage: [] };
+  savePlan();
+  gewaehltesDatum = null;
+  offenerSlot = null;
+  pruefePlanBezuege();
+}
+
+function abschlussSpeichern() {
+  const slots = alleSlots();
+  const eintrag = {
+    id: "w" + Date.now(),
+    von: slots.length ? slots[0].tag.datum : heuteIso(),
+    bis: slots.length ? slots[slots.length - 1].tag.datum : heuteIso(),
+    abgeschlossen: heuteIso(),
+    notiz: abschluss.notiz || "",
+    gerichte: abschluss.gerichte.map(g => ({
+      id: g.id, name: g.name, urteil: g.urteil, kind: g.kind, portionen: g.portionen, real: g.real
+    })),
+    tage: JSON.parse(JSON.stringify(plan.tage))
+  };
+
+  // Urteile wandern in die Rezeptebene, damit sie im Katalog und im Export stehen.
+  abschluss.gerichte.forEach(g => {
+    const felder = { gekocht_am: g.datum };
+    if (g.urteil) felder.urteil = g.urteil;
+    if (g.kind !== null) felder.kind_isst = g.kind;
+    if (g.real != null) felder.portionen_real = g.real;
+    patchSetzen(g.id, felder);
+  });
+
+  archiv.unshift(eintrag);
+  if (archiv.length > 30) archiv = archiv.slice(0, 30);
+  saveArchiv();
+
+  planLeeren();
+  abschlussSchliessen();
+  render();
+  meldung("Woche abgeschlossen und archiviert");
+}
+
+function wochenRueckblickText(eintrag) {
+  const zeilen = [`Rückblick ${tagLabel(eintrag.von)} bis ${tagLabel(eintrag.bis)}`];
+  eintrag.gerichte.forEach(g => {
+    const teile = [];
+    if (g.urteil) teile.push(g.urteil);
+    if (g.kind === true) teile.push("Kind hat gegessen");
+    if (g.kind === false) teile.push("Kind hat nicht gegessen");
+    if (g.real != null) teile.push(`${portionenText(g.real)} statt ${portionenText(g.portionen)} Portionen`);
+    zeilen.push(`${g.name}: ${teile.length ? teile.join(", ") : "kein Urteil"}`);
+  });
+  if (eintrag.notiz) {
+    zeilen.push("");
+    zeilen.push(`Notiz: ${eintrag.notiz}`);
+  }
+  return zeilen.join("\n");
 }
 
 // ---------- PLAN TEILEN ----------
@@ -2825,7 +3208,7 @@ function rohliste() {
   alleSlots().forEach(({ slot }) => {
     if (slot.art !== "rezept") return;
     const r = rezeptMitId(slot.recipeId);
-    if (r) addiere(r, slotPortionen(slot) / (r.basis || 2));
+    if (r) addiere(r, slotPortionen(slot) / ergiebigkeit(r));
   });
 
   const zeilen = [...summe.entries()]
@@ -2916,6 +3299,67 @@ function renderDaten() {
     karte.querySelector('[data-act="reset"]').addEventListener("click", () => {
       if (!confirm(`Änderungen an "${r.name}" verwerfen?`)) return;
       patchLoeschen(r.id);
+      render();
+    });
+    wrap.appendChild(karte);
+  });
+
+  // Archiv abgeschlossener Wochen
+  const labelA = document.createElement("span");
+  labelA.className = "label";
+  labelA.style.display = "block";
+  labelA.style.margin = "24px 0 8px";
+  labelA.textContent = "Abgeschlossene Wochen";
+  wrap.appendChild(labelA);
+
+  if (!archiv.length) {
+    const leer = document.createElement("p");
+    leer.className = "small-note";
+    leer.textContent = "Noch keine. In der Planung unten auf Woche abschließen tippen.";
+    wrap.appendChild(leer);
+  }
+
+  archiv.forEach(eintrag => {
+    const karte = document.createElement("div");
+    karte.className = "day-card";
+    karte.style.marginBottom = "10px";
+    const mitUrteil = eintrag.gerichte.filter(g => g.urteil).length;
+    karte.innerHTML = `
+      <div class="prep-kopf">
+        <span class="prep-name">${escapeHtml(tagLabel(eintrag.von))} bis ${escapeHtml(tagLabel(eintrag.bis))}</span>
+        <span class="prep-info">${eintrag.gerichte.length} Gerichte</span>
+      </div>
+      <span class="prep-info">${mitUrteil} bewertet${eintrag.notiz ? " · Notiz vorhanden" : ""}</span>
+      <div class="ab-gerichte">
+        ${eintrag.gerichte.map(g => `<div class="vk-zeile">
+          <span>${escapeHtml(g.name)}</span>
+          <span class="prep-info">${escapeHtml(g.urteil || "kein Urteil")}${g.kind === true ? " · Kind ja" : g.kind === false ? " · Kind nein" : ""}</span>
+        </div>`).join("")}
+      </div>
+      ${eintrag.notiz ? `<div class="day-rest">${escapeHtml(eintrag.notiz)}</div>` : ""}
+      <div class="day-actions">
+        <button class="btn secondary" type="button" data-act="kopieren">Rückblick kopieren</button>
+        <button class="btn secondary" type="button" data-act="zurueck">Wiederherstellen</button>
+        <button class="btn secondary" type="button" data-act="weg">Löschen</button>
+      </div>
+    `;
+    karte.querySelector('[data-act="kopieren"]').addEventListener("click", (e) =>
+      copyToClipboard(wochenRueckblickText(eintrag), e.currentTarget, "Rückblick kopieren"));
+    karte.querySelector('[data-act="zurueck"]').addEventListener("click", () => {
+      if (plan.tage.length && !confirm("Aktuelle Planung ersetzen?")) return;
+      plan = { tage: JSON.parse(JSON.stringify(eintrag.tage || [])) };
+      savePlan();
+      plan = loadPlan();
+      pruefePlanBezuege();
+      ui.view = "planung";
+      saveUi();
+      render();
+      meldung("Woche wiederhergestellt");
+    });
+    karte.querySelector('[data-act="weg"]').addEventListener("click", () => {
+      if (!confirm("Diesen Eintrag aus dem Archiv löschen?")) return;
+      archiv = archiv.filter(x => x !== eintrag);
+      saveArchiv();
       render();
     });
     wrap.appendChild(karte);
@@ -3107,7 +3551,8 @@ function sicherungJson() {
     version: 1,
     erstellt: heuteIso(),
     plan,
-    patches
+    patches,
+    archiv
   }, null, 2);
 }
 
@@ -3131,7 +3576,11 @@ function sicherungEinlesen(text) {
     plan = loadPlan();
     pruefePlanBezuege();
   }
-  return `Eingelesen: ${plan.tage.length} Tag(e), ${Object.keys(patches).length} angepasste Rezepte.`;
+  if (Array.isArray(daten.archiv)) {
+    speichern(LS_ARCHIV, daten.archiv);
+    archiv = loadArchiv();
+  }
+  return `Eingelesen: ${plan.tage.length} Tag(e), ${Object.keys(patches).length} angepasste Rezepte, ${archiv.length} archivierte Woche(n).`;
 }
 
 function textBlock(titel, text, notiz) {
