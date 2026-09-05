@@ -1,4 +1,16 @@
-# Futterassi App, v20, flache Struktur
+# Futterassi App, v22, flache Struktur
+
+## Neu in v22
+
+Rezepte mit dem Feld `original` bekommen im Rezept einen Umschalter **Angepasst / Original**. Er erscheint nur, wenn das Feld da ist, und steht immer auf Angepasst, auch nach dem Schließen und erneuten Öffnen.
+
+Umgeschaltet werden genau sechs Felder: `zutaten`, `schritte`, `kcal`, `protein`, `fett`, `quelle`. Tags, Status, Prep-Angaben, Zeit und Geräte bleiben stehen, die gelten nur für die angepasste Fassung. Nährwerte stehen jetzt auch im Rezept selbst, sonst wäre der Unterschied nicht sichtbar.
+
+Portionsrechner, Zutaten kopieren und Kochmodus beziehen sich auf die gerade angezeigte Fassung. Wochenplan, Vorkoch-Rechnung, Zutatenliste der Woche und Nährwertsummen nehmen immer die angepasste, unabhängig davon, was auf dem Bildschirm steht. Anpassen bearbeitet ebenfalls immer die angepasste Fassung und schaltet vorher zurück. Nach dem Kochen der Originalfassung fragt die App nicht nach der Ausbeute, weil `portionen_real` zur angepassten Fassung gehört.
+
+## Neu in v21
+
+Im Wochenabschluss sprang der Bildschirm bei jedem Antippen nach oben, weil das ganze Blatt neu aufgebaut wurde. Jetzt ändert sich nur die angetippte Stelle, die Ansicht bleibt stehen. Dasselbe im Einplanen-Blatt und bei der Ausbeute-Frage.
 
 ## Neu in v20
 
@@ -121,7 +133,7 @@ Keine Unterordner. Alle Dateien liegen im selben Verzeichnis, App-Code und Manif
 
 ## Rezepte aktualisieren
 
-Neue `rezepte.json` aus dem Chat direkt im Root ersetzen. `CACHE_NAME` in `service-worker.js` bei jeder Aktualisierung um eins erhöhen, aktuell `futterassi-v20`.
+Neue `rezepte.json` aus dem Chat direkt im Root ersetzen. `CACHE_NAME` in `service-worker.js` bei jeder Aktualisierung um eins erhöhen, aktuell `futterassi-v22`.
 
 Der Service Worker holt die Rezeptdaten immer zuerst aus dem Netz, eine neue Datei kommt also ohne Versionssprung an, sobald die App online geöffnet wird. Der Versionssprung ist nur für Änderungen an HTML, CSS oder JS nötig.
 

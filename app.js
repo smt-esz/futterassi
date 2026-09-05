@@ -796,11 +796,38 @@ function detailRezept() {
   return detail ? rezeptMitId(detail.id) : null;
 }
 
+// Nur importierte Rezepte tragen ein Feld original mit der unangepassten
+// Ausgangsversion. Umgeschaltet werden ausschließlich diese sechs Felder,
+// alles andere am Rezept gilt weiter für die angepasste Fassung.
+const ORIGINAL_FELDER = ["zutaten", "schritte", "kcal", "protein", "fett", "quelle"];
+
+function hatOriginal(r) {
+  return !!(r && r.original && typeof r.original === "object");
+}
+
+function variantenAnsicht(r, variante) {
+  if (!hatOriginal(r) || variante !== "original") return r;
+  const sicht = Object.assign({}, r);
+  ORIGINAL_FELDER.forEach(f => {
+    if (r.original[f] !== undefined) sicht[f] = r.original[f];
+  });
+  sicht._variante = "original";
+  return sicht;
+}
+
+// Das ist die Fassung, die gerade auf dem Bildschirm steht. Kochmodus,
+// Portionen und Zutaten kopieren hängen daran, der Wochenplan nie.
+function detailAnsicht() {
+  const r = detailRezept();
+  if (!r) return null;
+  return variantenAnsicht(r, detail.variante);
+}
+
 function openDetail(idOderRezept) {
   const id = typeof idOderRezept === "string" ? idOderRezept : (idOderRezept && idOderRezept.id);
   const r = rezeptMitId(id);
   if (!r) return;
-  detail = { id, portionen: ergiebigkeit(r), erledigt: new Set() };
+  detail = { id, portionen: ergiebigkeit(r), erledigt: new Set(), variante: "angepasst" };
   scrollSperre(true);
   drawDetail();
   const overlay = document.getElementById("overlay");
@@ -817,8 +844,9 @@ function closeDetail() {
 }
 
 function drawDetail() {
-  const r = detailRezept();
-  if (!r) return;
+  const basisRezept = detailRezept();
+  if (!basisRezept) return;
+  const r = detailAnsicht();
   const overlay = document.getElementById("overlay");
   overlay.classList.remove("hidden");
 
@@ -854,10 +882,18 @@ function drawDetail() {
     </div>
     <h1 class="detail-title">${escapeHtml(r.name)}</h1>
     <div class="recipe-meta">${metaBadges.join("")}</div>
+    ${hatOriginal(basisRezept) ? `<div class="segmented klein variante">
+      <button type="button" data-variante="angepasst"${detail.variante !== "original" ? ' class="aktiv"' : ""}>Angepasst</button>
+      <button type="button" data-variante="original"${detail.variante === "original" ? ' class="aktiv"' : ""}>Original</button>
+    </div>
+    <p class="small-note" style="margin:8px 0 0">${detail.variante === "original"
+      ? "Ausgangsrezept, nur zur Ansicht. Für Wochenplan, Einkaufsliste und Nährwerte zählt weiter die angepasste Fassung."
+      : "Angepasste Fassung. Das Ausgangsrezept steht unter Original."}</p>` : ""}
     <div class="detail-chips">
       <button type="button" class="chip" id="btn-plan">Einplanen</button>
       <button type="button" class="chip" id="btn-edit">Anpassen</button>
     </div>
+    ${naehrwertZeile(r)}
 
     ${r.ausnahme && r.leichter ? `<div class="note-box exception" style="margin-bottom:10px"><strong>Leichter gebaut</strong><p>${escapeHtml(r.leichter)}</p></div>` : ""}
     ${r.varianten ? `<div class="note-box" style="margin-bottom:10px"><strong>Varianten</strong><p>${escapeHtml(r.varianten)}</p></div>` : ""}
@@ -896,7 +932,20 @@ function drawDetail() {
   `;
 
   overlay.querySelector(".back").addEventListener("click", closeDetail);
-  overlay.querySelector("#btn-edit").addEventListener("click", () => editorOeffnen(r.id));
+  overlay.querySelectorAll("[data-variante]").forEach(b => {
+    b.addEventListener("click", () => {
+      if (detail.variante === b.dataset.variante) return;
+      detail.variante = b.dataset.variante;
+      detail.portionen = ergiebigkeit(detailAnsicht());
+      detail.erledigt = new Set();
+      drawDetail();
+    });
+  });
+  overlay.querySelector("#btn-edit").addEventListener("click", () => {
+    // Bearbeitet wird immer die angepasste Fassung, nie das Original.
+    detail.variante = "angepasst";
+    editorOeffnen(r.id);
+  });
   overlay.querySelector("#btn-plan").addEventListener("click", () => planSheetOeffnen(r.id));
 
   overlay.querySelectorAll(".portion-control button").forEach(b => {
@@ -922,8 +971,18 @@ function drawDetail() {
   drawZutaten();
 }
 
+function naehrwertZeile(r) {
+  const werte = [];
+  if (r.kcal) werte.push(`<span class="metric"><strong>${escapeHtml(r.kcal)}</strong>&nbsp;kcal</span>`);
+  if (r.protein) werte.push(`<span class="metric"><strong>${escapeHtml(r.protein)}</strong>&nbsp;g Eiweiß</span>`);
+  if (r.fett) werte.push(`<span class="metric"><strong>${escapeHtml(r.fett)}</strong>&nbsp;g Fett</span>`);
+  if (salzWert(r) != null) werte.push(`<span class="metric"><strong>${escapeHtml(salzText(salzWert(r)))}</strong>&nbsp;Salz</span>`);
+  if (!werte.length) return "";
+  return `<div class="metrics" style="margin-bottom:16px">${werte.join("")}</div>`;
+}
+
 function drawZutaten() {
-  const r = detailRezept();
+  const r = detailAnsicht();
   if (!r) return;
   const factor = detail.portionen / ergiebigkeit(r);
   const el = document.getElementById("zutaten-list");
@@ -1236,7 +1295,7 @@ function drawCook() {
         <button class="cook-zutaten-btn" type="button">${cook.zutatenOffen ? "Schritt" : "Zutaten"}</button>
       </div>
       <div class="cook-progress-bar"><span style="width:${breite}%"></span></div>
-      <div class="cook-title">${escapeHtml(r.name)} · ${escapeHtml(portionenText(cook.portionen))} Portionen</div>
+      <div class="cook-title">${escapeHtml(r.name)} · ${escapeHtml(portionenText(cook.portionen))} Portionen${r._variante === "original" ? " · Original" : ""}</div>
       ${timerZeile(gesamt ? schrittText(steps[cook.i]) : "")}
     </div>
     ${cook.zutatenOffen
@@ -1524,7 +1583,9 @@ function schrittVor() {
     const r = cook.recipe;
     const menge = cook.portionen;
     closeCook();
-    mengeFragen(r, menge);
+    // Nach dem Original wird nicht gefragt, die gemessene Ausbeute gehört
+    // zur angepassten Fassung.
+    if (!r._variante) mengeFragen(r, menge);
   }
 }
 

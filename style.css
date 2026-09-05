@@ -820,3 +820,7 @@ body.text-riesig .small-note, body.text-riesig .day-info, body.text-riesig .wb-i
 .vorschlag:active { background: var(--chip-bg); }
 .vorschlag-name { font-weight: 750; line-height: 1.3; }
 .vorschlag::after { content: ""; }
+
+/* Umschalter Original / Angepasst in der Rezeptkarte */
+.segmented.variante { margin-top: 14px; }
+.segmented.variante button { min-height: 42px; }

@@ -3,7 +3,7 @@
     "id": "sandwich",
     "name": "Sandwich mit veganem Chicken, Bacon, Avocado & Spiegelei",
     "basis": 2,
-    "portionen_real": null,
+    "portionen_real": 2,
     "typ": "abendessen",
     "favorit": true,
     "rest": null,
@@ -21,27 +21,27 @@
     "protein": 42,
     "zutaten": [
       {
-        "menge": 6,
+        "menge": 4,
         "einheit": "Scheiben",
         "name": "Toastbrot oder Ciabatta"
       },
       {
-        "menge": 300,
+        "menge": 200,
         "einheit": "g",
         "name": "veganer Chicken-Ersatz"
       },
       {
-        "menge": 100,
+        "menge": 70,
         "einheit": "g",
         "name": "veganer Bacon"
       },
       {
-        "menge": 2,
+        "menge": 1,
         "einheit": "Stück",
         "name": "Avocado"
       },
       {
-        "menge": 3,
+        "menge": 2,
         "einheit": "Stück",
         "name": "Eier"
       },
@@ -79,9 +79,10 @@
     },
     "fett": 45,
     "status": "stamm",
-    "gekocht_am": "2026-07",
+    "gekocht_am": "2026-08-22",
     "urteil": "kommt wieder",
-    "saison": null
+    "saison": null,
+    "kind_isst": false
   },
   {
     "id": "kritharaki",
@@ -1547,7 +1548,7 @@
     "id": "couscoussalat",
     "name": "Couscous-Salat mit Kichererbsen, Tomate, Gurke und Feta",
     "basis": 2,
-    "portionen_real": null,
+    "portionen_real": 4,
     "typ": "abendessen",
     "favorit": false,
     "rest": "½ Salatgurke",
@@ -1640,9 +1641,10 @@
     },
     "fett": 27,
     "status": "kandidat",
-    "gekocht_am": null,
-    "urteil": null,
-    "saison": null
+    "gekocht_am": "2026-08-26",
+    "urteil": "kommt wieder",
+    "saison": null,
+    "kind_isst": false
   },
   {
     "id": "ofengnocchi",
@@ -1985,7 +1987,7 @@
     },
     "fett": 6,
     "status": "kandidat",
-    "gekocht_am": null,
+    "gekocht_am": "2026-08-28",
     "urteil": null,
     "saison": null
   },
@@ -2108,7 +2110,7 @@
     "id": "kichererbsencurry",
     "name": "Kichererbsen-Spinat-Curry mit Vollkornreis",
     "basis": 6,
-    "portionen_real": null,
+    "portionen_real": 4,
     "typ": "mittag",
     "favorit": false,
     "rest": null,
@@ -2221,9 +2223,10 @@
     ],
     "fett": 14,
     "status": "kandidat",
-    "gekocht_am": null,
-    "urteil": null,
-    "saison": null
+    "gekocht_am": "2026-08-27",
+    "urteil": "kommt wieder",
+    "saison": null,
+    "kind_isst": false
   },
   {
     "id": "bulgurbowl",
@@ -2970,7 +2973,7 @@
     "id": "proteinporridge",
     "name": "Overnight-Proteinporridge mit Beeren und Zimt (to go)",
     "basis": 2,
-    "portionen_real": null,
+    "portionen_real": 2,
     "typ": "fruehstueck",
     "favorit": false,
     "rest": null,
@@ -2994,7 +2997,7 @@
         "name": "Haferflocken, kernig"
       },
       {
-        "menge": 300,
+        "menge": 400,
         "einheit": "g",
         "name": "Skyr oder Magerquark"
       },
@@ -3040,15 +3043,16 @@
     },
     "fett": 11,
     "status": "kandidat",
-    "gekocht_am": null,
-    "urteil": null,
-    "saison": null
+    "gekocht_am": "2026-08-27",
+    "urteil": "kommt wieder",
+    "saison": null,
+    "kind_isst": false
   },
   {
     "id": "huettenkaesebowl",
     "name": "Herzhafte Frühstücksbowl mit Hüttenkäse, Tahin und Vollkornbrot (to go)",
     "basis": 2,
-    "portionen_real": null,
+    "portionen_real": 2,
     "typ": "fruehstueck",
     "favorit": false,
     "rest": "1/2 Salatgurke",
@@ -3128,9 +3132,10 @@
     },
     "fett": 17,
     "status": "kandidat",
-    "gekocht_am": null,
-    "urteil": null,
-    "saison": null
+    "gekocht_am": "2026-08-25",
+    "urteil": "kommt wieder",
+    "saison": null,
+    "kind_isst": false
   },
   {
     "id": "fava",
@@ -4240,5 +4245,2316 @@
     "gekocht_am": null,
     "urteil": null,
     "saison": null
+  },
+  {
+    "id": "bohnenenchiladas",
+    "name": "Bohnen-Enchiladas mit Tofu-Käse-Sauce",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "SÄTTIGUNG",
+      "SOJA-CHECK",
+      "SPORT"
+    ],
+    "geraete": "Pfanne, Mixer oder Thermomix, Backofen, Auflaufform",
+    "zeit": "40 Min. aktiv, 25 Min. Ofenzeit",
+    "kcal": 580,
+    "protein": 40,
+    "zutaten": [
+      {
+        "menge": 70,
+        "einheit": "g",
+        "name": "TVP, trocken"
+      },
+      {
+        "menge": 180,
+        "einheit": "ml",
+        "name": "Wasser"
+      },
+      {
+        "menge": 15,
+        "einheit": "g",
+        "name": "Nährhefe (für die Füllung)"
+      },
+      {
+        "menge": 210,
+        "einheit": "g",
+        "name": "schwarze Bohnen, abgetropft"
+      },
+      {
+        "menge": 1.5,
+        "einheit": "TL",
+        "name": "Taco-Gewürzmischung, natriumreduziert"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "TL",
+        "name": "Knoblauchpulver"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "TL",
+        "name": "Zwiebelpulver"
+      },
+      {
+        "menge": 4,
+        "einheit": "Stück",
+        "name": "Vollkorn-Tortillas"
+      },
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "Enchiladasauce, natriumreduziert wenn erhältlich"
+      },
+      {
+        "menge": 150,
+        "einheit": "g",
+        "name": "Seidentofu (für die Käse-Sauce)"
+      },
+      {
+        "menge": 40,
+        "einheit": "ml",
+        "name": "Sojamilch, ungesüßt"
+      },
+      {
+        "menge": 55,
+        "einheit": "g",
+        "name": "grüne Chilis aus der Dose"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Nährhefe (für die Käse-Sauce)"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "TVP mit Wasser, Nährhefe, Taco-Gewürz, Knoblauch- und Zwiebelpulver in einer Pfanne vermengen und 15 Minuten bei mittlerer Hitze köcheln, bis die Flüssigkeit fast verkocht ist.",
+      "Schwarze Bohnen unterrühren und kurz mit erhitzen.",
+      "Für die Käse-Sauce Seidentofu, Sojamilch, grüne Chilis, Nährhefe und Salz im Mixer oder Thermomix cremig pürieren.",
+      "Ofen auf 190°C vorheizen. Füllung auf die Tortillas verteilen, aufrollen, mit der Naht nach unten in eine Auflaufform legen.",
+      "Mit Enchiladasauce übergießen, Tofu-Käse-Sauce darüber verteilen.",
+      "20 bis 25 Minuten backen, bis die Oberfläche leicht bräunt."
+    ],
+    "notiz": "Ausgangsrichtung ist Tex-Mex, nicht mediterran, passt aber als gelegentliches Comfort-Food-Gericht. Enchiladasauce und Taco-Gewürz auf Natriumgehalt prüfen, das ist der Hebel bei Bluthochdruck. Nährwerte geschätzt, mit YAZIO zu prüfen.",
+    "quelle": "proteindeficientvegan.com, High Protein Black Bean & TVP Enchiladas, angepasst",
+    "notizen": "Cashew-Queso durch Tofu-Käse-Sauce ersetzt, Nüsse sind bei euch als Zutat ausgeschlossen. Portionsmenge von 4 auf 2 halbiert, Tortillas auf Vollkorn umgestellt, der zusätzliche geriebene Käse-Belag aus dem Original wurde gestrichen.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 3,
+      "aufwaermen": "im Ofen bei 180°C abgedeckt aufwärmen",
+      "einfrierbar": true
+    },
+    "fett": 9,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "tvpspeck",
+    "name": "Speck-Krümel",
+    "basis": 4,
+    "portionen_real": null,
+    "typ": "basis",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "SOJA-CHECK",
+      "SÄTTIGUNG"
+    ],
+    "geraete": "Pfanne",
+    "zeit": "20 Min. aktiv",
+    "kcal": 119,
+    "protein": 14,
+    "zutaten": [
+      {
+        "menge": 96,
+        "einheit": "g",
+        "name": "TVP, trocken"
+      },
+      {
+        "menge": 240,
+        "einheit": "ml",
+        "name": "Wasser"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Knoblauchpulver"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Zwiebelpulver"
+      },
+      {
+        "menge": 2,
+        "einheit": "TL",
+        "name": "Rauchpaprika"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "TL",
+        "name": "Salz"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Nährhefe"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Ahornsirup"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Sojasauce, natriumreduziert"
+      }
+    ],
+    "schritte": [
+      "Alle Zutaten in einer Pfanne bei mittlerer Hitze gut vermengen.",
+      "15 bis 20 Minuten unter regelmäßigem Rühren köcheln lassen, bis die gewünschte Feuchtigkeit erreicht ist. Mit einem Holzlöffel vom Boden lösen, damit nichts anbrennt."
+    ],
+    "notiz": "Salz plus Sojasauce ergeben zusammen einen spürbaren Natriumanteil, deshalb natriumreduzierte Sojasauce verwenden und an Tagen mit anderen salzigen Gerichten gegenrechnen. Ahornsirup ist die einzige Zuckerquelle im Rezept, 1 EL auf 4 Portionen ist gering. Einfrierbarkeit ist vom Original nicht angegeben und noch nicht getestet.",
+    "quelle": "proteindeficientvegan.com, High Protein Vegan Bacon Bits",
+    "notizen": "Sojasauce auf natriumreduzierte Variante umgestellt, das ist der einzige Eingriff. Nährwerte sind aus der Quelle übernommen, nicht selbst nachgerechnet.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 3,
+      "aufwaermen": "kalt oder kurz in der Pfanne",
+      "einfrierbar": false
+    },
+    "fett": 0,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "kartoffelsalattvp",
+    "name": "Geladener Kartoffelsalat mit Tofu-Dressing und Speck-Krümeln",
+    "basis": 3,
+    "portionen_real": null,
+    "typ": "mittag",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "SOJA-CHECK",
+      "SÄTTIGUNG"
+    ],
+    "geraete": "Topf, Mixer oder Thermomix, Pfanne",
+    "zeit": "35 Min. aktiv, dazu Kühlzeit",
+    "kcal": 205,
+    "protein": 15,
+    "zutaten": [
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "kleine Kartoffeln"
+      },
+      {
+        "menge": 35,
+        "einheit": "g",
+        "name": "TVP, trocken"
+      },
+      {
+        "menge": 90,
+        "einheit": "ml",
+        "name": "Wasser"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "TL",
+        "name": "Knoblauchpulver (für die Krümel)"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "TL",
+        "name": "Zwiebelpulver (für die Krümel)"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Rauchpaprika"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz (für die Krümel, nach Bedarf)"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Nährhefe (für die Krümel)"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Ahornsirup"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Sojasauce, natriumreduziert"
+      },
+      {
+        "menge": 120,
+        "einheit": "g",
+        "name": "Seidentofu"
+      },
+      {
+        "menge": 75,
+        "einheit": "g",
+        "name": "fester Tofu"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Zitronensaft"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Nährhefe (für das Dressing)"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Apfelessig"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz (für das Dressing, nach Bedarf)"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "TL",
+        "name": "Knoblauchpulver (für das Dressing)"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "TL",
+        "name": "Zwiebelpulver (für das Dressing)"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "frischer Dill, fein gehackt"
+      },
+      {
+        "menge": 20,
+        "einheit": "g",
+        "name": "veganer Cheddar, gerieben (optional)"
+      }
+    ],
+    "schritte": [
+      "Kartoffeln waschen, halbieren, in kochendem Wasser 20 bis 25 Minuten garen, bis sie weich sind.",
+      "Für die Speck-Krümel TVP mit Wasser, Knoblauch- und Zwiebelpulver, Rauchpaprika, Salz, Nährhefe, Ahornsirup und Sojasauce in einer Pfanne 15 Minuten köcheln lassen.",
+      "Für das Dressing Seidentofu, festen Tofu, Zitronensaft, Nährhefe, Apfelessig, Salz, Knoblauch- und Zwiebelpulver im Mixer oder Thermomix cremig pürieren.",
+      "Dill von Hand unterrühren, damit das Dressing nicht grün wird.",
+      "Kartoffeln, Speck-Krümel, Dressing und veganen Cheddar vermengen.",
+      "Warm servieren oder im Kühlschrank durchziehen lassen."
+    ],
+    "notiz": "Zucker aus dem Original-Dressing gestrichen, wird nicht gebraucht. Veganer Cheddar ist optional, ohne bleibt es näher an pflanzlicher Vollwertkost. Passt sommerlich zu Grillabenden oder kalt als Mittagessen. Nährwerte geschätzt, aus der Krümel- und Dressing-Berechnung abgeleitet, nicht aus der Quelle übernommen.",
+    "quelle": "proteindeficientvegan.com, High Protein Loaded Potato Salad, angepasst mit eigener TVP-Speck-Krümel-Variante",
+    "notizen": "Mengen von 8 auf 3 Portionen herunterskaliert, 1 TL Zucker aus dem Dressing gestrichen, Sojasauce in der Krümel-Komponente auf natriumreduziert umgestellt.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 3,
+      "aufwaermen": "kalt servieren, nicht aufwärmen",
+      "einfrierbar": false
+    },
+    "fett": 5,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": [
+      6,
+      7,
+      8
+    ]
+  },
+  {
+    "id": "shepherdspietvp",
+    "name": "Shepherd's Pie mit Champignons und Kartoffelstampf",
+    "basis": 3,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "SÄTTIGUNG",
+      "SOJA-CHECK",
+      "SPORT"
+    ],
+    "geraete": "Pfanne, Topf, Handrührer oder Küchenmaschine, Auflaufform, Backofen",
+    "zeit": "35 Min. aktiv, 20 Min. Ofenzeit",
+    "kcal": 333,
+    "protein": 24,
+    "zutaten": [
+      {
+        "menge": 260,
+        "einheit": "g",
+        "name": "Kartoffeln, geschält und gewürfelt"
+      },
+      {
+        "menge": 70,
+        "einheit": "ml",
+        "name": "Sojamilch, ungesüßt"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz (für den Stampf, nach Bedarf)"
+      },
+      {
+        "menge": 35,
+        "einheit": "g",
+        "name": "veganer Käse, gerieben (optional, sonst mehr Nährhefe)"
+      },
+      {
+        "menge": 90,
+        "einheit": "g",
+        "name": "TVP, trocken"
+      },
+      {
+        "menge": 225,
+        "einheit": "ml",
+        "name": "Gemüsebrühe"
+      },
+      {
+        "menge": 340,
+        "einheit": "g",
+        "name": "braune Champignons, in Scheiben"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "kleine Zwiebel, gewürfelt"
+      },
+      {
+        "menge": 4,
+        "einheit": "Stück",
+        "name": "Knoblauchzehen, gehackt"
+      },
+      {
+        "menge": 40,
+        "einheit": "g",
+        "name": "Erbsen, tiefgekühlt"
+      },
+      {
+        "menge": 40,
+        "einheit": "g",
+        "name": "Mais, tiefgekühlt"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Nährhefe"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "TL",
+        "name": "Zwiebelpulver"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "TL",
+        "name": "Knoblauchpulver"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "getrockneter Basilikum"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Sojasauce, natriumreduziert"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "TL",
+        "name": "getrockneter Thymian"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz (für die Füllung, nach Bedarf)"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Worcestershiresauce, vegan (Etikett prüfen)"
+      }
+    ],
+    "schritte": [
+      "Kartoffeln schälen, würfeln, in kochendem Wasser 20 Minuten garen, bis sie weich sind. Mit Sojamilch und Salz cremig stampfen oder mit dem Handrührer aufschlagen, veganen Käse unterheben.",
+      "Zwiebel in einer großen Pfanne 5 Minuten andünsten, Knoblauch dazugeben und 2 bis 3 Minuten mitgaren.",
+      "Champignons zugeben und braten, bis das meiste Wasser verkocht ist.",
+      "TVP und Gemüsebrühe einrühren, Nährhefe, Zwiebel- und Knoblauchpulver, Basilikum, Sojasauce, Thymian, Salz und Worcestershiresauce untermischen, offen köcheln, bis die Flüssigkeit größtenteils aufgenommen ist.",
+      "Erbsen und Mais unterrühren, weitere 5 bis 10 Minuten köcheln, bis die Füllung nicht mehr matschig ist.",
+      "Ofen auf 177°C vorheizen. Füllung in eine Auflaufform geben, Kartoffelstampf darauf verteilen und glattstreichen.",
+      "20 Minuten backen, zum Schluss kurz überbacken, bis die Oberfläche Farbe bekommt. Vor dem Anschneiden 10 Minuten ruhen lassen."
+    ],
+    "notiz": "Das Original enthält keine Möhren, sondern Champignons, Erbsen und Mais, die befürchtete Möhren-Frage stellt sich hier nicht. Salz kommt aus Brühe, Sojasauce und Worcestershiresauce zusammen, beim Nachsalzen zurückhaltend sein. Veganer Käse ist optional. Nährwerte aus der Quelle übernommen, nicht selbst nachgerechnet.",
+    "quelle": "proteindeficientvegan.com, High Protein Vegan Shepherd's Pie, angepasst",
+    "notizen": "Von 8 auf 3 Portionen heruntergerechnet. Sojasauce auf natriumreduziert umgestellt. Sonst inhaltlich unverändert übernommen.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 4,
+      "aufwaermen": "im Ofen oder in der Mikrowelle",
+      "einfrierbar": true
+    },
+    "fett": 5,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "tvptacos",
+    "name": "Tacos mit Salsa und Oliven",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "SÄTTIGUNG",
+      "SOJA-CHECK",
+      "schnell",
+      "SPORT"
+    ],
+    "geraete": "Pfanne",
+    "zeit": "15 Min. aktiv",
+    "kcal": 287,
+    "protein": 23,
+    "zutaten": [
+      {
+        "menge": 48,
+        "einheit": "g",
+        "name": "TVP, trocken"
+      },
+      {
+        "menge": 120,
+        "einheit": "ml",
+        "name": "Wasser"
+      },
+      {
+        "menge": 7,
+        "einheit": "g",
+        "name": "Nährhefe"
+      },
+      {
+        "menge": 0.25,
+        "einheit": "TL",
+        "name": "Zwiebelpulver"
+      },
+      {
+        "menge": 0.25,
+        "einheit": "TL",
+        "name": "Knoblauchpulver"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Taco-Gewürzmischung, natriumreduziert"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Vollkorn-Tortillas"
+      },
+      {
+        "menge": 28,
+        "einheit": "g",
+        "name": "veganer Käse, gerieben (optional)"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Römersalat, nach Bedarf"
+      },
+      {
+        "menge": 8,
+        "einheit": "Stück",
+        "name": "Oliven, in Scheiben"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salsa, nach Bedarf"
+      },
+      {
+        "menge": 30,
+        "einheit": "g",
+        "name": "Sojajoghurt, ungesüßt (statt veganer Sauerrahm)"
+      }
+    ],
+    "schritte": [
+      "TVP, Wasser, Nährhefe, Zwiebel- und Knoblauchpulver sowie Taco-Gewürz in einer Pfanne bei mittlerer Hitze gut vermengen, solange die Masse noch feucht ist.",
+      "10 bis 15 Minuten unter regelmäßigem Rühren braten, bis das TVP leicht gebräunt ist und die gewünschte Feuchtigkeit erreicht ist.",
+      "Tortillas mit der TVP-Mischung, Käse, Salat, Oliven, Salsa und Sojajoghurt belegen."
+    ],
+    "notiz": "Kein Kohl, keine Möhren, keine Nüsse, unkompliziertestes der vier neuen Rezepte. Veganer Sauerrahm im Original durch Sojajoghurt ersetzt, weniger verarbeitet bei gleicher Funktion. Nährwerte aus der Quelle übernommen, nicht selbst nachgerechnet.",
+    "quelle": "proteindeficientvegan.com, High Protein TVP Tacos, angepasst",
+    "notizen": "Von 4 auf 2 Portionen heruntergerechnet, veganen Sauerrahm durch ungesüßten Sojajoghurt ersetzt, Taco-Gewürz auf natriumreduziert umgestellt.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 3,
+      "aufwaermen": "in der Pfanne kurz aufwärmen",
+      "einfrierbar": true
+    },
+    "fett": 11,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "chilitvp",
+    "name": "Chili sin Carne mit zwei Bohnensorten",
+    "basis": 3,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "SÄTTIGUNG",
+      "SOJA-CHECK",
+      "SPORT"
+    ],
+    "geraete": "Topf",
+    "zeit": "35 Min. aktiv",
+    "kcal": 375,
+    "protein": 29,
+    "zutaten": [
+      {
+        "menge": 90,
+        "einheit": "g",
+        "name": "TVP, trocken"
+      },
+      {
+        "menge": 220,
+        "einheit": "ml",
+        "name": "Gemüsebrühe"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zwiebel, gewürfelt"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Knoblauchzehen, gehackt"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "rote Paprika, gewürfelt"
+      },
+      {
+        "menge": 400,
+        "einheit": "g",
+        "name": "stückige Tomaten (Dose)"
+      },
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "Kidneybohnen, abgetropft"
+      },
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "schwarze Bohnen, abgetropft"
+      },
+      {
+        "menge": 60,
+        "einheit": "g",
+        "name": "Mais, tiefgekühlt oder aus der Dose"
+      },
+      {
+        "menge": 2,
+        "einheit": "TL",
+        "name": "Chilipulver"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Kreuzkümmel, gemahlen"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Rauchpaprika"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Tomatenmark"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Stück",
+        "name": "Limette, Saft davon"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "TVP mit heißer Gemüsebrühe übergießen und 10 Minuten quellen lassen.",
+      "Zwiebel und Knoblauch in Olivenöl andünsten, Paprikawürfel dazugeben und mitbraten.",
+      "Tomatenmark kurz mitrösten, mit den stückigen Tomaten ablöschen.",
+      "TVP, Kidneybohnen, schwarze Bohnen, Chilipulver, Kreuzkümmel und Rauchpaprika einrühren, 15 bis 20 Minuten offen köcheln lassen.",
+      "Mais in den letzten 5 Minuten zugeben.",
+      "Mit Limettensaft, Salz und Pfeffer abschmecken."
+    ],
+    "notiz": "Eigenbau, kein Vorbild übernommen. Mais bewusst in kleiner Menge nach der neuen Vorgabe. Keine Möhren drin, ließen sich in kleiner Menge mitkochen, Person 1 mag sie geschmacklich aber grundsätzlich nicht. Richtung ist Tex-Mex, nicht mediterran, das ist hier bewusst so, weil explizit Comfort Food gewünscht war. Nährwerte geschätzt, mit YAZIO zu prüfen.",
+    "quelle": "Eigenbau, TVP-Chili nach Comfort-Food-Wunsch aus dem Chat vom 05.09.2026",
+    "notizen": "Komplett neu zusammengestellt, keine Zutatenliste oder Mengen von einer fremden Quelle übernommen. Gewürzmengen sind Einschätzungen, beim ersten Kochen nachschmecken.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 4,
+      "aufwaermen": "in der Pfanne oder Mikrowelle aufwärmen",
+      "einfrierbar": true
+    },
+    "fett": 6,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "pilzstroganofftvp",
+    "name": "Pilz-Stroganoff mit Tofu-Sahne",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "SÄTTIGUNG",
+      "SOJA-CHECK",
+      "SPORT"
+    ],
+    "geraete": "Pfanne, Mixer oder Thermomix, Topf für die Nudeln",
+    "zeit": "30 Min. aktiv",
+    "kcal": 460,
+    "protein": 26,
+    "zutaten": [
+      {
+        "menge": 40,
+        "einheit": "g",
+        "name": "TVP, trocken"
+      },
+      {
+        "menge": 100,
+        "einheit": "ml",
+        "name": "Gemüsebrühe"
+      },
+      {
+        "menge": 250,
+        "einheit": "g",
+        "name": "braune Champignons, in Scheiben"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zwiebel, gewürfelt"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Knoblauchzehen, gehackt"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Tomatenmark"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Paprikapulver, edelsüß"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Senf, mittelscharf"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "Seidentofu"
+      },
+      {
+        "menge": 50,
+        "einheit": "ml",
+        "name": "Sojamilch, ungesüßt"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Sojasauce, natriumreduziert"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 140,
+        "einheit": "g",
+        "name": "Vollkornnudeln, trocken"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "frische Petersilie, gehackt"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "TVP mit heißer Gemüsebrühe übergießen und 10 Minuten quellen lassen.",
+      "Vollkornnudeln nach Packungsangabe kochen.",
+      "Zwiebel in Olivenöl andünsten, Knoblauch dazugeben.",
+      "Champignons zugeben und braten, bis das meiste Wasser verkocht ist.",
+      "TVP, Tomatenmark, Paprikapulver, Senf und Sojasauce einrühren, kurz mitbraten.",
+      "Seidentofu und Sojamilch im Mixer oder Thermomix cremig pürieren, zur Pfanne geben und bei niedriger Hitze erwärmen, nicht mehr kochen lassen.",
+      "Mit Salz und Pfeffer abschmecken, über die Nudeln geben, mit Petersilie garnieren."
+    ],
+    "notiz": "Eigenbau, kein Vorbild übernommen. Tofu-Sahne statt saurer Sahne oder Cashewsahne, keine Nüsse. Eher ein Herbst-Winter-Gericht als sommerlich, das ist hier bewusst so, weil explizit Comfort Food gewünscht war. Nährwerte geschätzt, mit YAZIO zu prüfen.",
+    "quelle": "Eigenbau, TVP-Pilz-Stroganoff nach Comfort-Food-Wunsch aus dem Chat vom 05.09.2026",
+    "notizen": "Komplett neu zusammengestellt, keine Zutatenliste oder Mengen von einer fremden Quelle übernommen.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 3,
+      "aufwaermen": "in der Pfanne bei niedriger Hitze aufwärmen, nicht kochen",
+      "einfrierbar": false
+    },
+    "fett": 10,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null
+  },
+  {
+    "id": "enchiladasrind",
+    "name": "Rinderhack-Enchiladas mit Kidneybohnen und Gouda",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "High Protein",
+      "SÄTTIGUNG",
+      "vegetarisch",
+      "SOJA-CHECK"
+    ],
+    "geraete": "Pfanne, Backofen mit Grillfunktion, Auflaufform",
+    "zeit": "15 bis 25 Min.",
+    "kcal": 800,
+    "protein": 48,
+    "zutaten": [
+      {
+        "menge": 250,
+        "einheit": "g",
+        "name": "Veggie-Hack"
+      },
+      {
+        "menge": 4,
+        "einheit": "Stück",
+        "name": "Vollkorn-Tortillas"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "passierte Tomaten oder Tomatensauce, natriumarm"
+      },
+      {
+        "menge": 380,
+        "einheit": "g",
+        "name": "Kidneybohnen, abgetropft"
+      },
+      {
+        "menge": 75,
+        "einheit": "g",
+        "name": "Naturjoghurt"
+      },
+      {
+        "menge": 50,
+        "einheit": "g",
+        "name": "junger Gouda, gerieben"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Kreuzkümmel, gemahlen"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Paprikapulver"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "TL",
+        "name": "Chiliflocken"
+      },
+      {
+        "menge": 10,
+        "einheit": "g",
+        "name": "Petersilie, glatt"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Salz, Pfeffer (sparsam, nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Bohnen abspülen und abtropfen lassen. Hackfleisch in einer Pfanne ohne zusätzliches Fett anbraten, bis es krümelig ist, Bohnen kurz mitbraten.",
+      "Tomatensauce zur Hälfte einrühren, mit Kreuzkümmel, Paprika und Chili würzen, kurz köcheln lassen.",
+      "Vollkorn-Tortillas mit der Füllung belegen, aufrollen und mit der Naht nach unten in eine Auflaufform legen.",
+      "Restliche Tomatensauce darüber verteilen, mit Gouda bestreuen.",
+      "Unter dem Ofengrill 3 bis 5 Minuten überbacken, bis der Käse geschmolzen ist.",
+      "Mit Joghurt und gehackter Petersilie servieren."
+    ],
+    "notiz": "Groesster Hebel war das Salz (Original ueber 6,5 g pro Portion), dazu jetzt auch das Fleisch: Rinderhack durch Veggie-Hack ersetzt, wie im Bestand bei den Lahmacun-Wraps schon verwendet. Vollkorntortillas statt Weissmehl, Kaese von 75 auf 50 g reduziert, eigene Gewuerzmischung statt Fertigmix. Naehrwerte geschaetzt und nach dem Fleisch-Tausch neu abgeschaetzt, nicht exakt nachgerechnet.",
+    "quelle": "HelloFresh Rezept Nr. 42, angepasst und vegetarisch",
+    "notizen": "Fertiggewuerzmischung durch Kreuzkuemmel, Paprika und Chili ersetzt, Weizentortillas auf Vollkorn, Kaese von 75 auf 50 g reduziert, Rinderhack durch Veggie-Hack ersetzt.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 2,
+      "aufwaermen": "im Ofen",
+      "einfrierbar": false
+    },
+    "fett": 26,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null,
+    "original": {
+      "zutaten": [
+        {
+          "menge": 250,
+          "einheit": "g",
+          "name": "Bio-Rinderhackfleischzubereitung"
+        },
+        {
+          "menge": 245,
+          "einheit": "g",
+          "name": "Weizentortillas"
+        },
+        {
+          "menge": 100,
+          "einheit": "g",
+          "name": "Tomaten-Salsa-Sosse"
+        },
+        {
+          "menge": 380,
+          "einheit": "g",
+          "name": "Kidneybohnen"
+        },
+        {
+          "menge": 75,
+          "einheit": "g",
+          "name": "Naturjoghurt"
+        },
+        {
+          "menge": 75,
+          "einheit": "g",
+          "name": "junger Gouda, gerieben"
+        },
+        {
+          "menge": 6,
+          "einheit": "g",
+          "name": "Gewuerzmischung Hello Fiesta"
+        },
+        {
+          "menge": 10,
+          "einheit": "g",
+          "name": "Petersilie, glatt"
+        }
+      ],
+      "schritte": [
+        "Bohnen abgiessen und abspuelen. Hackfleisch in einer Pfanne anbraten, Bohnen zugeben und mitbraten.",
+        "Tomate wuerfeln, mit der halben Salsa und dem Gewuerzmix zur Fuellung geben.",
+        "Tortillas fuellen, aufrollen, in eine Auflaufform legen, restliche Salsa und Kaese darauf verteilen.",
+        "Unter dem Grill 3 bis 5 Minuten ueberbacken.",
+        "Mit Joghurt und Petersilie garnieren."
+      ],
+      "kcal": 1117,
+      "protein": 56,
+      "fett": 56,
+      "kohlenhydrate": 89,
+      "zucker": 10.5,
+      "salz": 6.53,
+      "quelle": "HelloFresh Rezept Nr. 42, Bio-Rinderhack Enchiladas mit Kidneybohnen und Salsa, gratiniert mit Gouda"
+    }
+  },
+  {
+    "id": "tingabowl",
+    "name": "Chipotle-Hähnchen-Bowl mit pinken Zwiebeln, Avocado und schwarzen Bohnen",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "High Protein",
+      "SÄTTIGUNG",
+      "SPORT",
+      "vegetarisch",
+      "SOJA-CHECK"
+    ],
+    "geraete": "Topf, Pfanne",
+    "zeit": "30 bis 40 Min.",
+    "kcal": 830,
+    "protein": 40,
+    "zutaten": [
+      {
+        "menge": 250,
+        "einheit": "g",
+        "name": "veganer Chicken-Ersatz"
+      },
+      {
+        "menge": 150,
+        "einheit": "g",
+        "name": "Jasminreis"
+      },
+      {
+        "menge": 390,
+        "einheit": "g",
+        "name": "schwarze Bohnen, abgetropft"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "rote Zwiebel"
+      },
+      {
+        "menge": 50,
+        "einheit": "ml",
+        "name": "Essig, für die Zwiebeln"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Zucker, für die Zwiebeln"
+      },
+      {
+        "menge": 10,
+        "einheit": "g",
+        "name": "Chipotle-Paste"
+      },
+      {
+        "menge": 2,
+        "einheit": "Stück",
+        "name": "Knoblauchzehen"
+      },
+      {
+        "menge": 75,
+        "einheit": "ml",
+        "name": "Hühnerbrühe, natriumreduziert"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Kreuzkümmel, gemahlen"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Avocado"
+      },
+      {
+        "menge": 75,
+        "einheit": "g",
+        "name": "Naturjoghurt"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Koriander (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Zwiebel in feine Streifen schneiden, mit Essig, Zucker, Salz und etwas Wasser kurz aufkochen und ziehen lassen.",
+      "Reis nach Packungsangabe garen.",
+      "Hähnchen in Hühnerbrühe bei niedriger Hitze gar ziehen lassen, danach mit zwei Gabeln zerzupfen.",
+      "Knoblauch, Chipotle-Paste und Kreuzkümmel in einem Topf kurz anschwitzen, gezupftes Hähnchen zurückgeben und mit etwas Brühe binden.",
+      "Bohnen erwärmen, Avocado in Scheiben schneiden.",
+      "Reis und Bohnen in Schalen anrichten, Hähnchen, Avocado und pinke Zwiebeln daraufgeben, mit Joghurt und Koriander servieren."
+    ],
+    "notiz": "Huehnchen durch veganen Chicken-Ersatz ersetzt (gleiches Produkt wie beim Sandwich im Bestand), mit Chipotle, Knoblauch und Kreuzkuemmel genauso wuerzen wie das Original. Natriumreduzierte Bruehe statt normaler. Naehrwerte nach dem Ersatz neu geschaetzt, nicht exakt nachgerechnet.",
+    "quelle": "HelloFresh Rezept Nr. 43, angepasst und vegetarisch",
+    "notizen": "Huehnerbrustfilet durch veganen Chicken-Ersatz ersetzt, Huehnerbruehe auf natriumreduziert umgestellt.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 3,
+      "aufwaermen": "Pfanne oder Mikrowelle",
+      "einfrierbar": true
+    },
+    "fett": 35,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null,
+    "original": {
+      "zutaten": [
+        {
+          "menge": 250,
+          "einheit": "g",
+          "name": "Haehnchenbrustfilet in Lake"
+        },
+        {
+          "menge": 150,
+          "einheit": "g",
+          "name": "Jasminreis"
+        },
+        {
+          "menge": 390,
+          "einheit": "g",
+          "name": "schwarze Bohnen"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "rote Zwiebel"
+        },
+        {
+          "menge": 10,
+          "einheit": "g",
+          "name": "Chipotle Paste"
+        },
+        {
+          "menge": 2,
+          "einheit": "Stück",
+          "name": "Knoblauchzehen"
+        },
+        {
+          "menge": 75,
+          "einheit": "ml",
+          "name": "Huehnerbruehe"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "Avocado"
+        },
+        {
+          "menge": 75,
+          "einheit": "g",
+          "name": "Naturjoghurt"
+        }
+      ],
+      "schritte": [
+        "Zwiebeln in Essig, Wasser, Salz und Zucker einlegen.",
+        "Reis garen. Huehnchen in Bruehe pochieren, zerzupfen, mit Chipotle, Knoblauch und Kumin vollenden.",
+        "Gemuese schneiden, Avocado und Koriander vorbereiten.",
+        "Alles anrichten, mit eingelegten Zwiebeln, Joghurt und Koriander toppen."
+      ],
+      "kcal": 866,
+      "protein": 56,
+      "fett": 30,
+      "kohlenhydrate": 95,
+      "zucker": 7.3,
+      "salz": 2.28,
+      "quelle": "HelloFresh Rezept Nr. 43, Chipotle Chicken Tinga Bowl mit pinken Zwiebeln dazu Avocado und Reis mit schwarzen Bohnen"
+    }
+  },
+  {
+    "id": "roestkartoffelnkraeuterseitling",
+    "name": "Röstkartoffeln mit Kräuterseitlingen, Babyspinat und Kräuterdip",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "SÄTTIGUNG"
+    ],
+    "geraete": "Backofen, Pfanne",
+    "zeit": "35 bis 45 Min.",
+    "kcal": 600,
+    "protein": 15,
+    "zutaten": [
+      {
+        "menge": 400,
+        "einheit": "g",
+        "name": "festkochende Kartoffeln, in Scheiben"
+      },
+      {
+        "menge": 150,
+        "einheit": "g",
+        "name": "Kräuterseitlinge"
+      },
+      {
+        "menge": 50,
+        "einheit": "g",
+        "name": "Babyspinat"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "rote Zwiebel"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Knoblauchzehe"
+      },
+      {
+        "menge": 2,
+        "einheit": "EL",
+        "name": "Olivenöl"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Rauchpaprika"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "ungesüßter Sojajoghurt (für den Dip)"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "vegane Mayonnaise, sparsam"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Sojasauce, natriumreduziert"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Petersilie, Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Kartoffelscheiben mit etwas Öl und Rauchpaprika auf einem Blech verteilen, im Ofen bei 220°C 25 bis 30 Minuten rösten, bis sie knusprig sind.",
+      "Zwiebel und Knoblauch in einer Pfanne andünsten, Kräuterseitlinge zugeben und anbraten.",
+      "Spinat unterheben, bis er zusammenfällt, mit Sojasauce und Pfeffer abschmecken.",
+      "Für den Dip Sojajoghurt, wenig vegane Mayonnaise und gehackte Petersilie verrühren, mit Salz und Pfeffer würzen.",
+      "Kartoffeln, Pilzgemüse und Dip zusammen anrichten."
+    ],
+    "notiz": "Salz im Original bei fast 5,3 g pro Portion, hauptsaechlich aus Fertigmayonnaise und Sojasauce. Sojasauce auf natriumreduziert umgestellt, vegane Mayonnaise stark reduziert und mit Sojajoghurt gestreckt. Bereits vegan, kein Fleisch-Eingriff noetig. Naehrwerte geschaetzt, aus dem Original abgeleitet.",
+    "quelle": "HelloFresh Rezept Nr. 19, angepasst",
+    "notizen": "Vegane Mayonnaise von der Hauptmenge auf 1 EL reduziert, Rest durch Sojajoghurt ersetzt. Sojasauce natriumreduziert. Exakte Original-Mengen fuer Dressing-Komponenten waren auf dem Foto teils unscharf, sinnvoll geschaetzt.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 20,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null,
+    "original": {
+      "zutaten": [
+        {
+          "menge": 400,
+          "einheit": "g",
+          "name": "festk. Kartoffeln"
+        },
+        {
+          "menge": 150,
+          "einheit": "g",
+          "name": "Kraeuterseitling"
+        },
+        {
+          "menge": 50,
+          "einheit": "g",
+          "name": "Babyspinat"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "rote Zwiebel"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "Knoblauchzehe"
+        },
+        {
+          "menge": 25,
+          "einheit": "ml",
+          "name": "Oatly Bio Cuisine"
+        },
+        {
+          "menge": 1,
+          "einheit": "EL",
+          "name": "vegane Mayonnaise"
+        },
+        {
+          "menge": 1,
+          "einheit": "EL",
+          "name": "Sojasosse"
+        },
+        {
+          "menge": null,
+          "einheit": "",
+          "name": "Gewuerzmischung Hello Smoky Paprika, Hello Patatas"
+        }
+      ],
+      "schritte": [
+        "Kartoffelscheiben im Ofen backen.",
+        "Gemuese schneiden, Pilze und Zwiebel anbraten.",
+        "Fuer den Dip Petersilie mit Oatly Bio Cuisine und Mayo verruehren.",
+        "Sosse mit Smoky Paprika, Sojasosse und Pilzen vollenden, Spinat untermischen.",
+        "Kartoffeln, Pilzgemuese und Dip anrichten."
+      ],
+      "kcal": 637,
+      "protein": 15,
+      "fett": 25,
+      "kohlenhydrate": 83,
+      "zucker": 9.2,
+      "salz": 5.27,
+      "quelle": "HelloFresh Rezept Nr. 19, Roestkartoffeln mit Kraeuterseitlingsrahm, Babyspinat und Kraeuterdip"
+    }
+  },
+  {
+    "id": "suesskartoffelbowlvegan",
+    "name": "Vegane Bowl mit Sesam-Süßkartoffel, Buschbohnen, Avocado und Asia-Dressing",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegan",
+      "vegetarisch",
+      "SÄTTIGUNG",
+      "SOJA-CHECK"
+    ],
+    "geraete": "Backofen, Topf, Pfanne",
+    "zeit": "35 bis 45 Min.",
+    "kcal": 750,
+    "protein": 18,
+    "zutaten": [
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "Süßkartoffel, gewürfelt"
+      },
+      {
+        "menge": 150,
+        "einheit": "g",
+        "name": "Jasminreis"
+      },
+      {
+        "menge": 150,
+        "einheit": "g",
+        "name": "Buschbohnen"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "Gurke"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Avocado"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Sojasauce, natriumreduziert"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Limettensaft"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Ahornsirup, statt Zucker"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Sesam"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "milde Chilisauce, sparsam statt Sweet-Chili-Soße"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Frühlingszwiebel, Chili (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Süßkartoffelwürfel im Ofen bei 220°C etwa 25 Minuten rösten.",
+      "Reis nach Packungsangabe garen.",
+      "Buschbohnen in Salzwasser bissfest garen.",
+      "Gurke in Stifte schneiden, Avocado in Scheiben.",
+      "Für das Dressing Sojasauce, Limettensaft und Ahornsirup verrühren.",
+      "Reis, Süßkartoffel, Bohnen, Gurke und Avocado anrichten, mit Dressing beträufeln, Sesam und Frühlingszwiebel darüber."
+    ],
+    "notiz": "Groesster Punkt hier ist der Zucker, im Original fast 40 g pro Portion, vor allem aus der Sweet-Chili-Sosse und der Kokosmilch. Sweet-Chili-Sosse durch eine sparsame milde Chilisosse plus Limette und wenig Ahornsirup ersetzt, Kokosmilch komplett gestrichen. Naehrwerte geschaetzt, Zuckerwert der angepassten Fassung nicht exakt nachgerechnet.",
+    "quelle": "HelloFresh Rezept Nr. 3, angepasst",
+    "notizen": "Sweet-Chili-Sosse und Kokosmilch aus dem Original gestrichen, Dressing komplett neu mit Sojasauce, Limette und wenig Ahornsirup gebaut. Das ist der groesste Eingriff in dieser Session, weil der Original-Zuckerwert deutlich ueber der Vorgabe lag.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 2,
+      "aufwaermen": "Pfanne",
+      "einfrierbar": false
+    },
+    "fett": 18,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": [
+      6,
+      7,
+      8
+    ],
+    "original": {
+      "zutaten": [
+        {
+          "menge": 300,
+          "einheit": "g",
+          "name": "Suesskartoffel"
+        },
+        {
+          "menge": 150,
+          "einheit": "g",
+          "name": "Jasminreis"
+        },
+        {
+          "menge": 150,
+          "einheit": "g",
+          "name": "Buschbohnen"
+        },
+        {
+          "menge": 100,
+          "einheit": "g",
+          "name": "Gurke"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "Avocado"
+        },
+        {
+          "menge": 25,
+          "einheit": "ml",
+          "name": "Sojasosse"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "Limette"
+        },
+        {
+          "menge": 50,
+          "einheit": "ml",
+          "name": "Kokosmilch"
+        },
+        {
+          "menge": null,
+          "einheit": "",
+          "name": "Sweet-Chili-Sosse, Sesam, Fruehlingszwiebel, rote Chilischote"
+        }
+      ],
+      "schritte": [
+        "Reis kochen, Suesskartoffel im Ofen backen.",
+        "Fuer das Dressing Sojasosse mit Zucker und Limette verruehren.",
+        "Bohnen zubereiten, Gurke schneiden.",
+        "Alles anrichten, mit Dressing, Sweet-Chili-Sosse und Sesam toppen."
+      ],
+      "kcal": 1001,
+      "protein": 16,
+      "fett": 20,
+      "kohlenhydrate": 133,
+      "zucker": 39.4,
+      "salz": 2.27,
+      "quelle": "HelloFresh Rezept Nr. 3, Vegane Bowl mit Sesam-Suesskartoffel, scharfen Buschbohnen, Avocado und Asia-Dressing"
+    }
+  },
+  {
+    "id": "raviolipilzsahne",
+    "name": "Pastataschen mit Pilzfüllung in cremiger Champignonsoße",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "Ausnahme"
+    ],
+    "geraete": "Topf, Pfanne",
+    "zeit": "30 bis 40 Min.",
+    "kcal": 700,
+    "protein": 26,
+    "zutaten": [
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "Ravioli mit Pilzfüllung"
+      },
+      {
+        "menge": 150,
+        "einheit": "g",
+        "name": "Champignons"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "rote Zwiebel"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "Magerquark, glattgerührt (statt Crème fraîche)"
+      },
+      {
+        "menge": 100,
+        "einheit": "ml",
+        "name": "Gemüsebrühe"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "TL",
+        "name": "Thymian, getrocknet"
+      },
+      {
+        "menge": 20,
+        "einheit": "g",
+        "name": "geriebener Hartkäse, sparsam"
+      },
+      {
+        "menge": 10,
+        "einheit": "g",
+        "name": "Semmelbrösel, Vollkorn"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Petersilie, Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Ravioli nach Packungsangabe in Salzwasser garen.",
+      "Zwiebel andünsten, Champignons zugeben und braten, bis das Wasser verkocht ist.",
+      "Mit Gemüsebrühe ablöschen, Thymian zugeben, kurz einköcheln lassen.",
+      "Magerquark glattrühren und unterrühren, nicht mehr kochen lassen, damit er nicht flockt.",
+      "Vollkorn-Semmelbrösel in einer Pfanne mit etwas Hartkäse goldbraun rösten.",
+      "Ravioli unter die Soße heben, mit Käse-Brösel und Petersilie bestreuen."
+    ],
+    "notiz": "Groesster Punkt ist gesaettigtes Fett, im Original ueber 20 g pro Portion aus Creme fraiche und Kaese. Creme fraiche komplett durch Magerquark ersetzt, Kaesemenge deutlich reduziert. Ravioli sind Fertigprodukt aus Weissmehl, deshalb bleibt das Gericht eine Ausnahme, auch nach der Anpassung. Naehrwerte geschaetzt.",
+    "quelle": "HelloFresh Rezept Nr. 6, angepasst",
+    "notizen": "Creme fraiche durch Magerquark ersetzt, Hartkaese von der vollen Menge auf 20 g reduziert. Fertig-Ravioli bleiben als Basis, kein Vollkorn-Ersatz verfuegbar, deshalb weiterhin Ausnahme.",
+    "ausnahme": true,
+    "leichter": "Fettreduzierte Variante ist bereits die oben stehende angepasste Fassung. Noch leichter waere nur mit selbstgemachten Vollkorn-Ravioli moeglich, das ist ein groesserer Aufwand als eine Wochenplanung.",
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 20,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null,
+    "original": {
+      "zutaten": [
+        {
+          "menge": 300,
+          "einheit": "g",
+          "name": "Ravioli mit Pilzfuellung"
+        },
+        {
+          "menge": 150,
+          "einheit": "g",
+          "name": "Champignons"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "rote Zwiebel"
+        },
+        {
+          "menge": 40,
+          "einheit": "g",
+          "name": "Creme fraiche"
+        },
+        {
+          "menge": 100,
+          "einheit": "g",
+          "name": "Gemuesebruehe"
+        },
+        {
+          "menge": 1,
+          "einheit": "Zweig",
+          "name": "Thymian"
+        },
+        {
+          "menge": 25,
+          "einheit": "g",
+          "name": "geriebener Hartkaese"
+        },
+        {
+          "menge": 10,
+          "einheit": "g",
+          "name": "Semmelbroesel"
+        }
+      ],
+      "schritte": [
+        "Kaesebroesel in einer Pfanne mit Semmelbroesel und Petersilie rösten.",
+        "Zwiebel und Champignons anbraten.",
+        "Ravioli in Salzwasser garen.",
+        "Sosse aus Creme fraiche, Gemuesebruehe, Thymian und Pfeffer vollenden.",
+        "Ravioli mit Champignongemuese anrichten, mit Kaesebroeseln toppen."
+      ],
+      "kcal": 843,
+      "protein": 30,
+      "fett": 43,
+      "kohlenhydrate": 82,
+      "zucker": 6.3,
+      "salz": 3.17,
+      "quelle": "HelloFresh Rezept Nr. 6, Ravioli! Pastataschen mit Pilzfuellung in cremiger Champignonsosse, dazu Kaesebroesel"
+    }
+  },
+  {
+    "id": "americanbowlhaehnchen",
+    "name": "American Bowl mit Hähnchen und Avocado",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "High Protein",
+      "Low Carb",
+      "vegetarisch",
+      "SOJA-CHECK"
+    ],
+    "geraete": "Pfanne",
+    "zeit": "20 bis 30 Min.",
+    "kcal": 500,
+    "protein": 28,
+    "zutaten": [
+      {
+        "menge": 250,
+        "einheit": "g",
+        "name": "veganer Chicken-Ersatz"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Paprikagewürz"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Romana-Salatherz"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Tomate"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Avocado"
+      },
+      {
+        "menge": 60,
+        "einheit": "g",
+        "name": "Mais, klein bemessen"
+      },
+      {
+        "menge": 40,
+        "einheit": "g",
+        "name": "Naturjoghurt, statt Mayonnaise"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Mayonnaise, sparsam"
+      },
+      {
+        "menge": 20,
+        "einheit": "g",
+        "name": "Hartkäse, gerieben"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Frühlingszwiebel"
+      }
+    ],
+    "schritte": [
+      "Hähnchen mit Paprikagewürz würzen, in einer Pfanne durchbraten.",
+      "Salat, Tomate klein schneiden, Mais abtropfen lassen.",
+      "Dressing aus Joghurt, wenig Mayonnaise, Salz und Pfeffer verrühren.",
+      "Salat, Tomate und Mais mit dem Dressing mischen.",
+      "Avocado in Scheiben schneiden, Hähnchen und Avocado auf den Salat legen, mit Käse und Frühlingszwiebel bestreuen."
+    ],
+    "notiz": "Huehnchen durch veganen Chicken-Ersatz ersetzt. Mais nach der neuen Vorgabe in kleiner Menge, Mayonnaise ueberwiegend durch Joghurt ersetzt. Naehrwerte nach dem Ersatz neu geschaetzt.",
+    "quelle": "HelloFresh Rezept Nr. 19, angepasst und vegetarisch",
+    "notizen": "Huehnerbrustfilet durch veganen Chicken-Ersatz ersetzt, Mais-Menge reduziert, Mayonnaise ueberwiegend durch Joghurt ersetzt.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 24,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null,
+    "original": {
+      "zutaten": [
+        {
+          "menge": 250,
+          "einheit": "g",
+          "name": "Haehnchenbrustfilet"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "Salatherz (Romana)"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "Tomate"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "Avocado"
+        },
+        {
+          "menge": 100,
+          "einheit": "g",
+          "name": "Mais"
+        },
+        {
+          "menge": 60,
+          "einheit": "g",
+          "name": "Joghurt"
+        },
+        {
+          "menge": 40,
+          "einheit": "ml",
+          "name": "Mayonnaise"
+        },
+        {
+          "menge": 20,
+          "einheit": "g",
+          "name": "Hartkaese, gerieben"
+        },
+        {
+          "menge": null,
+          "einheit": "",
+          "name": "Gewuerzmischung Hello Paprika, Fruehlingszwiebel"
+        }
+      ],
+      "schritte": [
+        "Haehnchen wuerzen und braten.",
+        "Gemuese und Mais vorbereiten.",
+        "Dressing aus Joghurt und Mayonnaise anruehren, mit Salat und Mais mischen.",
+        "Avocado schneiden, alles anrichten und mit Kaese und Fruehlingszwiebel toppen."
+      ],
+      "kcal": 567,
+      "protein": 43,
+      "fett": 35,
+      "kohlenhydrate": 18,
+      "zucker": 3,
+      "salz": 2.4,
+      "quelle": "HelloFresh Rezept Nr. 19, American Bowl mit Haehnchen und Avocado"
+    }
+  },
+  {
+    "id": "griechischetacos",
+    "name": "Griechische Tacos mit Kichererbsen und Tzatziki",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "SÄTTIGUNG"
+    ],
+    "geraete": "Backofen",
+    "zeit": "30 bis 40 Min.",
+    "kcal": 650,
+    "protein": 26,
+    "zutaten": [
+      {
+        "menge": 240,
+        "einheit": "g",
+        "name": "Kichererbsen, abgetropft"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "rote Paprika"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "rote Zwiebel"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Gewürzmischung (Oregano, Paprika, Knoblauch)"
+      },
+      {
+        "menge": 4,
+        "einheit": "Stück",
+        "name": "Vollkorn-Tortillas"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "Feta, sparsam gebröckelt"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "griechischer Joghurt (2%)"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "Stück",
+        "name": "Salatgurke, gerieben (für Tzatziki)"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Knoblauchzehe"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Tomate"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Zitrone, Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Ofen auf 220°C vorheizen. Paprika und Zwiebel in Stücke schneiden, mit Kichererbsen, Öl und Gewürzen mischen und 20 Minuten rösten.",
+      "Für das Tzatziki geriebene Gurke ausdrücken, mit Joghurt, gepresstem Knoblauch, Salz und Pfeffer verrühren.",
+      "Tomate würfeln, Tortillas kurz erwärmen.",
+      "Ofengemüse und Kichererbsen auf die Tortillas verteilen, mit Tomate, Feta und Tzatziki toppen.",
+      "Mit Zitronensaft beträufeln."
+    ],
+    "notiz": "Salz im Original bei fast 5,9 g pro Portion, kommt vermutlich aus Fertigwuerzmischung, Ketchup und Oliven. Ketchup und Oliven aus dem Original gestrichen, Fertigwuerzmischung durch eigene Gewuerze ersetzt, Weizen-Wraps auf Vollkorn umgestellt, Hirtenkaese durch Feta in kleinerer Menge ersetzt. Naehrwerte geschaetzt.",
+    "quelle": "HelloFresh Rezept Nr. 34, angepasst",
+    "notizen": "Ketchup und gruene Oliven gestrichen (Salz- und Zuckerlast), Fertiggewuerzmischung durch Oregano, Paprika und Knoblauch ersetzt, Weizen-Wraps auf Vollkorn, Kaesemenge reduziert.",
+    "ausnahme": false,
+    "leichter": null,
+    "varianten": null,
+    "prep": {
+      "geeignet": true,
+      "haltbar_tage": 2,
+      "aufwaermen": "Ofen",
+      "einfrierbar": false
+    },
+    "fett": 24,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null,
+    "original": {
+      "zutaten": [
+        {
+          "menge": 240,
+          "einheit": "g",
+          "name": "Kichererbsen"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "rote Paprika"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "rote Zwiebel"
+        },
+        {
+          "menge": 8,
+          "einheit": "Stück",
+          "name": "Tortilla-Wraps, klein"
+        },
+        {
+          "menge": 70,
+          "einheit": "g",
+          "name": "Hirtenkaese"
+        },
+        {
+          "menge": 100,
+          "einheit": "g",
+          "name": "Sahnejoghurt"
+        },
+        {
+          "menge": 70,
+          "einheit": "g",
+          "name": "gruene Oliven"
+        },
+        {
+          "menge": 150,
+          "einheit": "g",
+          "name": "Ketchup"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "Tomate"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "Gurke"
+        },
+        {
+          "menge": null,
+          "einheit": "",
+          "name": "Gewuerzmischung Hello Buon Appetito, Zitrone"
+        }
+      ],
+      "schritte": [
+        "Gemuese und Kichererbsen im Ofen backen.",
+        "Salat aus Gurke, Tomate, Fruehlingszwiebel und Oliven anmachen.",
+        "Dips aus Hirtenkaese-Sahnejoghurt und Ketchup-Gurke ruehren.",
+        "Wraps mit Dips, Gemuese und Salat belegen."
+      ],
+      "kcal": 901,
+      "protein": 38,
+      "fett": 37,
+      "kohlenhydrate": 95,
+      "zucker": 22.3,
+      "salz": 5.91,
+      "quelle": "HelloFresh Rezept Nr. 34, Griechische Tacos mit Kichererbsen und Zaziki"
+    }
+  },
+  {
+    "id": "halloumibowlroest",
+    "name": "Halloumi-Bowl mit Röst-Kichererbsen und Avocado",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "vegetarisch",
+      "High Protein",
+      "Low Carb"
+    ],
+    "geraete": "Backofen, Pfanne",
+    "zeit": "30 bis 40 Min.",
+    "kcal": 620,
+    "protein": 32,
+    "zutaten": [
+      {
+        "menge": 200,
+        "einheit": "g",
+        "name": "Halloumi, in Scheiben"
+      },
+      {
+        "menge": 240,
+        "einheit": "g",
+        "name": "Kichererbsen, abgetropft"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Paprikagewürz"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Salatherz, gemischt"
+      },
+      {
+        "menge": 100,
+        "einheit": "g",
+        "name": "Gurke, in Streifen (statt Karotte)"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Avocado"
+      },
+      {
+        "menge": 100,
+        "einheit": "ml",
+        "name": "Buttermilch"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Zitronensaft"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Petersilie, Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Kichererbsen mit Paprikagewürz und etwas Öl im Ofen bei 200°C rund 20 Minuten rösten.",
+      "Halloumi in einer Pfanne ohne zusätzliches Fett von beiden Seiten goldbraun braten.",
+      "Salat und Gurkenstreifen mischen.",
+      "Für das Dressing Buttermilch, Zitronensaft, Salz und Pfeffer verrühren.",
+      "Salat, geröstete Kichererbsen, Halloumi und Avocado anrichten, mit Dressing beträufeln."
+    ],
+    "notiz": "Karotte im Original ersetzt, Person 1 mag keine Karotten. Salz und gesaettigtes Fett im Original hoch (fast 19 g gesaettigtes Fett pro Portion), das kommt fast komplett vom Halloumi selbst, nicht sinnvoll weiter reduzierbar ohne die Halloumi-Menge zu kuerzen. Naehrwerte geschaetzt.",
+    "quelle": "HelloFresh Rezept Nr. 23, angepasst",
+    "notizen": "Karotte durch Gurkenstreifen ersetzt (Person 1 mag keine Karotten). Sonst nah am Original, Halloumi bringt naturgemaess viel gesaettigtes Fett und Salz mit, das laesst sich nur durch weniger Halloumi senken, nicht wegkuerzen.",
+    "ausnahme": false,
+    "leichter": "Halloumi auf 150 g reduzieren, wenn die Salz- und Fettlast der Woche schon hoch ist.",
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 40,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null,
+    "original": {
+      "zutaten": [
+        {
+          "menge": 200,
+          "einheit": "g",
+          "name": "Halloumi"
+        },
+        {
+          "menge": 240,
+          "einheit": "g",
+          "name": "Kichererbsen"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "Pfluecksalat"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "Karotte"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "Gurke"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "Avocado"
+        },
+        {
+          "menge": 100,
+          "einheit": "ml",
+          "name": "Buttermilch-Zitronen-Dressing"
+        },
+        {
+          "menge": null,
+          "einheit": "",
+          "name": "Gewuerzmischung Hello Piri Piri, Petersilie"
+        }
+      ],
+      "schritte": [
+        "Salat vorbereiten, Karotte raspeln.",
+        "Kichererbsen mit Gewuerzmischung anbraten.",
+        "Halloumi anbraten.",
+        "Avocado schneiden, alles mit dem Dressing anrichten."
+      ],
+      "kcal": 868,
+      "protein": 38,
+      "fett": 60,
+      "kohlenhydrate": 38,
+      "zucker": 2.4,
+      "salz": 4.75,
+      "quelle": "HelloFresh Rezept Nr. 23, Halloumi Bowl mit Roest-Kichererbsen und Avocado"
+    }
+  },
+  {
+    "id": "koettbullar",
+    "name": "Schwedische Hackbällchen mit Champignonrahmsoße und Salat",
+    "basis": 2,
+    "portionen_real": null,
+    "typ": "abendessen",
+    "favorit": false,
+    "rest": null,
+    "tags": [
+      "High Protein",
+      "vegetarisch",
+      "SOJA-CHECK"
+    ],
+    "geraete": "Pfanne, Topf",
+    "zeit": "30 bis 40 Min.",
+    "kcal": 560,
+    "protein": 26,
+    "zutaten": [
+      {
+        "menge": 250,
+        "einheit": "g",
+        "name": "Veggie-Hack"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Zwiebel"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Semmelbrösel, Vollkorn"
+      },
+      {
+        "menge": 1,
+        "einheit": "EL",
+        "name": "Milch"
+      },
+      {
+        "menge": 0.5,
+        "einheit": "TL",
+        "name": "Piment, gemahlen"
+      },
+      {
+        "menge": 300,
+        "einheit": "g",
+        "name": "festkochende Kartoffeln"
+      },
+      {
+        "menge": 150,
+        "einheit": "g",
+        "name": "Champignons"
+      },
+      {
+        "menge": 100,
+        "einheit": "ml",
+        "name": "Milch, statt Kochsahne (für die Soße)"
+      },
+      {
+        "menge": 1,
+        "einheit": "TL",
+        "name": "Speisestärke, zum Binden"
+      },
+      {
+        "menge": 1,
+        "einheit": "Stück",
+        "name": "Salatherz"
+      },
+      {
+        "menge": 50,
+        "einheit": "g",
+        "name": "Wildpreiselbeeren, ungesüßt oder sparsam gezuckert"
+      },
+      {
+        "menge": null,
+        "einheit": "",
+        "name": "Petersilie, Salz, Pfeffer (nach Bedarf)"
+      }
+    ],
+    "schritte": [
+      "Kartoffeln schälen, vierteln und in Salzwasser garen.",
+      "Hackfleisch mit fein gewürfelter Zwiebel, Semmelbröseln, Milch, Piment, Salz und Pfeffer verkneten, zu kleinen Bällchen formen.",
+      "Bällchen in einer Pfanne rundherum braten.",
+      "Champignons und restliche Zwiebel in derselben Pfanne anbraten, mit Milch ablöschen, mit etwas angerührter Speisestärke leicht binden.",
+      "Bällchen in die Soße geben, kurz ziehen lassen.",
+      "Kartoffeln mit Petersilie und etwas Öl schwenken, mit Salat und Preiselbeeren zu den Bällchen servieren."
+    ],
+    "notiz": "Hackfleisch durch Veggie-Hack ersetzt, Baellchen mit Semmelbroesel, Milch und Piment binden wie im Original. Kochsahne durch Milch mit etwas Staerke ersetzt, keine zugesetzte Butter. Wildpreiselbeermarmelade in kleiner Menge oder ungesuesst. Naehrwerte nach dem Fleisch-Tausch neu geschaetzt, gilt weiterhin als Ausnahme wegen der cremigen Sosse und der Marmelade.",
+    "quelle": "HelloFresh Rezept Nr. 12, angepasst und vegetarisch",
+    "notizen": "Gemischtes Hackfleisch durch Veggie-Hack ersetzt, Kochsahne durch Milch mit Staerke, zugesetzte Butter gestrichen, Preiselbeermarmelade reduziert.",
+    "ausnahme": true,
+    "leichter": "Ist bereits die angepasste Fassung oben. Fuer eine noch leichtere Version Hackfleisch zur Haelfte durch Veggie-Hack strecken.",
+    "varianten": null,
+    "prep": {
+      "geeignet": false,
+      "haltbar_tage": null,
+      "aufwaermen": null,
+      "einfrierbar": false
+    },
+    "fett": 18,
+    "status": "kandidat",
+    "gekocht_am": null,
+    "urteil": null,
+    "saison": null,
+    "original": {
+      "zutaten": [
+        {
+          "menge": 250,
+          "einheit": "g",
+          "name": "gemischtes Hackfleisch"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "Zwiebel"
+        },
+        {
+          "menge": 1,
+          "einheit": "EL",
+          "name": "Semmelbroesel"
+        },
+        {
+          "menge": 1,
+          "einheit": "EL",
+          "name": "Milch"
+        },
+        {
+          "menge": 1,
+          "einheit": "TL",
+          "name": "gemahlener Piment"
+        },
+        {
+          "menge": 300,
+          "einheit": "g",
+          "name": "festk. Kartoffeln"
+        },
+        {
+          "menge": 150,
+          "einheit": "g",
+          "name": "Champignons"
+        },
+        {
+          "menge": 100,
+          "einheit": "ml",
+          "name": "Kochsahne"
+        },
+        {
+          "menge": 1,
+          "einheit": "Stück",
+          "name": "Salatherz (Romana)"
+        },
+        {
+          "menge": 50,
+          "einheit": "g",
+          "name": "Wildpreiselbeermarmelade"
+        },
+        {
+          "menge": null,
+          "einheit": "",
+          "name": "Butter, Petersilie"
+        }
+      ],
+      "schritte": [
+        "Kartoffeln kochen, Salat und Champignons schneiden.",
+        "Baellchen formen und anbraten.",
+        "Sosse aus Zwiebel, Champignons und Kochsahne herstellen.",
+        "Kartoffeln mit Butter und Petersilie vermengen, mit Salat, Baellchen, Sosse und Preiselbeeren anrichten."
+      ],
+      "kcal": 842,
+      "protein": 37,
+      "fett": 49,
+      "kohlenhydrate": 60,
+      "zucker": 19.9,
+      "salz": 1.97,
+      "quelle": "HelloFresh Rezept Nr. 12, Koettbullar! Schwedische Hackbaellchen mit Champignonrahmsosse und frischem Salat"
+    }
   }
 ]
